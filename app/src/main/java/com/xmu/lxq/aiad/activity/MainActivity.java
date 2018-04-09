@@ -40,6 +40,7 @@ import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.service.AppContext;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
+import com.xmu.lxq.aiad.util.ToastUtil;
 
 import org.json.JSONObject;
 
@@ -90,9 +91,15 @@ public class MainActivity extends AppCompatActivity
         submitPic_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadPic();
-                showDialog();
-                mThread.start();
+                //要先判断照片是否存在
+                if(picture.getDrawable()==null ){
+                    ToastUtil.getInstance(MainActivity.this).showToast("照片不存在！");
+                }else{
+                    uploadPic();
+                    showDialog();
+                    mThread.start();
+                }
+
             }
         });
         Logger.addLogAdapter(new AndroidLogAdapter() {
