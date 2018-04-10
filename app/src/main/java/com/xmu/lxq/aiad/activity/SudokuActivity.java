@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,6 +37,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -195,6 +197,40 @@ public class SudokuActivity extends Activity {
         initialData();
         adapter = new DragBaseAdapter(SudokuActivity.this, list);
         aGridview.setAdapter(adapter);
+    }
+
+    class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
+        private final WeakReference<ImageView> imageViewReference;
+        private String data=null;
+
+        public BitmapWorkerTask(ImageView imageView) {
+            // 使用WeakReference来确保ImageView可以被垃圾回收机制回收
+            imageViewReference = new WeakReference<ImageView>(imageView);
+        }
+
+        // 在后台解析图片.
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            data = params[0];
+            return getVideoThumbnail(data);
+        }
+
+        // 一旦解析完成，先查看imageview是否已经被回收，没回收就设置bitmap上去.
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (imageViewReference != null && bitmap != null) {
+                final ImageView imageView = imageViewReference.get();
+                //saveBitmap(bitmap, fileName);
+                if (imageView != null) {
+                    imageView.setImageBitmap(bitmap);
+                }
+            }
+        }
+
+    }
+    public void loadBitmap(String imagePath, ImageView imageView) {
+        BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+        task.execute(imagePath);
     }
 
     /**
@@ -381,13 +417,24 @@ public class SudokuActivity extends Activity {
                 int order = Integer.parseInt((data.getStringExtra("order")).trim());
                 String fileName = data.getStringExtra("fileName");
                 String absolutePath = data.getStringExtra("absolutePath");
-                Bitmap bitmap = getVideoThumbnail(absolutePath + "");
-                saveBitmap(bitmap, fileName);
+
                 aGridview = (ActiveGrideView) findViewById(R.id.gridview);
                 ImageView imageView = (ImageView) aGridview.getChildAt(order).findViewById(R.id.iv_item);
-                imageView.setImageBitmap(bitmap);
+                loadBitmap(absolutePath,imageView);
+              /*  ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                if(bitmap!=null){
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    Glide.with(this).load(stream.toByteArray())
+                            .asBitmap().into(imageView);
+                }else{
+                    Logger.e("bitmap为null!");
+                }*/
+
+                imgs[order]="/sdcard/"+fileName+".png";
                 //Glide.with(this).load(bitmap).into(imageView);
                 imgs[order] = userfiles_url + "/" + fileName + ".png";
+
+
                 initialData();
                 adapter = new DragBaseAdapter(this, list);
                 adapter.notifyDataSetChanged();
@@ -406,10 +453,16 @@ public class SudokuActivity extends Activity {
         }
         File file1 = new File(filePath);
         if (!file1.exists()) {
+            Logger.e(filePath+"不存在");
             return null;
+        }else{
+            Logger.e(filePath+"存在");
         }
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        //FFmpegMediaMetadataRetriever mmr = new  FFmpegMediaMetadataRetriever();
         try {
+              mmr.setDataSource(filePath);
+
            /* retriever.setDataSource(filePath);
             bitmap = retriever.getFrameAtTime(10);
             上面这样写会出错
@@ -422,15 +475,20 @@ public class SudokuActivity extends Activity {
             /*
             https://stackoverflow.com/questions/11459784/mediametadataretactivity-getframeattime-videoframe-is-a-null-pointer
              */
-            retriever.setDataSource(filePath);
-            bitmap = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+            //retriever.setDataSource(filePath);
+            //new HashMap<String, String>()
+
+           /* Uri uri=Uri.fromFile(new File(filePath));
+            mmr.setDataSource(SudokuActivity.this,uri);
+            bitmap = mmr.getFrameAtTime(10000, FFmpegMediaMetadataRetriever.OPTION_CLOSEST);*/
+            bitmap=mmr.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {
             try {
-                retriever.release();
+                mmr.release();
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }

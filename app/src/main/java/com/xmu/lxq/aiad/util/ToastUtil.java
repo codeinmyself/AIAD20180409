@@ -42,7 +42,7 @@ public class ToastUtil {
     /**
      * 取消toast，在activity的destory方法中调用
      */
-    public void destory() {
+    public void destroy() {
         if (null != mToast) {
             mToast.cancel();
             mToast = null;

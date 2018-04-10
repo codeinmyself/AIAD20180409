@@ -39,6 +39,7 @@ import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.service.AppContext;
+import com.xmu.lxq.aiad.util.NetworkDetector;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
 
@@ -94,6 +95,8 @@ public class MainActivity extends AppCompatActivity
                 //要先判断照片是否存在
                 if(picture.getDrawable()==null ){
                     ToastUtil.getInstance(MainActivity.this).showToast("照片不存在！");
+                }else if(!NetworkDetector.detectNetwork(MainActivity.this)){
+                    ToastUtil.getInstance(MainActivity.this).showToast("网络未连接！");
                 }else{
                     uploadPic();
                     showDialog();
@@ -289,7 +292,7 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(MainActivity.this, PersonalInfo.class);
                 startActivity(intent);
             } else {
-                Toast.makeText(MainActivity.this, "请先登录！", Toast.LENGTH_SHORT).show();
+                ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
             }
 
         } else if (id == R.id.nav_gallery) {
@@ -298,7 +301,7 @@ public class MainActivity extends AppCompatActivity
             if (AppContext.isLogin) {
 
             } else {
-                Toast.makeText(MainActivity.this, "请先登录！", Toast.LENGTH_SHORT).show();
+                ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
             }
         } else if (id == R.id.nav_slideshow) {
 
@@ -306,21 +309,21 @@ public class MainActivity extends AppCompatActivity
             if (AppContext.isLogin) {
 
             } else {
-                Toast.makeText(MainActivity.this, "请先登录！", Toast.LENGTH_SHORT).show();
+                ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
             }
         } else if (id == R.id.nav_manage) {
             AppContext AppContext = new AppContext();
             if (AppContext.isLogin) {
 
             } else {
-                Toast.makeText(MainActivity.this, "请先登录！", Toast.LENGTH_SHORT).show();
+                ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
             }
         } else if (id == R.id.nav_share) {
             AppContext AppContext = new AppContext();
             if (AppContext.isLogin) {
 
             } else {
-                Toast.makeText(MainActivity.this, "请先登录！", Toast.LENGTH_SHORT).show();
+                ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
             }
         } else if (id == R.id.logout) {
             AppContext AppContext = new AppContext();
@@ -341,7 +344,7 @@ public class MainActivity extends AppCompatActivity
                 // sharePreferenceUtil.setStateLogout();
                 AppContext.setIsLogin(false);
             } else {
-                Toast.makeText(MainActivity.this, "并未登录！", Toast.LENGTH_SHORT).show();
+                ToastUtil.getInstance(MainActivity.this).showToast("并未登录！");
             }
 
 
@@ -375,7 +378,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, IconActivity.class);
             startActivity(intent);
         } else {
-            Toast.makeText(MainActivity.this, "请先登录！", Toast.LENGTH_SHORT).show();
+            ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
         }
     }
 
@@ -402,7 +405,7 @@ public class MainActivity extends AppCompatActivity
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openAlbum();
                 } else {
-                    Toast.makeText(this, "没有权限！", Toast.LENGTH_SHORT).show();
+                    ToastUtil.getInstance(MainActivity.this).showToast("没有权限！");
                 }
                 break;
             default:
@@ -505,7 +508,7 @@ public class MainActivity extends AppCompatActivity
     private void showDialog() {
         dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置水平进度条
-        dialog.setCancelable(true);// 设置是否可以通过点击Back键取消
+        dialog.setCancelable(false);// 设置是否可以通过点击Back键取消
         dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
         dialog.setTitle("识别中");
         dialog.setMax(100);

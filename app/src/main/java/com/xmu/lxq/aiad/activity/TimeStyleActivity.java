@@ -109,7 +109,13 @@ public class TimeStyleActivity extends Activity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                writeStyleTimeToFile();
+                if(radioGroup1.getCheckedRadioButtonId()==-1 ){
+                    ToastUtil.getInstance(TimeStyleActivity.this).showToast("未选择风格！");
+                }else if(radioGroup2.getCheckedRadioButtonId()==-1){
+                    ToastUtil.getInstance(TimeStyleActivity.this).showToast("未选择时长！");
+                }else{
+                    writeStyleTimeToFile();
+                }
             }
         });
     }

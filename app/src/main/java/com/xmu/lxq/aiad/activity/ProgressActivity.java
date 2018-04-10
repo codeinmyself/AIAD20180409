@@ -37,7 +37,7 @@ public class ProgressActivity extends Activity{
     public static String[] videosName=new String[6];//记录videosName
     static int num=0;//在非主线程遍历videosName[]，必须为静态
     static ProgressDialog dialog = null;
-    private int FLAG_DISMISS = 1;//关闭dialog的标志
+    private int FLAG_DISMISS = 5;//关闭dialog的标志
     private boolean flag = true;//跳出循环的标志
 
     @Override
@@ -66,7 +66,6 @@ public class ProgressActivity extends Activity{
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
                 String tempResponse =  response.body().string();
                 if(response.isSuccessful()){
                     Logger.i("getVideosName():成功");
@@ -125,12 +124,14 @@ public class ProgressActivity extends Activity{
                 OkHttpUtil.downFile(url, resourcesfiles_url+"/", /*videosName[i]*/videosName[i] + ".mp4", new OkHttpUtil.OnDownloadListener() {
                     @Override
                     public void onDownloadSuccess() {
-                        Logger.i(videosName[num++]+"^_^视频下载成功！");
+                        Logger.i(videosName[num]+"^_^视频下载成功！");
+                        Message msg=mHandler.obtainMessage();
+                        msg.what=num;
+                        mHandler.sendMessage(msg);
+                        num++;
+                        //if只会在最后执行
                         if(num==6){
-                            Message msg=mHandler.obtainMessage();
-                            msg.what=FLAG_DISMISS;
-                            Intent intent=new Intent(ProgressActivity.this,SudokuActivity.class);
-                            startActivity(intent);
+                            num=0;
                         }
                     }
 
@@ -164,7 +165,7 @@ public class ProgressActivity extends Activity{
     private void initialView(){
         dialog=new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置水平进度条
-        dialog.setCancelable(true);// 设置是否可以通过点击Back键取消
+        dialog.setCancelable(false);// 设置是否可以通过点击Back键取消
         dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
         dialog.setTitle("正在下载");
         dialog.setMax(100);
@@ -200,8 +201,12 @@ public class ProgressActivity extends Activity{
         @Override
         public void handleMessage(Message msg){
             super.handleMessage(msg);
+
+            dialog.setTitle("正在下载"+((int)(((double)(msg.what+1)/6)*100))+"%");
             if(msg.what==FLAG_DISMISS){
                 dismiss();
+                Intent intent=new Intent(ProgressActivity.this,SudokuActivity.class);
+                startActivity(intent);
             }
         }
     };

@@ -4,9 +4,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
@@ -30,13 +34,13 @@ import com.xmu.lxq.aiad.widget.CircularProgressView;
 import com.xmu.lxq.aiad.widget.FocusImageView;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static com.xmu.lxq.aiad.config.Config.userfiles_url;
 
 /**
- * Created by cj on 2017/7/25.
  * desc 视频录制
  * 主要包括 音视频录制、断点续录、对焦等功能
  */
@@ -49,7 +53,7 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
     private ImageView mBeautyBtn;
     private ImageView mFilterBtn;
     private ImageView mCameraChange;
-    private static final int maxTime = 4000;//最长录制4s
+    private static final int maxTime = 2000;//最长录制4s
     private boolean pausing = false;
     private boolean recordFlag = false;//是否正在录制
 
@@ -241,6 +245,9 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
             timeCount = 0;
             long time = System.currentTimeMillis();
             //String savePath = Constants.getPath("record/", time + ".mp4");
+            file=new File(userfiles_url+"/"+fileName+".mp4");
+            //如果存在文件先删除（有方法覆盖吗？）
+            if(file.exists()) file.delete();
             String savePath = userfiles_url+"/"+fileName+".mp4";
 
             try {
@@ -280,11 +287,13 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
         long time=System.currentTimeMillis()/1000;//获取系统时间的10位的时间戳
         return String.valueOf(time);
     }
+
+
+
     private void recordComplete(final String path) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Logger.e("执行run方法！");
                 mCapture.setProcess(0);
                 ToastUtil.getInstance(RecordedActivity.this).showToast( "文件保存路径：" + path);
 
@@ -305,7 +314,6 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
 
                 mCameraView.onDestroy();
                 RecordedActivity.this.setResult(1,intent);
-                Logger.e("执行run方法结束！");
                 finish();
             }
         });

@@ -51,6 +51,9 @@ public class ProductTypeActivity extends Activity{
 
 
     }
+    @Override
+    public void onBackPressed(){
+    }
     /**
      * initialView
      */
@@ -79,8 +82,17 @@ public class ProductTypeActivity extends Activity{
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ProductTypeActivity.this,TimeStyleActivity.class);
-                startActivity(intent);
+
+                //要先判断是否选择了类型
+                if(rg0.getCheckedRadioButtonId()==-1 &&
+                        rg1.getCheckedRadioButtonId()==-1 &&
+                        rg2.getCheckedRadioButtonId()==-1){
+                    ToastUtil.getInstance(ProductTypeActivity.this).showToast("还未选择类型！");
+                }else{
+                    Intent intent=new Intent(ProductTypeActivity.this,TimeStyleActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
     }
@@ -94,7 +106,6 @@ public class ProductTypeActivity extends Activity{
                 productType=choose;
                 rg1.setOnCheckedChangeListener(null);rg1.clearCheck();rg1.setOnCheckedChangeListener(listener2);
                 rg2.setOnCheckedChangeListener(null);rg2.clearCheck();rg2.setOnCheckedChangeListener(listener2);
-                Logger.i( String.valueOf(radioButton.getText()));
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
@@ -114,7 +125,6 @@ public class ProductTypeActivity extends Activity{
                 productType=choose;
                 rg0.setOnCheckedChangeListener(null);rg0.clearCheck();rg0.setOnCheckedChangeListener(listener2);
                 rg2.setOnCheckedChangeListener(null);rg2.clearCheck();rg2.setOnCheckedChangeListener(listener2);
-                Logger.i( String.valueOf(radioButton.getText()));
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
@@ -175,14 +185,6 @@ public class ProductTypeActivity extends Activity{
         icon.setBounds(0, 0, 200, 200);//第一0是距左右边距离，第二0是距上下边距离，第三69长度,第四宽度
         radioButton0.setCompoundDrawables(null,icon, null, null);//只放上面
         radioButton0.setText(icon_txt);
-
-        /*radioButton1.setText(str[0]);
-        radioButton2.setText(str[1]);
-        radioButton3.setText(str[2]);
-
-        radioButton4.setText(str[3]);
-        radioButton5.setText(str[4]);
-        radioButton6.setText("其他");*/
     }
 
     private int classifyProcess(String str[],int type[]){
