@@ -3,6 +3,7 @@ package com.xmu.lxq.aiad.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
@@ -13,13 +14,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -61,19 +66,30 @@ public class SudokuActivity extends Activity {
     private MediaPlayer player;
     private SeekBar seekBar;
     private ImageButton start;
+    private ImageButton edit;
+    private ImageButton save;
+    private ImageButton lefttop,leftbottom,righttop,rightbottom,black,white;
+    private EditText word;
     private Button submit;
     private ActiveGrideView aGridview;
     public static List<HashMap<String, String>> list;
     private DragBaseAdapter adapter;
     private int position = 0;
-
+    private LinearLayout editWordsBar;
     private String path;
+    private int temp;
     public static String[] img_text = {"u_1", "宫格1", "宫格2", "宫格3", "u_2", "宫格4",
             "宫格5", "宫格6", "u_3"};
 
     static String default_img = "/sdcard/1513955901.png";
     public static String[] imgs = {"hh", default_img, default_img, default_img, "hh", default_img, default_img, default_img, "hh"};
-
+    public class Words{
+        private String videoID;
+        private String content;
+        private String  pos;
+        private String color;
+    }
+    private Words []words=new Words[9];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,13 +107,25 @@ public class SudokuActivity extends Activity {
      * initView and set Listener
      */
     private void initView() {
+
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         start = (ImageButton) findViewById(R.id.video_start);
+        edit=(ImageButton) findViewById(R.id.video_edit);
+
+        save=(ImageButton) findViewById(R.id.save_words);
+        word=(EditText)findViewById(R.id.words); word.setEnabled(false);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         player = new MediaPlayer();
         surfaceView.getHolder().setKeepScreenOn(true);
         aGridview = (ActiveGrideView) findViewById(R.id.gridview);
         submit=(Button) findViewById(R.id.submit);
+        editWordsBar=(LinearLayout)findViewById(R.id.edit_words_bar);
+        rightbottom=(ImageButton) findViewById(R.id.rightbottom);
+        leftbottom=(ImageButton) findViewById(R.id.leftbottom);
+        righttop=(ImageButton) findViewById(R.id.righttop);
+        lefttop=(ImageButton) findViewById(R.id.lefttop);
+        black=(ImageButton) findViewById(R.id.black);
+        white=(ImageButton) findViewById(R.id.white);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,9 +172,22 @@ public class SudokuActivity extends Activity {
                     //surfaceView.setBackgroundDrawable(null);
                     surfaceView.setBackgroundDrawable(new BitmapDrawable(getResources(),bitmap));
                     seekBar.setProgress(0);
+                    for(int i=0;i<9;i++){
+                        if(words[i].videoID==img_text[arg2]){
+                            word.setText(words[i].content);
+                            if(words[i].pos=="lt")setMargins(word,dip2px(20),dip2px(20),0,0);
+                            else if (words[i].pos=="lb")setMargins(word,dip2px(20),dip2px(150),0,0);
+                            else if (words[i].pos=="rt")setMargins(word,dip2px(200),dip2px(20),0,0);
+                            else if (words[i].pos=="rb")setMargins(word,dip2px(200),dip2px(150),0,0);
+                            if(words[i].color=="black")word.setTextColor(Color.BLACK);
+                            else if(words[i].color=="white")word.setTextColor(Color.WHITE);
+                            temp=i;
+                        }
+                    }
                 }
             }
         });
+
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,14 +195,62 @@ public class SudokuActivity extends Activity {
                 videoPlay(0, path);
             }
         });
+        edit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                word.setEnabled(true);word.requestFocus();
+                editWordsBar.setVisibility(View.VISIBLE);
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                words[temp].content=word.getText().toString();
+                word.setEnabled(false);
+                editWordsBar.setVisibility(View.INVISIBLE);
+            }
+        });
+        lefttop.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                setMargins(word,dip2px(20),dip2px(20),0,0);
+                words[temp].pos="lt";
+            }
+        });
+        leftbottom.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               setMargins(word,dip2px(20),dip2px(150),0,0);
+                words[temp].pos="lb";
+            }
+        });
+        righttop.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                setMargins(word,dip2px(200),dip2px(20),0,0);
+                words[temp].pos="rt";
+            }
+        });
+        rightbottom.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                setMargins(word,dip2px(200),dip2px(150),0,0);
+                words[temp].pos="rb";
+            }
+        });
+        black.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               word.setTextColor(Color.BLACK);words[temp].color="black";
+            }
+        });
+        white.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                word.setTextColor(Color.WHITE);words[temp].color="white";
+            }
+        });
+
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
+
             public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                        int height) {
             }
 
-            @Override
+
             public void surfaceCreated(SurfaceHolder holder) {
 
                 start.setEnabled(true);
@@ -197,6 +286,7 @@ public class SudokuActivity extends Activity {
         initialData();
         adapter = new DragBaseAdapter(SudokuActivity.this, list);
         aGridview.setAdapter(adapter);
+
     }
 
     class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
@@ -232,7 +322,17 @@ public class SudokuActivity extends Activity {
         BitmapWorkerTask task = new BitmapWorkerTask(imageView);
         task.execute(imagePath);
     }
-
+    public int dip2px(float dpValue) {
+        final float scale = this.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+    public static void setMargins (View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
+    }
     /**
      * 初始化6个模板视频
      */
@@ -258,6 +358,14 @@ public class SudokuActivity extends Activity {
                         initialData();
                         adapter = new DragBaseAdapter(SudokuActivity.this, list);
                         aGridview.setAdapter(adapter);
+                        for(int i=0;i<9;i++){
+                            words[i]=new Words();
+                            words[i].content="请输入文字";
+                            words[i].videoID=img_text[i];
+                            words[i].pos="lt";
+                            words[i].color="black";
+                            Logger.i(words[i].videoID);
+                        }
                     }
                 });
             }
@@ -383,6 +491,11 @@ public class SudokuActivity extends Activity {
             bufferedWriter.write(img_text[6] + " ");
             bufferedWriter.write(img_text[7] + " ");
             bufferedWriter.write(img_text[8] + "\r\n");
+            for(int i=0;i<9;i++){
+                for(int j=0;j<9;j++){
+                    if(words[j].videoID==img_text[i]){bufferedWriter.write(words[j].content+" "+words[j].pos+" "+words[j].color+"\r\n");break;}
+                }
+            }
             bufferedWriter.close();
             outputStreamWriter.close();
         } catch (Exception e) {

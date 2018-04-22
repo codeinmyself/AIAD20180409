@@ -33,8 +33,15 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_margin="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -62,6 +69,16 @@
                 </ImageButton>
 
 
+                <ImageButton
+                    android:id="@+id/video_edit"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/edit">
+
+                </ImageButton>
+
                 <SeekBar
                     android:id="@+id/seekBar"
                     android:layout_width="250dp"
@@ -72,8 +89,92 @@
                     android:minHeight="8dp"
 
                     />
+
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/words"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:ems="10"
+                android:text="Name"
+                android:textAlignment="textStart"
+                android:textColor="#555"
+                android:textSize="14sp" />
+
         </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/edit_words_bar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="200dp"
+            android:background="#2a0a50"
+            android:gravity="center_vertical|center"
+            android:orientation="horizontal"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:id="@+id/lefttop"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0"
+                android:background="@drawable/lt" />
+
+            <ImageButton
+                android:id="@+id/righttop"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0"
+                android:background="@drawable/rt" />
+
+            <ImageButton
+                android:id="@+id/leftbottom"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0"
+                android:background="@drawable/lb" />
+
+            <ImageButton
+                android:id="@+id/rightbottom"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/rb" />
+
+            <ImageButton
+                android:id="@+id/black"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="0"
+                android:background="@android:color/black" />
+
+            <ImageButton
+                android:id="@+id/white"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0"
+                android:background="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/save_words"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="0"
+                android:background="@mipmap/editor_img_confirm"
+                android:visibility="visible">
+
+            </ImageButton>
+        </LinearLayout>
 
         <com.xmu.lxq.aiad.SudokuUtil.ActiveGrideView
             android:id="@+id/gridview"
@@ -81,13 +182,15 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="220dp"
+            android:layout_marginTop="240dp"
             android:cacheColorHint="#ffffff"
             android:gravity="center"
             android:horizontalSpacing="10dp"
-            android:scaleType="centerCrop"
             android:listSelector="#ffffff"
             android:numColumns="3"
-            android:verticalSpacing="10dp" />
+            android:scaleType="centerCrop"
+            android:verticalSpacing="10dp">
+
+        </com.xmu.lxq.aiad.SudokuUtil.ActiveGrideView>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
