@@ -47,6 +47,8 @@ public class ProductTypeActivity extends Activity{
                 return BuildConfig.DEBUG;
             }
         });
+
+
         initialize();
 
 
@@ -106,8 +108,8 @@ public class ProductTypeActivity extends Activity{
                 productType=choose;
                 rg1.setOnCheckedChangeListener(null);rg1.clearCheck();rg1.setOnCheckedChangeListener(listener2);
                 rg2.setOnCheckedChangeListener(null);rg2.clearCheck();rg2.setOnCheckedChangeListener(listener2);
-                Handler h = new Handler(Looper.getMainLooper());
-                h.post(new Runnable() {
+                runOnUiThread(new Runnable() {
+                    @Override
                     public void run() {
                         ToastUtil.getInstance(ProductTypeActivity.this).showToast("已选择"+choose);
                     }
@@ -125,13 +127,13 @@ public class ProductTypeActivity extends Activity{
                 productType=choose;
                 rg0.setOnCheckedChangeListener(null);rg0.clearCheck();rg0.setOnCheckedChangeListener(listener2);
                 rg2.setOnCheckedChangeListener(null);rg2.clearCheck();rg2.setOnCheckedChangeListener(listener2);
-                Handler h = new Handler(Looper.getMainLooper());
-                h.post(new Runnable() {
-                    public void run() {
-                        ToastUtil.getInstance(ProductTypeActivity.this).showToast("已选择"+choose);
+               runOnUiThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       ToastUtil.getInstance(ProductTypeActivity.this).showToast("已选择"+choose);
 
-                    }
-                });
+                   }
+               });
             }
 
         }
@@ -148,11 +150,13 @@ public class ProductTypeActivity extends Activity{
                 productType=choose;
                 Logger.i(String.valueOf(radioButton.getText()));
                 Handler h = new Handler(Looper.getMainLooper());
-                h.post(new Runnable() {
-                    public void run() {
-                        ToastUtil.getInstance(ProductTypeActivity.this).showToast( "已选择"+choose);
-                    }
-                });
+               runOnUiThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       ToastUtil.getInstance(ProductTypeActivity.this).showToast( "已选择"+choose);
+
+                   }
+               });
             }
 
         }

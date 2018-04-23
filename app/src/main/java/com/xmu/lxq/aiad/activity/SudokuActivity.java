@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -27,9 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.SudokuUtil.ActiveGrideView;
 import com.xmu.lxq.aiad.SudokuUtil.DragBaseAdapter;
@@ -95,11 +92,6 @@ public class SudokuActivity extends Activity {
         super.onCreate(savedInstanceState);
      //   makeActionOverflowMenuShown();
         setContentView(R.layout.activity_sudoku);
-        Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
-            }
-        });
         initView();
     }
 
@@ -173,14 +165,14 @@ public class SudokuActivity extends Activity {
                     surfaceView.setBackgroundDrawable(new BitmapDrawable(getResources(),bitmap));
                     seekBar.setProgress(0);
                     for(int i=0;i<9;i++){
-                        if(words[i].videoID==img_text[arg2]){
+                        if(words[i].videoID.equals(img_text[arg2])){
                             word.setText(words[i].content);
-                            if(words[i].pos=="lt")setMargins(word,dip2px(20),dip2px(20),0,0);
-                            else if (words[i].pos=="lb")setMargins(word,dip2px(20),dip2px(150),0,0);
-                            else if (words[i].pos=="rt")setMargins(word,dip2px(200),dip2px(20),0,0);
-                            else if (words[i].pos=="rb")setMargins(word,dip2px(200),dip2px(150),0,0);
-                            if(words[i].color=="black")word.setTextColor(Color.BLACK);
-                            else if(words[i].color=="white")word.setTextColor(Color.WHITE);
+                            if(words[i].pos.equals("lt"))setMargins(word,dip2px(20),dip2px(20),0,0);
+                            else if (words[i].pos.equals("lb"))setMargins(word,dip2px(20),dip2px(150),0,0);
+                            else if (words[i].pos.equals("rt"))setMargins(word,dip2px(200),dip2px(20),0,0);
+                            else if (words[i].pos.equals("rb"))setMargins(word,dip2px(200),dip2px(150),0,0);
+                            if(words[i].color.equals("black"))word.setTextColor(Color.BLACK);
+                            else if(words[i].color.equals("white"))word.setTextColor(Color.WHITE);
                             temp=i;
                         }
                     }
@@ -377,7 +369,6 @@ public class SudokuActivity extends Activity {
         if (list != null) {
             if (list.size() > 0) list.clear();
         } else {
-            //list = new ArrayList<HashMap<String,Integer>>();
             list = new ArrayList<HashMap<String, String>>();
         }
         for (int i = 0; i < img_text.length; i++) {

@@ -3,8 +3,6 @@ package com.xmu.lxq.aiad.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -178,23 +176,24 @@ public class RegisterActivity extends Activity{
                             String returnCode=jsonObject.getString("code");
                             if("200".equals(returnCode)){
                                 Logger.i("注册成功!"+returnCode);
-                                Handler h = new Handler(Looper.getMainLooper());
-                                h.post(new Runnable() {
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
                                     public void run() {
-                                        Toast.makeText(RegisterActivity.this, "注册成功!",Toast.LENGTH_SHORT).show();
+                                        ToastUtil.getInstance(RegisterActivity.this).showToast("注册成功!");
                                     }
                                 });
-
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 startActivity(intent);
                             }else{
-
-                                Handler h = new Handler(Looper.getMainLooper());
-                                h.post(new Runnable() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
                                     public void run() {
-                                        Toast.makeText(RegisterActivity.this, "注册失败!",Toast.LENGTH_SHORT).show();
+                                        ToastUtil.getInstance(RegisterActivity.this).showToast("注册失败!");
                                     }
                                 });
+
+
 
                             }
                         }catch (Exception e){

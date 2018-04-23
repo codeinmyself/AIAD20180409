@@ -4,19 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.service.AppContext;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
+import com.xmu.lxq.aiad.util.ToastUtil;
 
 import org.json.JSONObject;
 
@@ -92,7 +90,7 @@ public class LoginActivity extends Activity{
                 else{
                     long remainTime=errorTime+WAIT_TIME-recentTime;
                     //Toast提醒
-                    Toast.makeText(LoginActivity.this, "登录界面锁定中，请等待！剩余"+remainTime/1000+"s",Toast.LENGTH_SHORT).show();
+                    ToastUtil.getInstance(LoginActivity.this).showToast("登录界面锁定中，请等待！剩余"+remainTime/1000+"s");
                 }
 
 
@@ -131,12 +129,13 @@ public class LoginActivity extends Activity{
     public boolean matchLoginMsg(String telephone,String password){
         if("".equals(telephone))
         {
-            Toast.makeText(LoginActivity.this, "账号不能为空",Toast.LENGTH_SHORT).show();
+            ToastUtil.getInstance(LoginActivity.this).showToast("账号不能为空");
             return false;
         }
         if("".equals(password))
         {
-            Toast.makeText(LoginActivity.this, "密码不能为空",Toast.LENGTH_SHORT).show();
+            ToastUtil.getInstance(LoginActivity.this).showToast("密码不能为空");
+
             return false;
         }
         return true;
@@ -205,15 +204,13 @@ public class LoginActivity extends Activity{
 
                             if(counter==1){
                                 counter=LOGIN_CHANCES;
-                                Handler h = new Handler(Looper.getMainLooper());
-                                h.post(new Runnable() {
-                                    public void run() {
-                                        et_password.setText("");
-                                        Toast.makeText(LoginActivity.this, "连续" + LOGIN_CHANCES + "次认证失败，请您" + WAIT_TIME / 1000 +"秒后再登陆！", Toast.LENGTH_LONG).show();
-
-                                    }
-                                });
-                                //Toast提醒
+                               runOnUiThread(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       et_password.setText("");
+                                       ToastUtil.getInstance(LoginActivity.this).showToast("连续" + LOGIN_CHANCES + "次认证失败，请您" + WAIT_TIME / 1000 +"秒后再登陆！");
+                                   }
+                               });
                                 errorTime = System.currentTimeMillis();
                                 SharedPreferences sp1 = getSharedPreferences("data", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sp1.edit();
@@ -221,13 +218,13 @@ public class LoginActivity extends Activity{
                                 editor.commit();
                             }else {
                                 counter--;
-                                Handler h = new Handler(Looper.getMainLooper());
-                                h.post(new Runnable() {
-                                    public void run() {
-                                        et_password.setText("");
-                                        Toast.makeText(LoginActivity.this, "用户名或密码错误，请重新输入!剩余"+counter+"机会",Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                              runOnUiThread(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      et_password.setText("");
+                                      ToastUtil.getInstance(LoginActivity.this).showToast("用户名或密码错误，请重新输入!剩余"+counter+"机会");
+                                  }
+                              });
                             }
 
 

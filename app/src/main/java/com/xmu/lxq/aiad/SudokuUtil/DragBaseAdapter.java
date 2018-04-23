@@ -91,7 +91,7 @@ public class DragBaseAdapter extends BaseAdapter {
 		if(entry != null){
 			//方案一：移动会卡顿。
 			// iv.setImageBitmap(getBitmap(entry.getValue()+""));
-			//方案二：膜拜下Glide，感受下。
+			//方案二：Glide
 			if(!(entry.getValue()+"").contains("hh")){
 				//Glide.with(mContext).load(entry.getValue()+"").placeholder(R.drawable.rotate_pro).crossFade().into(iv);
 				final ObjectAnimator anim = ObjectAnimator.ofInt(iv, "ImageLevel", 0, 10000);

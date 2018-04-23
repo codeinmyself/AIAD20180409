@@ -163,12 +163,13 @@ public class CameraDrawer implements GLSurfaceView.Renderer {
 
         MatrixUtils.getShowMatrix(SM,mPreviewWidth, mPreviewHeight, width, height);
 
-        //添加的
+       /* //添加的
         if(width>height){
             MatrixUtils.getShowMatrix(SM,mPreviewWidth, mPreviewHeight, width, (int)(height*aspectRatio*aspectRatio));
         }else{
             MatrixUtils.getShowMatrix(SM,mPreviewWidth, mPreviewHeight, width, height);
-        }
+        }*/
+        MatrixUtils.getShowMatrix(SM,mPreviewWidth, mPreviewHeight, width, height);
 
         showFilter.setMatrix(SM);
     }
@@ -179,7 +180,8 @@ public class CameraDrawer implements GLSurfaceView.Renderer {
         mSurfaceTextrue.updateTexImage();
 
         EasyGlUtils.bindFrameTexture(fFrame[0],fTexture[0]);
-        GLES20.glViewport(0,0,mPreviewWidth,mPreviewHeight);
+        //GLES20.glViewport(0,0,mPreviewWidth,mPreviewHeight);
+        GLES20.glViewport(0,0,mPreviewWidth,mPreviewHeight*2);
         drawFilter.draw();
         EasyGlUtils.unBindFrameBuffer();
 
@@ -252,8 +254,8 @@ public class CameraDrawer implements GLSurfaceView.Renderer {
                     throw new RuntimeException("unknown recording status " + recordingStatus);
             }
         }
-        /**绘制显示的filter*/
-        GLES20.glViewport(0,0,width,height);
+        //GLES20.glViewport(0,0,width,height);
+        GLES20.glViewport(0,height/4,width,height/2);
         showFilter.setTextureId(mAfFilter.getOutputTexture());
         showFilter.draw();
         if (videoEncoder != null && recordingEnabled && recordingStatus == RECORDING_ON){
