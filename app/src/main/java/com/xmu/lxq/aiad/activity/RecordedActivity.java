@@ -4,13 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
@@ -34,7 +30,6 @@ import com.xmu.lxq.aiad.widget.CircularProgressView;
 import com.xmu.lxq.aiad.widget.FocusImageView;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -243,8 +238,7 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
             pausing = false;
             autoPausing = false;
             timeCount = 0;
-            long time = System.currentTimeMillis();
-            //String savePath = Constants.getPath("record/", time + ".mp4");
+
             file=new File(userfiles_url+"/"+fileName+".mp4");
             //如果存在文件先删除（有方法覆盖吗？）
             if(file.exists()) file.delete();
@@ -324,10 +318,5 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
         mCameraView.onDestroy();
         super.onDestroy();
     }
-
-   /* @Override
-    public void onConfigurationChanged(Configuration newConfig){
-        super.onConfigurationChanged(newConfig);
-    }*/
 
 }
