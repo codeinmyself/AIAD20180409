@@ -314,9 +314,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             AppContext AppContext = new AppContext();
             if (AppContext.isLogin) {
-
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
             } else {
-                ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
+               /* ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");*/
             }
         } else if (id == R.id.nav_share) {
             AppContext AppContext = new AppContext();
