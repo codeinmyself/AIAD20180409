@@ -10,7 +10,7 @@ import android.opengl.GLUtils;
 import android.util.Log;
 
 import com.xmu.lxq.aiad.gpufilter.basefilter.GPUImageFilter;
-import com.xmu.lxq.aiad.service.AppContext;
+import com.xmu.lxq.aiad.application.AppContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -5,7 +5,7 @@ import android.opengl.GLES20;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.gpufilter.basefilter.GPUImageFilter;
 import com.xmu.lxq.aiad.gpufilter.utils.OpenGlUtils;
-import com.xmu.lxq.aiad.service.AppContext;
+import com.xmu.lxq.aiad.application.AppContext;
 
 
 public class MagicInkwellFilter extends GPUImageFilter {

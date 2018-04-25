@@ -3,8 +3,8 @@ package com.xmu.lxq.aiad.filter;
 import android.content.res.Resources;
 import android.opengl.GLES20;
 
-import com.xmu.lxq.aiad.utils.EasyGlUtils;
-import com.xmu.lxq.aiad.utils.MatrixUtils;
+import com.xmu.lxq.aiad.util.EasyGlUtils;
+import com.xmu.lxq.aiad.util.MatrixUtils;
 
 
 /**

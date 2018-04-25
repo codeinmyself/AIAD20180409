@@ -23,7 +23,7 @@ import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.camera.SensorControler;
 import com.xmu.lxq.aiad.gpufilter.SlideGpuFilterGroup;
 import com.xmu.lxq.aiad.gpufilter.helper.MagicFilterType;
-import com.xmu.lxq.aiad.service.AppContext;
+import com.xmu.lxq.aiad.application.AppContext;
 import com.xmu.lxq.aiad.util.ToastUtil;
 import com.xmu.lxq.aiad.widget.CameraView;
 import com.xmu.lxq.aiad.widget.CircularProgressView;

@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
-import com.xmu.lxq.aiad.service.AppContext;
+import com.xmu.lxq.aiad.application.AppContext;
 
 import java.util.Calendar;
 

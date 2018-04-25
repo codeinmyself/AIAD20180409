@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.xmu.lxq.aiad.utils.DensityUtils;
+import com.xmu.lxq.aiad.util.DensityUtils;
 
 
 /**

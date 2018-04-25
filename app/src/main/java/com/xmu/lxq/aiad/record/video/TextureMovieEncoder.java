@@ -29,7 +29,7 @@ import com.xmu.lxq.aiad.filter.NoFilter;
 import com.xmu.lxq.aiad.gpufilter.basefilter.GPUImageFilter;
 import com.xmu.lxq.aiad.gpufilter.basefilter.MagicCameraInputFilter;
 import com.xmu.lxq.aiad.record.gles.EglCore;
-import com.xmu.lxq.aiad.service.AppContext;
+import com.xmu.lxq.aiad.application.AppContext;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;

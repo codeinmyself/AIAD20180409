@@ -1,4 +1,4 @@
-package com.xmu.lxq.aiad.service;
+package com.xmu.lxq.aiad.application;
 
 import android.app.Application;
 import android.content.Context;
@@ -11,16 +11,6 @@ import android.util.DisplayMetrics;
 public class AppContext extends Application{
     public  static boolean isLogin=false;
 
-   /* private  AppContext instance;
-
-    public  AppContext getInstance() {
-        return instance;
-    }*/
-   /* @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-    }*/
     public boolean isLogin(){
         return isLogin;
     }

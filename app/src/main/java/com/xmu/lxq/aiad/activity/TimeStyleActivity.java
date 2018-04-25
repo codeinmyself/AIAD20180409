@@ -12,7 +12,7 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
-import com.xmu.lxq.aiad.service.AppContext;
+import com.xmu.lxq.aiad.application.AppContext;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
 

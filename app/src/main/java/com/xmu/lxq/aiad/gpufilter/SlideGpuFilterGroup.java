@@ -7,8 +7,8 @@ import android.widget.Scroller;
 import com.xmu.lxq.aiad.gpufilter.basefilter.GPUImageFilter;
 import com.xmu.lxq.aiad.gpufilter.helper.MagicFilterFactory;
 import com.xmu.lxq.aiad.gpufilter.helper.MagicFilterType;
-import com.xmu.lxq.aiad.service.AppContext;
-import com.xmu.lxq.aiad.utils.EasyGlUtils;
+import com.xmu.lxq.aiad.application.AppContext;
+import com.xmu.lxq.aiad.util.EasyGlUtils;
 
 
 /**

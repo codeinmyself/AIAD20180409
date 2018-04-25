@@ -5,7 +5,7 @@ import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 
-import com.xmu.lxq.aiad.service.AppContext;
+import com.xmu.lxq.aiad.application.AppContext;
 
 import java.io.IOException;
 import java.util.ArrayList;

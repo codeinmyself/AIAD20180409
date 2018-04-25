@@ -1,4 +1,4 @@
-package com.xmu.lxq.aiad.utils;
+package com.xmu.lxq.aiad.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

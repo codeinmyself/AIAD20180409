@@ -20,8 +20,8 @@ import com.xmu.lxq.aiad.gpufilter.SlideGpuFilterGroup;
 import com.xmu.lxq.aiad.gpufilter.basefilter.GPUImageFilter;
 import com.xmu.lxq.aiad.gpufilter.filter.MagicBeautyFilter;
 import com.xmu.lxq.aiad.media.VideoInfo;
-import com.xmu.lxq.aiad.utils.EasyGlUtils;
-import com.xmu.lxq.aiad.utils.MatrixUtils;
+import com.xmu.lxq.aiad.util.EasyGlUtils;
+import com.xmu.lxq.aiad.util.MatrixUtils;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;

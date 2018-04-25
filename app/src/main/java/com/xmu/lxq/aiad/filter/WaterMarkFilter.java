@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
-import com.xmu.lxq.aiad.utils.MatrixUtils;
+import com.xmu.lxq.aiad.util.MatrixUtils;
 
 
 /**

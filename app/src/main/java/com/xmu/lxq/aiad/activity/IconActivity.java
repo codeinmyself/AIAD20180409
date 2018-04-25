@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.xmu.lxq.aiad.R;
-import com.xmu.lxq.aiad.service.AppContext;
+import com.xmu.lxq.aiad.application.AppContext;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

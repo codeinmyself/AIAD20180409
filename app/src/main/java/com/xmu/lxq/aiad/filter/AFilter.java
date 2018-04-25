@@ -5,7 +5,7 @@ import android.opengl.GLES20;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.xmu.lxq.aiad.utils.MatrixUtils;
+import com.xmu.lxq.aiad.util.MatrixUtils;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;

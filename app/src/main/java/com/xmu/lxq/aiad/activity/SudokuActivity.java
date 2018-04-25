@@ -30,7 +30,7 @@ import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.SudokuUtil.ActiveGrideView;
 import com.xmu.lxq.aiad.SudokuUtil.DragBaseAdapter;
-import com.xmu.lxq.aiad.service.AppContext;
+import com.xmu.lxq.aiad.application.AppContext;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
 

@@ -1,4 +1,4 @@
-package com.xmu.lxq.aiad.utils;
+package com.xmu.lxq.aiad.util;
 
 /**
  * Created by Administrator on 2017/6/30 0030.
