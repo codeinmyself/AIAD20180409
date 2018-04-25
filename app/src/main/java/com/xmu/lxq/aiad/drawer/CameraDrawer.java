@@ -91,7 +91,8 @@ public class CameraDrawer implements GLSurfaceView.Renderer {
 
         WaterMarkFilter waterMarkFilter = new WaterMarkFilter(resources);
         waterMarkFilter.setWaterMark(BitmapFactory.decodeResource(resources, R.mipmap.watermark));
-        waterMarkFilter.setPosition(30,50,0,0);
+        //waterMarkFilter.setPosition(30,50,0,0);
+        waterMarkFilter.setPosition(20,50,80,50);
         addFilter(waterMarkFilter);
 
         recordingEnabled = false;
@@ -181,7 +182,7 @@ public class CameraDrawer implements GLSurfaceView.Renderer {
 
         EasyGlUtils.bindFrameTexture(fFrame[0],fTexture[0]);
         //GLES20.glViewport(0,0,mPreviewWidth,mPreviewHeight);
-        GLES20.glViewport(0,0,mPreviewWidth,mPreviewHeight*2);
+        GLES20.glViewport(0,0,mPreviewWidth,mPreviewHeight*3);
         drawFilter.draw();
         EasyGlUtils.unBindFrameBuffer();
 
@@ -255,7 +256,7 @@ public class CameraDrawer implements GLSurfaceView.Renderer {
             }
         }
         //GLES20.glViewport(0,0,width,height);
-        GLES20.glViewport(0,height/4,width,height/2);
+        GLES20.glViewport(0,height/3,width,height/3);
         showFilter.setTextureId(mAfFilter.getOutputTexture());
         showFilter.draw();
         if (videoEncoder != null && recordingEnabled && recordingStatus == RECORDING_ON){

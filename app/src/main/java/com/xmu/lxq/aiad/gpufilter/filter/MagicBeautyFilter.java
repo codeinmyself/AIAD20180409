@@ -38,7 +38,7 @@ public class MagicBeautyFilter extends GPUImageFilter {
     }
 
     public void setBeautyLevel(int level){
-        mLevel=level;
+        mLevel=level;    mLevel=level;
         switch (level) {
             case 1:
                 setFloat(mParamsLocation, 1.0f);
