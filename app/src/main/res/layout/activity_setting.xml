@@ -7,7 +7,6 @@
     tools:context="com.xmu.lxq.aiad.activity.SettingActivity">
 
     <LinearLayout
-        android:id="@+id/setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -36,7 +35,6 @@
             android:background="#999" />
 
         <Switch
-            android:id="@+id/switch1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -50,14 +48,12 @@
             android:thumb="@drawable/thumb"/>
 
         <View
-            android:id="@+id/view"
             android:layout_width="match_parent"
 
             android:layout_height="1px"
             android:background="#999" />
 
         <Switch
-            android:id="@+id/switch2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -70,7 +66,6 @@
             android:thumb="@drawable/thumb"/>
 
         <View
-            android:id="@+id/view2"
             android:layout_width="match_parent"
 
             android:layout_height="1px"
