@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".service.AppContext"
         android:allowBackup="true"
@@ -35,41 +36,43 @@
         </activity>
         <activity
             android:name=".activity.RegisterActivity"
-            android:screenOrientation="portrait"
-            android:label="Register" />
+            android:label="Register"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SudokuActivity"
-            android:screenOrientation="portrait"
-            android:label="Sudoku" />
+            android:label="Sudoku"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PersonalInfo"
-            android:screenOrientation="portrait"
-            android:label="PersonalInfo" />
+            android:label="PersonalInfo"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.IconActivity"
-            android:screenOrientation="portrait"
-            android:label="Icon" />
+            android:label="Icon"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.VideoActivity"
-
             android:label="Video"
             android:screenOrientation="landscape" />
         <activity
             android:name=".activity.ProductTypeActivity"
-            android:screenOrientation="portrait"
-            android:label="ProductType" />
+            android:label="ProductType"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ProgressActivity"
-            android:screenOrientation="portrait"
-            android:label="Progress" />
+            android:label="Progress"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ResultActivity"
-            android:screenOrientation="portrait"
-            android:label="Result" />
-        <activity android:name=".activity.TimeStyleActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.AddWordsActivity"
-            android:screenOrientation="portrait"/>
+            android:label="Result"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TimeStyleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddWordsActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.aiad2.fileprovider"
@@ -80,6 +83,17 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+<<<<<<< HEAD
+        <activity
+            android:name=".activity.RecordedActivity"
+            android:screenOrientation="landscape" />
+        <!-- android:configChanges="orientation|screenSize|keyboardHidden|navigation" -->
+        />
+        <activity
+            android:name=".activity.BaseActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.SettingActivity"></activity>
+=======
 
 
 
@@ -91,6 +105,7 @@
 
 
 
+>>>>>>> 184180171b47995c614180f2c41b2e11c16f1341
     </application>
 
 </manifest>
