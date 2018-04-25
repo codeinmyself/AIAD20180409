@@ -85,13 +85,11 @@
 
         <activity
             android:name=".activity.RecordedActivity"
-            android:screenOrientation="landscape" />
-        <!-- android:configChanges="orientation|screenSize|keyboardHidden|navigation" -->
-        />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.BaseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.SettingActivity"></activity>
+        <activity android:name=".activity.SettingActivity"/>
     </application>
 
 </manifest>
