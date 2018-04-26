@@ -42,16 +42,11 @@ public class IconActivity extends Activity {
         setContentView(R.layout.activity_icon_image);
         Button btn_change = (Button) findViewById(R.id.btn_change);
         iv_personal_icon = (ImageView) findViewById(R.id.iv_personal_icon);
-
-        AppContext appContextUtil =new AppContext();
-
-        if(appContextUtil.isLogin()){
+        if(AppContext.isLogin){
             String path="/sdcard/AIAD/personal/icon.jpg";
-            try
-            {
+            try {
                 File file = new File(path);
-                if(file.exists())
-                {
+                if(file.exists()) {
                     iv_personal_icon.setImageBitmap(getDiskBitmap(path));
                     //Glide.with(this).load(path).bitmapTransform(new CropCircleTransformation(this)).into(iv_personal_icon);
                 }else{
@@ -60,9 +55,8 @@ public class IconActivity extends Activity {
                     iv_personal_icon.setImageBitmap(icon);
                     //Glide.with(this).load(R.drawable.ic_launcher_background).bitmapTransform(new CropCircleTransformation(this)).into(iv_personal_icon);
                 }
-            } catch (Exception e)
-            {
-                // TODO: handle exception
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         btn_change.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +66,6 @@ public class IconActivity extends Activity {
                 showChoosePicDialog();
             }
         });
-
     }
 
     /**
@@ -182,7 +175,7 @@ public class IconActivity extends Activity {
      * @param bm
      * @throws IOException
      */
-    public File saveFile(Bitmap bm) throws IOException {
+    public void saveFile(Bitmap bm) throws IOException {
         File file= new File("/sdcard/AIAD/personal/icon.jpg");
         File fileParent = file.getParentFile();
         if(!fileParent.exists()){
@@ -195,7 +188,6 @@ public class IconActivity extends Activity {
         bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
         bos.flush();
         bos.close();
-        return file;
     }
 
 
@@ -204,19 +196,15 @@ public class IconActivity extends Activity {
      * @param pathString 文件路径
      * @return 图片
      */
-    public Bitmap getDiskBitmap(String pathString)
-    {
+    public Bitmap getDiskBitmap(String pathString) {
         Bitmap bitmap = null;
-        try
-        {
+        try {
             File file = new File(pathString);
-            if(file.exists())
-            {
+            if(file.exists()) {
                 bitmap = BitmapFactory.decodeFile(pathString);
             }
-        } catch (Exception e)
-        {
-            // TODO: handle exception
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return bitmap;
     }

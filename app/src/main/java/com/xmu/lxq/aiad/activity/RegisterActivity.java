@@ -8,9 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.model.User;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
@@ -48,11 +46,6 @@ public class RegisterActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_register);
-        Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
-            }
-        });
         initView();
     }
 
@@ -81,8 +74,6 @@ public class RegisterActivity extends Activity{
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-
-
                             String tempResponse =  response.body().string();
                             if(response.isSuccessful()){
                                 Logger.i("success!");                            }
@@ -121,9 +112,7 @@ public class RegisterActivity extends Activity{
             }
         }
     };
-
     public final static String PHONE_PATTERN = "[1][34578]\\d{9}";
-
     public static boolean isMatchered(String patternStr, CharSequence input) {
         Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(input);
@@ -154,9 +143,8 @@ public class RegisterActivity extends Activity{
      * doRegister
      * @param user
      */
-    private void doRegister(User user)
-    {
-        String url = OkHttpUtil.base_url + "register"; //POST方式
+    private void doRegister(User user) {
+        String url = OkHttpUtil.base_url + "register";
         try {
             // 发送请求
             OkHttpUtil.doPost(url,user, new Callback() {
@@ -192,9 +180,6 @@ public class RegisterActivity extends Activity{
                                         ToastUtil.getInstance(RegisterActivity.this).showToast("注册失败!");
                                     }
                                 });
-
-
-
                             }
                         }catch (Exception e){
                             e.printStackTrace();

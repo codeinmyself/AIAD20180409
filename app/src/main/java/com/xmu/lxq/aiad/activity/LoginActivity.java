@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -151,59 +150,51 @@ public class LoginActivity extends Activity{
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String tempResponse =  response.body().string();
-                    if(response.isSuccessful()){
-                        Logger.e("成功！");
-                    }
-                    try{
-                        Log.e("hh","jj"+tempResponse);
-                        Logger.i(tempResponse);
-                        JSONObject jsonObject=new JSONObject(tempResponse);
-                        String returnCode=jsonObject.getString("code");
-                        if("200".equals(returnCode)){
-                            AppContext AppContext =new AppContext();
-                            AppContext.setIsLogin(true);
-                            /*setContentView(R.layout.activity_main);
-                            TextView textView=(TextView)findViewById(R.id.account_text);
-                            textView.setText(telephone);
+                    if(response.isSuccessful()) {
+                        Logger.i("成功！");
+                        try {
+                            JSONObject jsonObject = new JSONObject(tempResponse);
+                            String returnCode = jsonObject.getString("code");
+                            if ("200".equals(returnCode)) {
+                                AppContext appContext = (AppContext) getApplication();
+                                appContext.setIsLogin(true);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra("telephone", telephone);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                if (counter == 1) {
+                                    counter = LOGIN_CHANCES;
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            et_password.setText("");
+                                            ToastUtil.getInstance(LoginActivity.this).showToast("连续" + LOGIN_CHANCES + "次认证失败，请您" + WAIT_TIME / 1000 + "秒后再登陆！");
+                                        }
+                                    });
+                                    errorTime = System.currentTimeMillis();
+                                    SharedPreferences sp1 = getSharedPreferences("data", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp1.edit();
+                                    editor.putLong("errorTime", errorTime);
+                                    editor.apply();
+                                } else {
+                                    counter--;
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            et_password.setText("");
+                                            ToastUtil.getInstance(LoginActivity.this).showToast("用户名或密码错误，请重新输入!剩余" + counter + "机会");
+                                        }
+                                    });
+                                }
 
-                            Button button=(Button)findViewById(R.id.button1);
-                            button.setVisibility(View.INVISIBLE);*/
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("telephone",telephone);
-                            startActivity(intent);
-                            finish();
-                        }else{
-
-                            if(counter==1){
-                                counter=LOGIN_CHANCES;
-                               runOnUiThread(new Runnable() {
-                                   @Override
-                                   public void run() {
-                                       et_password.setText("");
-                                       ToastUtil.getInstance(LoginActivity.this).showToast("连续" + LOGIN_CHANCES + "次认证失败，请您" + WAIT_TIME / 1000 +"秒后再登陆！");
-                                   }
-                               });
-                                errorTime = System.currentTimeMillis();
-                                SharedPreferences sp1 = getSharedPreferences("data", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sp1.edit();
-                                editor.putLong("errorTime", errorTime);
-                                editor.commit();
-                            }else {
-                                counter--;
-                              runOnUiThread(new Runnable() {
-                                  @Override
-                                  public void run() {
-                                      et_password.setText("");
-                                      ToastUtil.getInstance(LoginActivity.this).showToast("用户名或密码错误，请重新输入!剩余"+counter+"机会");
-                                  }
-                              });
                             }
-
-
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    }catch (Exception e){
-                        e.printStackTrace();
+                    }else{
+                        Logger.e("失败");
                     }
                 }
             });  //POST方式

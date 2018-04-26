@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 
@@ -44,11 +42,6 @@ public class ProgressActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_progress);
-        Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
-            }
-        });
         getVideosName();
         initialView();
     }
@@ -210,6 +203,4 @@ public class ProgressActivity extends Activity{
             }
         }
     };
-
-
 }

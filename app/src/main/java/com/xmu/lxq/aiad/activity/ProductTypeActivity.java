@@ -12,9 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.util.ToastUtil;
 
@@ -42,16 +40,7 @@ public class ProductTypeActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_type);
         initView();
-        Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
-            }
-        });
-
-
         initialize();
-
-
     }
     @Override
     public void onBackPressed(){
@@ -60,7 +49,6 @@ public class ProductTypeActivity extends Activity{
      * initialView
      */
     private void initView(){
-
         linearLayout=(LinearLayout)findViewById(R.id.LinearLayout_Parent);
         rg0=(RadioGroup) linearLayout.getChildAt(1);
         linearLayout1=(LinearLayout)linearLayout.getChildAt(3);
@@ -202,8 +190,7 @@ public class ProductTypeActivity extends Activity{
             else if(str[i].equals("electronic"))type[5]++;
         }
         int max=type[0],index=0;                                 //取最大票数
-        for(int i=0;i<type.length;i++)
-        {
+        for(int i=0;i<type.length;i++) {
             Logger.i(type[i]+" ");
             if(type[i]>max)   // 判断最大值
             {max=type[i];
@@ -212,5 +199,4 @@ public class ProductTypeActivity extends Activity{
         Logger.i("!!!最大值是"+index);
         return index;
     }
-
 }

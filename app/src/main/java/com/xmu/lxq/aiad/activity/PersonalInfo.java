@@ -14,9 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
-import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.application.AppContext;
 
@@ -40,12 +37,6 @@ public class PersonalInfo extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info);
-        Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override
-            public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
-            }
-        });
         avatar = (ImageView) findViewById(R.id.avatar);
         edit_nickname = (ImageButton) findViewById(R.id.edit_nickname);edit_gender=(ImageButton) findViewById(R.id.edit_gender);
         personalInfo = (LinearLayout) findViewById(R.id.personalInfo);
@@ -56,9 +47,6 @@ public class PersonalInfo extends Activity {
         editText_nickname = (EditText) findViewById(R.id.editText_nickname);
         save_nickname = (Button) findViewById(R.id.save_nickname);
         male = (Button) findViewById(R.id.male);female = (Button) findViewById(R.id.female);
-
-
-      AppContext AppContext = new AppContext();
         if (AppContext.isLogin) {
             String path = "/sdcard/AIAD/personal/" + "icon.jpg";
             try {

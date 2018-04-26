@@ -8,9 +8,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.application.AppContext;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
@@ -49,11 +47,6 @@ public class TimeStyleActivity extends Activity {
         setContentView(R.layout.activity_time_style);
         setTitle("风格时长选择");
         initView();
-        Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
-            }
-        });
     }
 
     /**
@@ -124,7 +117,6 @@ public class TimeStyleActivity extends Activity {
         File file=new File(userfiles_url+"/","DateRecording.txt");
         try {
             boolean fileFlag=file.createNewFile(); // 创建文件
-            // Log.e(TAG,"DateRecoding.txt原本是否存在："+fileFlag);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

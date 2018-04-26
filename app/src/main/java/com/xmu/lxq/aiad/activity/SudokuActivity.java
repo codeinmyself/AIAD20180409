@@ -98,11 +98,9 @@ public class SudokuActivity extends Activity {
      * initView and set Listener
      */
     private void initView() {
-
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         start = (ImageButton) findViewById(R.id.video_start);
         edit=(ImageButton) findViewById(R.id.video_edit);
-
         save=(ImageButton) findViewById(R.id.save_words);
         word=(EditText)findViewById(R.id.words); word.setEnabled(false);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
@@ -177,7 +175,6 @@ public class SudokuActivity extends Activity {
                 }
             }
         });
-
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,8 +229,6 @@ public class SudokuActivity extends Activity {
                 word.setTextColor(Color.WHITE);words[temp].color="white";
             }
         });
-
-
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
 
             public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -276,7 +271,6 @@ public class SudokuActivity extends Activity {
         initialData();
         adapter = new DragBaseAdapter(SudokuActivity.this, list);
         aGridview.setAdapter(adapter);
-
     }
 
     private class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
@@ -383,7 +377,6 @@ public class SudokuActivity extends Activity {
     }
 
 
-    private long[] mHits = new long[2];
 
     /**
      * 处理双击事件
@@ -391,6 +384,7 @@ public class SudokuActivity extends Activity {
      * @return
      */
     private boolean doubleClick() {
+        long[] mHits = new long[2];
         System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
         mHits[mHits.length - 1] = SystemClock.uptimeMillis();//获取手机开机时间
         if (mHits[mHits.length - 1] - mHits[0] < 1000) {
@@ -398,7 +392,6 @@ public class SudokuActivity extends Activity {
         }
         return false;
     }
-
 
     protected void videoPlay(final int msec, final String path) {
         start.setEnabled(false);//在播放时不允许再点击播放按钮
@@ -452,7 +445,6 @@ public class SudokuActivity extends Activity {
             }
         });
     }
-
     private void stop(){
         if (player != null) {
             seekBar.setProgress(0);
@@ -463,8 +455,6 @@ public class SudokuActivity extends Activity {
             start.setEnabled(true);
         }
     }
-
-
 
     @Override
     protected void onDestroy() {
@@ -488,7 +478,7 @@ public class SudokuActivity extends Activity {
             bufferedWriter.write(img_text[8] + "\r\n");
             for(int i=0;i<9;i++){
                 for(int j=0;j<9;j++){
-                    if(words[j].videoID==img_text[i]){bufferedWriter.write(words[j].content+" "+words[j].pos+" "+words[j].color+"\r\n");break;}
+                    if(words[j].videoID.equals(img_text[i])){bufferedWriter.write(words[j].content+" "+words[j].pos+" "+words[j].color+"\r\n");break;}
                 }
             }
             bufferedWriter.close();
@@ -512,20 +502,17 @@ public class SudokuActivity extends Activity {
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 1:
-
                 if (data == null) {
                     return;
                 }
                 int order = Integer.parseInt((data.getStringExtra("order")).trim());
                 String fileName = data.getStringExtra("fileName");
                 String absolutePath = data.getStringExtra("absolutePath");
-
                 aGridview = (ActiveGrideView) findViewById(R.id.gridview);
                 ImageView imageView = (ImageView) aGridview.getChildAt(order).findViewById(R.id.iv_item);
                 loadBitmap(absolutePath,imageView,fileName);
@@ -537,12 +524,9 @@ public class SudokuActivity extends Activity {
                 }else{
                     Logger.e("bitmap为null!");
                 }*/
-
                 imgs[order]="/sdcard/"+fileName+".png";
                 //Glide.with(this).load(bitmap).into(imageView);
                 imgs[order] = userfiles_url + "/" + fileName + ".png";
-
-
                 initialData();
                 adapter = new DragBaseAdapter(this, list);
                 adapter.notifyDataSetChanged();

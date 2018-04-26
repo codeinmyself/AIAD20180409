@@ -17,9 +17,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.application.AppContext;
 
@@ -48,15 +46,9 @@ public class ResultActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_result);
-        Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
-            }
-        });
         initView();
         Logger.i(path);
     }
-
 
     /**
      * initView
@@ -160,7 +152,6 @@ public class ResultActivity extends Activity {
         @Override
         public void run() {
             while(flag){
-                // TODO Auto-generated method stub
                 try {
                     Thread.sleep(1000);
                     if(isExists()){
@@ -169,7 +160,6 @@ public class ResultActivity extends Activity {
                         mHandler.sendMessage(msg);
                     }
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -222,7 +212,6 @@ public class ResultActivity extends Activity {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 player.start();
-
                 // 按照初始位置播放
                 player.seekTo(msec);
                 // 设置进度条的最大进度为视频流的最大播放时长

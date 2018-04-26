@@ -3,7 +3,6 @@ package com.xmu.lxq.aiad.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.net.Uri;
@@ -16,14 +15,11 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
-import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
+import com.xmu.lxq.aiad.application.AppContext;
 import com.xmu.lxq.aiad.camera.SensorControler;
 import com.xmu.lxq.aiad.gpufilter.SlideGpuFilterGroup;
 import com.xmu.lxq.aiad.gpufilter.helper.MagicFilterType;
-import com.xmu.lxq.aiad.application.AppContext;
 import com.xmu.lxq.aiad.util.ToastUtil;
 import com.xmu.lxq.aiad.widget.CameraView;
 import com.xmu.lxq.aiad.widget.CircularProgressView;
@@ -51,9 +47,6 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
     private static final int maxTime = 2000;//最长录制2s
     private boolean pausing = false;
     private boolean recordFlag = false;//是否正在录制
-
-    private int WIDTH = 720,HEIGHT = 1280;
-
     private long timeStep = 50;//进度条刷新的时间
     long timeCount = 0;//用于记录录制时间
     private boolean autoPausing = false;
@@ -62,17 +55,11 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
     private String fileName;
     private File file;
     private int order=1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recorde);
-
-        Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
-            }
-        });
-
         Intent intent=getIntent();
         order=(int)Long.parseLong((intent.getStringExtra("order")).trim());
         fileName=intent.getStringExtra("fileName").trim();
@@ -85,18 +72,12 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initView() {
-        if (getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE) {
-
-        }
         mCameraView = (CameraView) findViewById(R.id.camera_view);
         mCapture = (CircularProgressView) findViewById(R.id.mCapture);
         mFocus = (FocusImageView) findViewById(R.id.focusImageView);
         mBeautyBtn = (ImageView) findViewById(R.id.btn_camera_beauty);
         mFilterBtn = (ImageView) findViewById(R.id.btn_camera_filter);
         mCameraChange = (ImageView) findViewById(R.id.btn_camera_switch);
-
-
         mBeautyBtn.setOnClickListener(this);
         mCameraView.setOnTouchListener(this);
         mCameraView.setOnFilterChangeListener(this);
@@ -213,11 +194,6 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
                 }
                 break;
             case R.id.btn_camera_beauty:
-
-                /*if (mCameraView.getCameraId() == 0){
-                    Toast.makeText(this, "后置摄像头 不使用美白磨皮功能", Toast.LENGTH_SHORT).show();
-                    return;
-                }*/
                 new AlertDialog.Builder(RecordedActivity.this)
                         .setSingleChoiceItems(new String[]{"关闭", "1", "2", "3", "4", "5"}, mCameraView.getBeautyLevel(),
                                 new DialogInterface.OnClickListener() {
