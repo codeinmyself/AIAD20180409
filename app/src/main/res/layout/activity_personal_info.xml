@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="20dp"
-            android:text="个人资料"
+            android:text="@string/personal_info"
             android:textAlignment="center" />
 
         <LinearLayout
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="头像" />
+                android:text="@string/icon" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avatar"
@@ -56,7 +56,6 @@
             android:id="@+id/line1"
             android:layout_width="match_parent"
             android:layout_height="1px"
-
             android:background="#999" />
 
         <LinearLayout
@@ -72,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="账号" />
+                android:text="@string/account" />
 
             <TextView
                 android:id="@+id/text_account"
@@ -104,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="昵称" />
+                android:text="@string/nickname" />
 
             <TextView
                 android:id="@+id/text_nickname"
@@ -142,14 +141,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="性别" />
+                android:text="@string/sex" />
 
             <TextView
                 android:id="@+id/text_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="女"
+                android:text="@string/women"
                 android:textAlignment="viewEnd" />
 
             <ImageButton
@@ -182,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="手机" />
+                android:text="@string/phone_number" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -280,7 +279,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="20dp"
-            android:text="         修改性别"
+            android:text="@string/revise_sex"
             android:textAlignment="center" />
 
         <View
@@ -294,7 +293,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:text="男"
+            android:text="@string/man"
             android:textAlignment="textStart" />
 
         <View
@@ -308,7 +307,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:text="女"
+            android:text="@string/women"
             android:textAlignment="textStart" />
 
         <View

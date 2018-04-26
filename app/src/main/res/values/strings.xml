@@ -9,4 +9,21 @@
     <string name="next">下一步</string>
     <string name="show_area">图片显示区域</string>
     <string name="login">登录</string>
+    <string name="product_name">产品名称</string>
+    <string name="advert">广告词</string>
+    <string name="revise_icon">修改头像</string>
+    <string name="phone_number">手机号</string>
+    <string name="password">密码</string>
+    <string name="tip_for_register">未注册账号？ 马上注册</string>
+    <string name="tryout">试用</string>
+    <string name="tip_for_preview">仅预览 登录后即可保存发布</string>
+    <string name="personal_info">个人资料</string>
+    <string name="icon">头像</string>
+    <string name="account">账号</string>
+    <string name="nickname">昵称</string>
+    <string name="sex">性别</string>
+    <string name="women">女</string>
+    <string name="man">男</string>
+    <string name="revise_sex">         修改性别</string>
+    <string name="product_type_is">您产品的类型应该是：</string>
 </resources>
