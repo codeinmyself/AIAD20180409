@@ -90,7 +90,6 @@ public class SudokuActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-     //   makeActionOverflowMenuShown();
         setContentView(R.layout.activity_sudoku);
         initView();
     }
@@ -161,7 +160,6 @@ public class SudokuActivity extends Activity {
                 } else {
                     path = getFileNameNoEx(imgs[arg2]) + ".mp4";
                     Bitmap bitmap=getVideoThumbnail(path);
-                    //surfaceView.setBackgroundDrawable(null);
                     surfaceView.setBackgroundDrawable(new BitmapDrawable(getResources(),bitmap));
                     seekBar.setProgress(0);
                     for(int i=0;i<9;i++){
@@ -281,11 +279,12 @@ public class SudokuActivity extends Activity {
 
     }
 
-    class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
+    private class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
         private String data=null;
+        private String fileName=null;
 
-        public BitmapWorkerTask(ImageView imageView) {
+        private BitmapWorkerTask(ImageView imageView) {
             // 使用WeakReference来确保ImageView可以被垃圾回收机制回收
             imageViewReference = new WeakReference<ImageView>(imageView);
         }
@@ -294,6 +293,7 @@ public class SudokuActivity extends Activity {
         @Override
         protected Bitmap doInBackground(String... params) {
             data = params[0];
+            fileName=params[1];
             return getVideoThumbnail(data);
         }
 
@@ -303,6 +303,7 @@ public class SudokuActivity extends Activity {
             if (imageViewReference != null && bitmap != null) {
                 final ImageView imageView = imageViewReference.get();
                 //saveBitmap(bitmap, fileName);
+                Logger.e("postexecute");
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
                 }
@@ -310,9 +311,12 @@ public class SudokuActivity extends Activity {
         }
 
     }
-    public void loadBitmap(String imagePath, ImageView imageView) {
+    public void loadBitmap(String imagePath, ImageView imageView,String fileName) {
         BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-        task.execute(imagePath);
+        String []arr=new String[2];
+        arr[1]=imagePath;
+        arr[2]=fileName;
+        task.execute(arr);
     }
     public int dip2px(float dpValue) {
         final float scale = this.getResources().getDisplayMetrics().density;
@@ -524,7 +528,7 @@ public class SudokuActivity extends Activity {
 
                 aGridview = (ActiveGrideView) findViewById(R.id.gridview);
                 ImageView imageView = (ImageView) aGridview.getChildAt(order).findViewById(R.id.iv_item);
-                loadBitmap(absolutePath,imageView);
+                loadBitmap(absolutePath,imageView,fileName);
               /*  ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 if(bitmap!=null){
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);

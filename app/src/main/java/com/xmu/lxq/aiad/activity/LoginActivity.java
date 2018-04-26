@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
@@ -36,18 +35,16 @@ public class LoginActivity extends Activity{
 
     private EditText  et_telephone=null;
     private EditText  et_password=null;
-    private TextView attempts;
     private Button login;
     private Button register;
     private Button tryout;
     //3次登录机会
     private int LOGIN_CHANCES = 3;
-    long errorTime;
-
     //还剩几次登录机会的标志，初始值就是LOGIN_CHANCES
     private int counter = LOGIN_CHANCES;
     //多次认证失败时需要等待的时间
     private long WAIT_TIME = 30000L;
+    long errorTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -63,40 +60,28 @@ public class LoginActivity extends Activity{
     public void initView(){
         et_telephone = (EditText)findViewById(R.id.editText1);
         et_password = (EditText)findViewById(R.id.editText2);
-        /*attempts = (TextView)findViewById(R.id.textView5);
-        attempts.setText(Integer.toString(counter));*/
         login = (Button)findViewById(R.id.button1);
         register=(Button)findViewById(R.id.button2);
         tryout=(Button)findViewById(R.id.button);
 
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
-
                 //输入错误时的时间,如果为空的话就取0L
                 errorTime = sp.getLong("errorTime", 0L);
-                //获取当前时间
                 long recentTime = System.currentTimeMillis();
                 //如果当前时间与出错时间相差超过30s
                 if(recentTime - errorTime > WAIT_TIME) {
                     if(matchLoginMsg(et_telephone.getText().toString().trim(),et_password.getText().toString().trim())) {
                         doLogin(et_telephone.getText().toString().trim(), et_password.getText().toString().trim());
                     }
-
-                }
-                else{
+                } else{
                     long remainTime=errorTime+WAIT_TIME-recentTime;
-                    //Toast提醒
                     ToastUtil.getInstance(LoginActivity.this).showToast("登录界面锁定中，请等待！剩余"+remainTime/1000+"s");
                 }
-
-
             }
         });
-
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,29 +112,22 @@ public class LoginActivity extends Activity{
      * @return
      */
     public boolean matchLoginMsg(String telephone,String password){
-        if("".equals(telephone))
-        {
+        if("".equals(telephone)) {
             ToastUtil.getInstance(LoginActivity.this).showToast("账号不能为空");
             return false;
         }
-        if("".equals(password))
-        {
+        if("".equals(password)) {
             ToastUtil.getInstance(LoginActivity.this).showToast("密码不能为空");
-
             return false;
         }
         return true;
     }
 
     public final static String PHONE_PATTERN = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
-
     public static boolean isMatchered(String patternStr, CharSequence input) {
         Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(input);
-        if (matcher.find()) {
-            return true;
-        }
-        return false;
+        return matcher.find();
     }
 
     /**
@@ -157,16 +135,13 @@ public class LoginActivity extends Activity{
      * @param telephone
      * @param password
      */
-    private void doLogin(final String telephone, String password)
-    {
+    private void doLogin(final String telephone, String password) {
         // 使用Map封装请求参数
         HashMap<String, String> map = new HashMap<>();
         map.put("telephone", telephone);
         map.put("password", password);
-
-        String url = OkHttpUtil.base_url + "login"; //POST方式
+        String url = OkHttpUtil.base_url + "login";
         try {
-            // 发送请求
             OkHttpUtil.doPost(url, map, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -185,8 +160,6 @@ public class LoginActivity extends Activity{
                         JSONObject jsonObject=new JSONObject(tempResponse);
                         String returnCode=jsonObject.getString("code");
                         if("200".equals(returnCode)){
-                            Logger.i("进来了"+returnCode);
-
                             AppContext AppContext =new AppContext();
                             AppContext.setIsLogin(true);
                             /*setContentView(R.layout.activity_main);

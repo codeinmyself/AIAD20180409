@@ -34,9 +34,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.xmu.lxq.aiad.BuildConfig;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.application.AppContext;
 import com.xmu.lxq.aiad.util.NetworkDetector;
@@ -54,8 +52,6 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static com.xmu.lxq.aiad.config.Config.directorysUrl;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -72,8 +68,7 @@ public class MainActivity extends AppCompatActivity
     private Button button_to_login;
     private ImageView icon_image;
     private Uri imageUri;
-    private Toolbar toolbar;
-    private Button submitPic_button;
+
 
     public static final String IMAGE_FILE_NAME_TEMP = "faceImage_temp.jpg";
     private File cropFile = new File(Environment.getExternalStorageDirectory(), IMAGE_FILE_NAME_TEMP);
@@ -84,15 +79,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //设置toolbar图标
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.mipmap.more);
 
-        submitPic_button = findViewById(R.id.button3);
-        submitPic_button.setOnClickListener(new View.OnClickListener() {
+        //提交图片
+        findViewById(R.id.submitPic_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //要先判断照片是否存在
                 if(picture.getDrawable()==null ){
                     ToastUtil.getInstance(MainActivity.this).showToast("照片不存在！");
                 }else if(!NetworkDetector.detectNetwork(MainActivity.this)){
@@ -105,12 +100,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-        Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override
-            public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -125,7 +115,6 @@ public class MainActivity extends AppCompatActivity
         notlogin = (TextView) view.findViewById(R.id.notlogin);
         icon_image = view.findViewById(R.id.icon_image);
         icon_image.setVisibility(View.INVISIBLE);
-        AppContext AppContext = new AppContext();
 
         if (AppContext.isLogin) {
             icon_image.setVisibility(View.VISIBLE);
@@ -134,7 +123,6 @@ public class MainActivity extends AppCompatActivity
                 File file = new File(path);
                 if (file.exists()) {
                     icon_image.setImageBitmap(getDiskBitmap(path));
-
                     //Glide.with(this).load(path).bitmapTransform(new CropCircleTransformation(this)).into(icon_image);
                 } else {
                     Resources res = MainActivity.this.getResources();
@@ -145,8 +133,6 @@ public class MainActivity extends AppCompatActivity
             } catch (Exception e) {
                 // TODO: handle exception
             }
-
-
         }
 
         Intent intent = getIntent();
@@ -163,17 +149,12 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        Button takePhoto = (Button) findViewById(R.id.take_photo);
         Button chooseFromAlbum = (Button) findViewById(R.id.choose_from_album);
         picture = (ImageView) findViewById(R.id.picture);
-        takePhoto.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.take_photo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Logger.i("进入拍照！");
-                /*//测试用
-                Intent intent1=new Intent(MainActivity.this,ProgressActivity.class);
-                startActivity(intent1);
-                //测试用*/
                 Intent openCameraIntent = new Intent(
                         MediaStore.ACTION_IMAGE_CAPTURE);
                 imageUri = Uri.fromFile(new File(Environment
@@ -194,18 +175,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-
-        initialDirectory();
-        /*StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .detectDiskReads().detectDiskWrites().detectNetwork()
-                .penaltyLog().build());
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                .detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
-                .penaltyLog().penaltyDeath().build());*/
-        if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-        }
+
     }
 
     /**
@@ -214,7 +186,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRestart() {
         super.onRestart();
-        AppContext AppContext = new AppContext();
         if (AppContext.isLogin) {
             icon_image.setVisibility(View.VISIBLE);
             String path = "/sdcard/AIAD/personal/" + "icon.jpg";
@@ -222,7 +193,6 @@ public class MainActivity extends AppCompatActivity
                 File file = new File(path);
                 if (file.exists()) {
                     icon_image.setImageBitmap(getDiskBitmap(path));
-
                     // Glide.with(this).load(path).bitmapTransform(new CropCircleTransformation(this)).into(icon_image);
                 } else {
                     Resources res = MainActivity.this.getResources();
@@ -230,7 +200,6 @@ public class MainActivity extends AppCompatActivity
                     icon_image.setImageBitmap(icon);
                     //Glide.with(this).load(R.drawable.ic_launcher_background).bitmapTransform(new CropCircleTransformation(this)).into(icon_image);
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -238,15 +207,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void initialDirectory() {
-        for (int i = 0; i < directorysUrl.length; i++) {
-            File file = new File(directorysUrl[i]);
-            if (!file.exists()) {
-                boolean bool = file.mkdirs();
-                Logger.e("初始化需要的文件夹" + directorysUrl[i] + ",成功（true）失败（false）：" + bool);
-            }
-        }
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -272,7 +233,6 @@ public class MainActivity extends AppCompatActivity
         return bitmap;
     }
 
-
     /**
      * onNavigationItemSelected
      *
@@ -284,10 +244,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.personal_info) {
-
-            AppContext AppContext = new AppContext();
             if (AppContext.isLogin) {
                 Intent intent = new Intent(MainActivity.this, PersonalInfo.class);
                 startActivity(intent);
@@ -296,23 +253,18 @@ public class MainActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_gallery) {
-
-            AppContext AppContext = new AppContext();
             if (AppContext.isLogin) {
 
             } else {
                 ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
             }
         } else if (id == R.id.nav_slideshow) {
-
-            AppContext AppContext = new AppContext();
             if (AppContext.isLogin) {
 
             } else {
                 ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
             }
         } else if (id == R.id.nav_manage) {
-            AppContext AppContext = new AppContext();
             if (AppContext.isLogin) {
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
@@ -320,15 +272,14 @@ public class MainActivity extends AppCompatActivity
                /* ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");*/
             }
         } else if (id == R.id.nav_share) {
-            AppContext AppContext = new AppContext();
             if (AppContext.isLogin) {
 
             } else {
                 ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
             }
         } else if (id == R.id.logout) {
-            AppContext AppContext = new AppContext();
-            AppContext.setIsLogin(true);
+            AppContext app=(AppContext)getApplication();
+            app.setIsLogin(true);
             //SharePreferenceUtil sharePreferenceUtil=new SharePreferenceUtil(MainActivity.this);
             if (AppContext.isLogin) {
                 Logger.i("退出账号！");
@@ -343,7 +294,7 @@ public class MainActivity extends AppCompatActivity
                 icon_image.setVisibility(View.INVISIBLE);
                 notlogin.setVisibility(View.VISIBLE);
                 // sharePreferenceUtil.setStateLogout();
-                AppContext.setIsLogin(false);
+                app.setIsLogin(false);
             } else {
                 ToastUtil.getInstance(MainActivity.this).showToast("并未登录！");
             }
@@ -374,7 +325,6 @@ public class MainActivity extends AppCompatActivity
      * @param view
      */
     public void icon_image_click(View view) {
-        AppContext AppContext = new AppContext();
         if (AppContext.isLogin) {
             Intent intent = new Intent(MainActivity.this, IconActivity.class);
             startActivity(intent);
@@ -474,7 +424,7 @@ public class MainActivity extends AppCompatActivity
      * @param data
      */
     protected void setImageToView(Intent data) {
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         try {
             bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageCropUri));
             picture.setImageBitmap(bitmap);

@@ -26,7 +26,6 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
- * Created by cj on 2017/8/2.
  * desc 管理图像绘制的类
  * 主要用于管理各种滤镜、画面旋转、视频编码录制等
  */
@@ -92,7 +91,7 @@ public class CameraDrawer implements GLSurfaceView.Renderer {
         WaterMarkFilter waterMarkFilter = new WaterMarkFilter(resources);
         waterMarkFilter.setWaterMark(BitmapFactory.decodeResource(resources, R.mipmap.watermark));
         //waterMarkFilter.setPosition(30,50,0,0);
-        waterMarkFilter.setPosition(20,50,80,50);
+        waterMarkFilter.setPosition(20,80,80,50);
         addFilter(waterMarkFilter);
 
         recordingEnabled = false;

@@ -48,7 +48,7 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
     private ImageView mBeautyBtn;
     private ImageView mFilterBtn;
     private ImageView mCameraChange;
-    private static final int maxTime = 2000;//最长录制4s
+    private static final int maxTime = 2000;//最长录制2s
     private boolean pausing = false;
     private boolean recordFlag = false;//是否正在录制
 
