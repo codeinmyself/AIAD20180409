@@ -177,7 +177,7 @@
             android:cacheColorHint="#ffffff"
             android:gravity="center"
             android:horizontalSpacing="10dp"
-            android:listSelector="#ffffff"
+            android:listSelector="@android:color/transparent"
             android:numColumns="3"
             android:scaleType="centerCrop"
             android:verticalSpacing="10dp">

@@ -537,6 +537,8 @@ public class MainActivity extends AppCompatActivity
                     }
                 } else {
                     Logger.i("error");
+                    ToastUtil.getInstance(MainActivity.this).showToast("网络连接不好，请重新尝试！");
+                    dismiss();
                 }
 
             }

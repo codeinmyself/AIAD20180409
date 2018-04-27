@@ -29,7 +29,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="5dp"
-            android:text="清新"
+            android:text="@string/fresh"
             android:textColor="@drawable/style_textcolor_selector" />
 
         <RadioButton
@@ -41,7 +41,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="5dp"
-            android:text="复古"
+            android:text="@string/classical"
             android:textColor="@drawable/style_textcolor_selector" />
 
         <RadioButton
@@ -52,7 +52,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="5dp"
-            android:text="简约"
+            android:text="@string/simplicity"
             android:textColor="@drawable/style_textcolor_selector" />
     </RadioGroup>
 
@@ -75,7 +75,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
-        android:text="——————请选择你需要的广告片风格——————"
+        android:text="@string/tip_for_choose_style"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
@@ -87,7 +87,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
-        android:text="——————请选择你需要的广告片时长——————"
+        android:text="@string/tip_for_choose_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup1" />
@@ -138,7 +138,7 @@
         android:layout_height="40dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/shape_bg"
-        android:text="下一步"
+        android:text="@string/next"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -47,14 +47,14 @@
                 android:gravity="center"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                android:text="类型0" />
+                android:text="@string/type0" />
         </RadioGroup>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="若不是，请在下方选择：" />
+            android:text="@string/tip_for_choose_others" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                     android:gravity="center"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
-                    android:text="衣帽鞋包"
+                    android:text="@string/cloth"
                     android:textSize="10dp" />
 
                 <RadioButton
@@ -92,7 +92,7 @@
                     android:gravity="center"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
-                    android:text="日常用品"
+                    android:text="@string/daily"
                     android:textSize="10dp" />
 
                 <RadioButton
@@ -104,7 +104,7 @@
                     android:gravity="center"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
-                    android:text="美妆饰品"
+                    android:text="@string/dressing"
                     android:textSize="10dp" />
             </RadioGroup>
 
@@ -118,7 +118,7 @@
             android:orientation="horizontal">
 
             <RadioGroup
-                android:id="@+id/radioGroup1"
+                android:id="@+id/radioGroup2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -133,7 +133,7 @@
                     android:gravity="center"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
-                    android:text="食物小吃"
+                    android:text="@string/snack"
                     android:textSize="10dp" />
 
                 <RadioButton
@@ -145,7 +145,7 @@
                     android:gravity="center"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
-                    android:text="学习办公"
+                    android:text="@string/study"
                     android:textSize="10dp" />
 
                 <RadioButton
@@ -157,7 +157,7 @@
                     android:gravity="center"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
-                    android:text="数码电子"
+                    android:text="@string/electrical"
                     android:textSize="10dp" />
             </RadioGroup>
         </LinearLayout>
@@ -173,7 +173,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/shape_bg"
-            android:text="下一步"
+            android:text="@string/next"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

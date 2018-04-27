@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">AIAD</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="account_empty">账户不能为空！</string>
@@ -26,4 +25,24 @@
     <string name="man">男</string>
     <string name="revise_sex">         修改性别</string>
     <string name="product_type_is">您产品的类型应该是：</string>
+    <string name="fresh">清新</string>
+    <string name="classical">复古</string>
+    <string name="simplicity">简约</string>
+    <string name="tip_for_choose_style">"——————请选择你需要的广告片风格——————</string>
+    <string name="tip_for_choose_time">——————请选择你需要的广告片时长——————</string>
+    <string name="settings">设置</string>
+    <string name="tip_for_wifi_choose">仅在wifi环境下上传\下载视频</string>
+    <string name="tip_for_save_article">自动保存我的作品到广告库</string>
+    <string name="send_verify_code">发送验证码</string>
+    <string name="register">注册</string>
+    <string name="tip_for_login_redirect">已有账号？ 立即登录</string>
+    <string name="type0">类型0</string>
+    <string name="tip_for_choose_others">若不是，请在下方选择：</string>
+    <string name="cloth">衣帽鞋包</string>
+    <string name="daily">日常用品</string>
+    <string name="dressing">美妆饰品</string>
+    <string name="snack">食物小吃</string>
+    <string name="study">学习办公</string>
+    <string name="electrical">数码电子</string>
+    <string name="loading">加载中</string>
 </resources>

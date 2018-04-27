@@ -5,14 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.hardware.Camera;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.MediaController;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.xmu.lxq.aiad.R;
@@ -184,7 +181,9 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.mCapture:
                 if (!recordFlag) {
-                    executorService.execute(recordRunnable);
+                    //executorService.execute(recordRunnable);
+                    thread1.start();
+                    thread2.start();
                 } else if (!pausing) {
                     mCameraView.pause(false);
                     pausing = true;
@@ -207,7 +206,7 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
                 break;
         }
     }
-    Runnable recordRunnable = new Runnable() {
+    Thread thread1=new Thread(new Runnable() {
         @Override
         public void run() {
             recordFlag = true;
@@ -233,22 +232,44 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
                 }
                 recordFlag = false;
                 mCameraView.stopRecord();
-                if (timeCount < 2000) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ToastUtil.getInstance(RecordedActivity.this).showToast( "录像时间太短");
-                        }
-                    });
-                } else {
-                    recordComplete(savePath);
-                }
-
+                //recordComplete(savePath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    };
+    });
+   /* Runnable recordRunnable = new Runnable() {
+        @Override
+        public void run() {
+            recordFlag = true;
+            pausing = false;
+            autoPausing = false;
+            timeCount = 0;
+
+            file=new File(userfiles_url+"/"+fileName+".mp4");
+            //如果存在文件先删除（有方法覆盖吗？）
+            if(file.exists()) file.delete();
+            String savePath = userfiles_url+"/"+fileName+".mp4";
+
+            try {
+                mCameraView.setSavePath(savePath);
+                mCameraView.startRecord();
+                while (timeCount <= maxTime && recordFlag) {
+                    if (pausing || autoPausing) {
+                        continue;
+                    }
+                    mCapture.setProcess((int) timeCount);
+                    Thread.sleep(timeStep);
+                    timeCount += timeStep;
+                }
+                recordFlag = false;
+                mCameraView.stopRecord();
+                //recordComplete(savePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };*/
     /**
      * getTime
      * @return
@@ -258,9 +279,39 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
         return String.valueOf(time);
     }
 
-
-
-    private void recordComplete(final String path) {
+    Thread thread2=new Thread(new Runnable() {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        thread1.join();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    mCapture.setProcess(0);
+                    ToastUtil.getInstance(RecordedActivity.this).showToast( "文件已保存！");
+                    Glide.get(RecordedActivity.this).clearMemory();
+                    // Uri uri = Uri.fromFile(file);
+               /* VideoView videoView = new VideoView(RecordedActivity.this);
+                videoView.setMediaController(new MediaController(RecordedActivity.this));
+                videoView.setVideoURI(uri);
+                videoView.start();
+                videoView.requestFocus();*/
+                    Intent intent=new Intent();
+                    intent.putExtra("fileName",fileName+"");
+                    intent.putExtra("parentPath",file.getParent()+"");
+                    intent.putExtra("absolutePath",file.getAbsolutePath()+"");
+                    intent.putExtra("order",order+"");
+                    mCameraView.onDestroy();
+                    RecordedActivity.this.setResult(1,intent);
+                    finish();
+                }
+            });
+        }
+    });
+   /* private void recordComplete(final String path) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -269,25 +320,24 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
 
                 Glide.get(RecordedActivity.this).clearMemory();
 
-                Uri uri = Uri.fromFile(file);
-                VideoView videoView = new VideoView(RecordedActivity.this);
+               // Uri uri = Uri.fromFile(file);
+               *//* VideoView videoView = new VideoView(RecordedActivity.this);
                 videoView.setMediaController(new MediaController(RecordedActivity.this));
                 videoView.setVideoURI(uri);
                 videoView.start();
-                videoView.requestFocus();
+                videoView.requestFocus();*//*
 
                 Intent intent=new Intent();
                 intent.putExtra("fileName",fileName+"");
                 intent.putExtra("parentPath",file.getParent()+"");
                 intent.putExtra("absolutePath",file.getAbsolutePath()+"");
                 intent.putExtra("order",order+"");
-
                 mCameraView.onDestroy();
                 RecordedActivity.this.setResult(1,intent);
                 finish();
             }
         });
-    }
+    }*/
 
     @Override
     public void onDestroy(){

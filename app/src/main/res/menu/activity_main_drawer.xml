@@ -20,7 +20,6 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/setup"
             android:title="设置" />
-        <item />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/share"

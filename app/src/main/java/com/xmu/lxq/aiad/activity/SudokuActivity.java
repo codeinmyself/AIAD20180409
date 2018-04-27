@@ -65,7 +65,7 @@ public class SudokuActivity extends Activity {
     private ImageButton start;
     private ImageButton edit;
     private ImageButton save;
-    private ImageButton lefttop,leftbottom,righttop,rightbottom,black,white;
+    private ImageButton lefttop, leftbottom, righttop, rightbottom, black, white;
     private EditText word;
     private Button submit;
     private ActiveGrideView aGridview;
@@ -80,13 +80,16 @@ public class SudokuActivity extends Activity {
 
     static String default_img = "/sdcard/1513955901.png";
     public static String[] imgs = {"hh", default_img, default_img, default_img, "hh", default_img, default_img, default_img, "hh"};
-    public class Words{
+
+    public class Words {
         private String videoID;
         private String content;
-        private String  pos;
+        private String pos;
         private String color;
     }
-    private Words []words=new Words[9];
+
+    private Words[] words = new Words[9];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,26 +103,27 @@ public class SudokuActivity extends Activity {
     private void initView() {
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         start = (ImageButton) findViewById(R.id.video_start);
-        edit=(ImageButton) findViewById(R.id.video_edit);
-        save=(ImageButton) findViewById(R.id.save_words);
-        word=(EditText)findViewById(R.id.words); word.setEnabled(false);
+        edit = (ImageButton) findViewById(R.id.video_edit);
+        save = (ImageButton) findViewById(R.id.save_words);
+        word = (EditText) findViewById(R.id.words);
+        word.setEnabled(false);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         player = new MediaPlayer();
         surfaceView.getHolder().setKeepScreenOn(true);
         aGridview = (ActiveGrideView) findViewById(R.id.gridview);
-        submit=(Button) findViewById(R.id.submit);
-        editWordsBar=(LinearLayout)findViewById(R.id.edit_words_bar);
-        rightbottom=(ImageButton) findViewById(R.id.rightbottom);
-        leftbottom=(ImageButton) findViewById(R.id.leftbottom);
-        righttop=(ImageButton) findViewById(R.id.righttop);
-        lefttop=(ImageButton) findViewById(R.id.lefttop);
-        black=(ImageButton) findViewById(R.id.black);
-        white=(ImageButton) findViewById(R.id.white);
+        submit = (Button) findViewById(R.id.submit);
+        editWordsBar = (LinearLayout) findViewById(R.id.edit_words_bar);
+        rightbottom = (ImageButton) findViewById(R.id.rightbottom);
+        leftbottom = (ImageButton) findViewById(R.id.leftbottom);
+        righttop = (ImageButton) findViewById(R.id.righttop);
+        lefttop = (ImageButton) findViewById(R.id.lefttop);
+        black = (ImageButton) findViewById(R.id.black);
+        white = (ImageButton) findViewById(R.id.white);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean down=true;
-                Logger.i( "整合视频!");
+                boolean down = true;
+                Logger.i("整合视频!");
                 for (int i = 0; i < img_text.length; i++) {
                     if (imgs[i].equals(default_img) || imgs[i].equals("hh")) {
                         Handler h = new Handler(Looper.getMainLooper());
@@ -128,11 +132,11 @@ public class SudokuActivity extends Activity {
                                 ToastUtil.getInstance(SudokuActivity.this).showToast("九宫格视频尚未完成！");
                             }
                         });
-                        down=false;
+                        down = false;
                         break;
                     }
                 }
-                if (down){
+                if (down) {
                     submitRecord();
                     submitUserVideos();
                     mThread.start();
@@ -157,19 +161,23 @@ public class SudokuActivity extends Activity {
                     startActivityForResult(intent, 1);
                 } else {
                     path = getFileNameNoEx(imgs[arg2]) + ".mp4";
-                    Bitmap bitmap=getVideoThumbnail(path);
-                    surfaceView.setBackgroundDrawable(new BitmapDrawable(getResources(),bitmap));
+                    Bitmap bitmap = getVideoThumbnail(path);
+                    surfaceView.setBackgroundDrawable(new BitmapDrawable(getResources(), bitmap));
                     seekBar.setProgress(0);
-                    for(int i=0;i<9;i++){
-                        if(words[i].videoID.equals(img_text[arg2])){
+                    for (int i = 0; i < 9; i++) {
+                        if (words[i].videoID.equals(img_text[arg2])) {
                             word.setText(words[i].content);
-                            if(words[i].pos.equals("lt"))setMargins(word,dip2px(20),dip2px(20),0,0);
-                            else if (words[i].pos.equals("lb"))setMargins(word,dip2px(20),dip2px(150),0,0);
-                            else if (words[i].pos.equals("rt"))setMargins(word,dip2px(200),dip2px(20),0,0);
-                            else if (words[i].pos.equals("rb"))setMargins(word,dip2px(200),dip2px(150),0,0);
-                            if(words[i].color.equals("black"))word.setTextColor(Color.BLACK);
-                            else if(words[i].color.equals("white"))word.setTextColor(Color.WHITE);
-                            temp=i;
+                            if (words[i].pos.equals("lt"))
+                                setMargins(word, dip2px(20), dip2px(20), 0, 0);
+                            else if (words[i].pos.equals("lb"))
+                                setMargins(word, dip2px(20), dip2px(150), 0, 0);
+                            else if (words[i].pos.equals("rt"))
+                                setMargins(word, dip2px(200), dip2px(20), 0, 0);
+                            else if (words[i].pos.equals("rb"))
+                                setMargins(word, dip2px(200), dip2px(150), 0, 0);
+                            if (words[i].color.equals("black")) word.setTextColor(Color.BLACK);
+                            else if (words[i].color.equals("white")) word.setTextColor(Color.WHITE);
+                            temp = i;
                         }
                     }
                 }
@@ -184,49 +192,52 @@ public class SudokuActivity extends Activity {
         });
         edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                word.setEnabled(true);word.requestFocus();
+                word.setEnabled(true);
+                word.requestFocus();
                 editWordsBar.setVisibility(View.VISIBLE);
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                words[temp].content=word.getText().toString();
+                words[temp].content = word.getText().toString();
                 word.setEnabled(false);
                 editWordsBar.setVisibility(View.INVISIBLE);
             }
         });
         lefttop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setMargins(word,dip2px(20),dip2px(20),0,0);
-                words[temp].pos="lt";
+                setMargins(word, dip2px(20), dip2px(20), 0, 0);
+                words[temp].pos = "lt";
             }
         });
         leftbottom.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-               setMargins(word,dip2px(20),dip2px(150),0,0);
-                words[temp].pos="lb";
+                setMargins(word, dip2px(20), dip2px(150), 0, 0);
+                words[temp].pos = "lb";
             }
         });
         righttop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setMargins(word,dip2px(200),dip2px(20),0,0);
-                words[temp].pos="rt";
+                setMargins(word, dip2px(200), dip2px(20), 0, 0);
+                words[temp].pos = "rt";
             }
         });
         rightbottom.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setMargins(word,dip2px(200),dip2px(150),0,0);
-                words[temp].pos="rb";
+                setMargins(word, dip2px(200), dip2px(150), 0, 0);
+                words[temp].pos = "rb";
             }
         });
         black.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-               word.setTextColor(Color.BLACK);words[temp].color="black";
+                word.setTextColor(Color.BLACK);
+                words[temp].color = "black";
             }
         });
         white.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                word.setTextColor(Color.WHITE);words[temp].color="white";
+                word.setTextColor(Color.WHITE);
+                words[temp].color = "white";
             }
         });
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -244,7 +255,7 @@ public class SudokuActivity extends Activity {
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 if (player != null) {
-                    position =player.getCurrentPosition();
+                    position = player.getCurrentPosition();
                     stop();
                 }
             }
@@ -262,7 +273,7 @@ public class SudokuActivity extends Activity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(player!=null){
+                if (player != null) {
                     player.seekTo(seekBar.getProgress());
                 }
             }
@@ -275,8 +286,8 @@ public class SudokuActivity extends Activity {
 
     private class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
-        private String data=null;
-        private String fileName=null;
+        private String data = null;
+        //private String fileName=null;
 
         private BitmapWorkerTask(ImageView imageView) {
             // 使用WeakReference来确保ImageView可以被垃圾回收机制回收
@@ -287,7 +298,7 @@ public class SudokuActivity extends Activity {
         @Override
         protected Bitmap doInBackground(String... params) {
             data = params[0];
-            fileName=params[1];
+            //fileName=params[1];
             return getVideoThumbnail(data);
         }
 
@@ -305,24 +316,28 @@ public class SudokuActivity extends Activity {
         }
 
     }
-    public void loadBitmap(String imagePath, ImageView imageView,String fileName) {
+
+    public void loadBitmap(String videoPath, ImageView imageView) {
         BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-        String []arr=new String[2];
-        arr[1]=imagePath;
-        arr[2]=fileName;
-        task.execute(arr);
+        //String []arr=new String[2];
+        //arr[1]=imagePath;
+        //arr[2]=fileName;
+        task.execute(videoPath);
     }
+
     public int dip2px(float dpValue) {
         final float scale = this.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
-    public static void setMargins (View v, int l, int t, int r, int b) {
+
+    public static void setMargins(View v, int l, int t, int r, int b) {
         if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
             p.setMargins(l, t, r, b);
             v.requestLayout();
         }
     }
+
     /**
      * 初始化6个模板视频
      */
@@ -348,12 +363,12 @@ public class SudokuActivity extends Activity {
                         initialData();
                         adapter = new DragBaseAdapter(SudokuActivity.this, list);
                         aGridview.setAdapter(adapter);
-                        for(int i=0;i<9;i++){
-                            words[i]=new Words();
-                            words[i].content="请输入文字";
-                            words[i].videoID=img_text[i];
-                            words[i].pos="lt";
-                            words[i].color="black";
+                        for (int i = 0; i < 9; i++) {
+                            words[i] = new Words();
+                            words[i].content = "请输入文字";
+                            words[i].videoID = img_text[i];
+                            words[i].pos = "lt";
+                            words[i].color = "black";
                             Logger.i(words[i].videoID);
                         }
                     }
@@ -375,7 +390,6 @@ public class SudokuActivity extends Activity {
             list.add(map);
         }
     }
-
 
 
     /**
@@ -422,7 +436,7 @@ public class SudokuActivity extends Activity {
                     @Override
                     public void run() {
                         try {
-                            while (player!=null){
+                            while (player != null) {
                                 int current = player.getCurrentPosition();
                                 seekBar.setProgress(current);
                                 sleep(20);
@@ -445,7 +459,8 @@ public class SudokuActivity extends Activity {
             }
         });
     }
-    private void stop(){
+
+    private void stop() {
         if (player != null) {
             seekBar.setProgress(0);
             player.stop();
@@ -461,6 +476,7 @@ public class SudokuActivity extends Activity {
         super.onDestroy();
         stop();
     }
+
     public void submitRecord() {
         File file = new File(userfiles_url + "/", "DateRecording.txt");
         try {
@@ -476,9 +492,12 @@ public class SudokuActivity extends Activity {
             bufferedWriter.write(img_text[6] + " ");
             bufferedWriter.write(img_text[7] + " ");
             bufferedWriter.write(img_text[8] + "\r\n");
-            for(int i=0;i<9;i++){
-                for(int j=0;j<9;j++){
-                    if(words[j].videoID.equals(img_text[i])){bufferedWriter.write(words[j].content+" "+words[j].pos+" "+words[j].color+"\r\n");break;}
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    if (words[j].videoID.equals(img_text[i])) {
+                        bufferedWriter.write(words[j].content + " " + words[j].pos + " " + words[j].color + "\r\n");
+                        break;
+                    }
                 }
             }
             bufferedWriter.close();
@@ -489,7 +508,7 @@ public class SudokuActivity extends Activity {
 
     }
 
-    public  static void reInitial() {
+    public static void reInitial() {
         for (int i = 0; i < img_text.length; i++) {
             HashMap<String, String> map;
             map = list.get(i);
@@ -515,17 +534,10 @@ public class SudokuActivity extends Activity {
                 String absolutePath = data.getStringExtra("absolutePath");
                 aGridview = (ActiveGrideView) findViewById(R.id.gridview);
                 ImageView imageView = (ImageView) aGridview.getChildAt(order).findViewById(R.id.iv_item);
-                loadBitmap(absolutePath,imageView,fileName);
-              /*  ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                if(bitmap!=null){
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    Glide.with(this).load(stream.toByteArray())
-                            .asBitmap().into(imageView);
-                }else{
-                    Logger.e("bitmap为null!");
-                }*/
-                imgs[order]="/sdcard/"+fileName+".png";
-                //Glide.with(this).load(bitmap).into(imageView);
+                //loadBitmap(absolutePath,imageView);
+                Bitmap bitmap = getVideoThumbnail(absolutePath);
+                imageView.setImageBitmap(bitmap);
+                saveBitmap(bitmap, fileName);
                 imgs[order] = userfiles_url + "/" + fileName + ".png";
                 initialData();
                 adapter = new DragBaseAdapter(this, list);
@@ -539,66 +551,53 @@ public class SudokuActivity extends Activity {
 
     public Bitmap getVideoThumbnail(String filePath) {
         Bitmap bitmap = null;
-
         if (TextUtils.isEmpty(filePath)) {
             return null;
         }
         File file1 = new File(filePath);
         if (!file1.exists()) {
-            Logger.e(filePath+"不存在");
+            Logger.e(filePath + "不存在");
             return null;
-        }else{
-            Logger.e(filePath+"存在");
-        }
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        //FFmpegMediaMetadataRetriever mmr = new  FFmpegMediaMetadataRetriever();
-        try {
-              mmr.setDataSource(filePath);
-
-           /* retriever.setDataSource(filePath);
-            bitmap = retriever.getFrameAtTime(10);
-            上面这样写会出错
-            */
-            /*File file=new File(filePath);
-            retriever.setDataSource(file.getAbsolutePath());
-            bitmap = retriever.getFrameAtTime();
-            链接：http://blog.csdn.net/yaochangliang159/article/details/56841879
-            */
-            /*
-            https://stackoverflow.com/questions/11459784/mediametadataretactivity-getframeattime-videoframe-is-a-null-pointer
-             */
-            //retriever.setDataSource(filePath);
-            //new HashMap<String, String>()
-
-           /* Uri uri=Uri.fromFile(new File(filePath));
-            mmr.setDataSource(SudokuActivity.this,uri);
-            bitmap = mmr.getFrameAtTime(10000, FFmpegMediaMetadataRetriever.OPTION_CLOSEST);*/
-            bitmap=mmr.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        } finally {
+        } else {
+            Logger.e(filePath + "存在");
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            //FFmpegMediaMetadataRetriever mmr = new  FFmpegMediaMetadataRetriever();
             try {
-                mmr.release();
+                File file = new File(filePath);
+                mmr.setDataSource(file.getAbsolutePath());
+                bitmap = mmr.getFrameAtTime(1000,MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+                if (bitmap == null) {
+                    Logger.e("bitmap==null");
+                }else{
+                   Logger.e("bitmap!=null");
+                }
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
             } catch (RuntimeException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    mmr.release();
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                }
             }
+            return bitmap;
         }
-        return bitmap;
-    }
 
+
+    }
 
     public void saveBitmap(Bitmap bitmap, String fileName) { // 将在屏幕上绘制的图形保存到SD卡
         File file;
-        if("u_1".equals(fileName)||"u_2".equals(fileName)||"u_3".equals(fileName)){
+        if ("u_1".equals(fileName) || "u_2".equals(fileName) || "u_3".equals(fileName)) {
             file = new File(userfiles_url + "/" + fileName + ".png");
-        }else{
+        } else {
             file = new File(resourcesfiles_url + "/" + fileName + ".png");
         }
         if (!file.exists()) {
             try {
-                boolean flag=file.createNewFile();
+                boolean flag = file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -606,7 +605,6 @@ public class SudokuActivity extends Activity {
         try {
             FileOutputStream fos = new FileOutputStream(file); // 创建文件输出流（写文件）
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);// 将图片对象按PNG格式压缩（质量100%)，写入文件
-
             fos.flush(); // 刷新
             fos.close();// 关闭流
         } catch (Exception e) {
@@ -632,7 +630,7 @@ public class SudokuActivity extends Activity {
                 @Override
                 public void onFailure(Call call, IOException e) {
 
-                    Logger.e( "用户视频上传失败！");
+                    Logger.e("用户视频上传失败！");
                 }
 
                 @Override
@@ -653,11 +651,11 @@ public class SudokuActivity extends Activity {
     });
 
     public void entrance() {
-        String url = OkHttpUtil.base_url + "downloadVideo/"+ AppContext.timeStamp;
-        File file=new File(deal_url+"/"+AppContext.timeStamp);
-        if(!file.exists())
+        String url = OkHttpUtil.base_url + "downloadVideo/" + AppContext.timeStamp;
+        File file = new File(deal_url + "/" + AppContext.timeStamp);
+        if (!file.exists())
             file.mkdirs();
-        Logger.i(deal_url + "/"+ AppContext.timeStamp+"/"+"merge1.mp4");
+        Logger.i(deal_url + "/" + AppContext.timeStamp + "/" + "merge1.mp4");
         OkHttpUtil.downFile(url, deal_url + "/" + AppContext.timeStamp + "/", "merge1.mp4", new OkHttpUtil.OnDownloadListener() {
             @Override
             public void onDownloadSuccess() {
