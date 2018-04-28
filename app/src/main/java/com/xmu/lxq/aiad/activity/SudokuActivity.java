@@ -64,17 +64,16 @@ public class SudokuActivity extends Activity {
     private SurfaceView surfaceView;
     private MediaPlayer player;
     private SeekBar seekBar;
-    private ImageButton start;
-    private ImageButton edit;
+    private ImageButton start,edit,music;
     private ImageButton save;
-    private ImageButton lefttop, leftbottom, righttop, rightbottom, black, white;
+    private ImageButton lefttop, leftbottom, righttop, rightbottom, black, white,cd1;
     private EditText word;
     private Button submit;
     private ActiveGrideView aGridview;
     public static List<HashMap<String, String>> list;
     private DragBaseAdapter adapter;
     private int position = 0;
-    private LinearLayout editWordsBar;
+    private LinearLayout editWordsBar,addMusicBar;
     private String path;
     private int temp;
     static CustomDialogUtil dialog=null;
@@ -106,7 +105,7 @@ public class SudokuActivity extends Activity {
     private void initView() {
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         start = (ImageButton) findViewById(R.id.video_start);
-        edit = (ImageButton) findViewById(R.id.video_edit);
+        edit = (ImageButton) findViewById(R.id.video_edit);music = (ImageButton) findViewById(R.id.video_music);
         save = (ImageButton) findViewById(R.id.save_words);
         word = (EditText) findViewById(R.id.words);
         word.setEnabled(false);
@@ -115,13 +114,14 @@ public class SudokuActivity extends Activity {
         surfaceView.getHolder().setKeepScreenOn(true);
         aGridview = (ActiveGrideView) findViewById(R.id.gridview);
         submit = (Button) findViewById(R.id.submit);
-        editWordsBar = (LinearLayout) findViewById(R.id.edit_words_bar);
+        editWordsBar = (LinearLayout) findViewById(R.id.edit_words_bar); addMusicBar = (LinearLayout) findViewById(R.id.add_music_bar);
         rightbottom = (ImageButton) findViewById(R.id.rightbottom);
         leftbottom = (ImageButton) findViewById(R.id.leftbottom);
         righttop = (ImageButton) findViewById(R.id.righttop);
         lefttop = (ImageButton) findViewById(R.id.lefttop);
         black = (ImageButton) findViewById(R.id.black);
         white = (ImageButton) findViewById(R.id.white);
+        cd1=(ImageButton) findViewById(R.id.cd1);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,6 +200,11 @@ public class SudokuActivity extends Activity {
                 editWordsBar.setVisibility(View.VISIBLE);
             }
         });
+        music.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                addMusicBar.setVisibility(View.VISIBLE);
+            }
+        });
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 words[temp].content = word.getText().toString();
@@ -238,6 +243,12 @@ public class SudokuActivity extends Activity {
             }
         });
         white.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                word.setTextColor(Color.WHITE);
+                words[temp].color = "white";
+            }
+        });
+        cd1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 word.setTextColor(Color.WHITE);
                 words[temp].color = "white";
@@ -286,6 +297,7 @@ public class SudokuActivity extends Activity {
         adapter = new DragBaseAdapter(SudokuActivity.this, list);
         aGridview.setAdapter(adapter);
     }
+
 
     private class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
