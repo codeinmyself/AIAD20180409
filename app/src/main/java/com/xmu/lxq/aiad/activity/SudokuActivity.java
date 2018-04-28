@@ -3,17 +3,20 @@ package com.xmu.lxq.aiad.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -34,6 +37,7 @@ import com.xmu.lxq.aiad.SudokuUtil.DragBaseAdapter;
 import com.xmu.lxq.aiad.application.AppContext;
 import com.xmu.lxq.aiad.util.CustomDialogUtil;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
+import com.xmu.lxq.aiad.util.PermissionUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
 
 import java.io.BufferedWriter;
@@ -156,12 +160,32 @@ public class SudokuActivity extends Activity {
                                     long position) {
 
                 if (imgs[arg2].equals(default_img) || doubleClick() || imgs[arg2].equals("hh")) {
-                    DragBaseAdapter dba = (DragBaseAdapter) parent.getAdapter();
-                    Map.Entry entry = dba.loopItem(dba.get(), (int) position);
-                    Intent intent = new Intent(SudokuActivity.this, RecordedActivity.class);
-                    intent.putExtra("order", arg2 + "");
-                    intent.putExtra("fileName", img_text[arg2] + "");
-                    startActivityForResult(intent, 1);
+                    if(voicePermission() && PermissionUtil.isHasAudioRecordPermission(SudokuActivity.this)){
+                        Logger.i("录音权限已开启");
+                        DragBaseAdapter dba = (DragBaseAdapter) parent.getAdapter();
+                        Map.Entry entry = dba.loopItem(dba.get(), (int) position);
+                        Intent intent = new Intent(SudokuActivity.this, RecordedActivity.class);
+                        intent.putExtra("order", arg2 + "");
+                        intent.putExtra("fileName", img_text[arg2] + "");
+                        startActivityForResult(intent, 1);
+                    }else {
+                        ToastUtil.getInstance(SudokuActivity.this).showToast("需要开启录音权限！");
+                        MediaRecorder recorder = new MediaRecorder();
+                        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                        recorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
+                        recorder.setAudioChannels(1);
+                        recorder.setAudioSamplingRate(8000);
+                        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                        recorder.setOutputFile("");//这里给个假的地址,因为这段录音是无效的.
+                        try {
+                            recorder.prepare();
+                            recorder.start();//要开始录音时,这里就会弹出提示框了,如果不给权限.我们有异常处理,而且下次想录音时 还是会有此提示.
+                            recorder.stop();
+                            recorder.release();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 } else {
                     path = getFileNameNoEx(imgs[arg2]) + ".mp4";
                     Bitmap bitmap = getVideoThumbnail(path);
@@ -298,6 +322,11 @@ public class SudokuActivity extends Activity {
         aGridview.setAdapter(adapter);
     }
 
+
+    private  boolean voicePermission(){
+        return (PackageManager.PERMISSION_GRANTED ==   ContextCompat.
+                checkSelfPermission(SudokuActivity.this, android.Manifest.permission.RECORD_AUDIO));
+    }
 
     private class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
