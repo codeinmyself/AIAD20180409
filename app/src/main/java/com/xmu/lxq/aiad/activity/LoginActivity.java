@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.application.AppContext;
+import com.xmu.lxq.aiad.util.CustomDialogUtil;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
 
@@ -73,6 +74,7 @@ public class LoginActivity extends Activity{
                 //如果当前时间与出错时间相差超过30s
                 if(recentTime - errorTime > WAIT_TIME) {
                     if(matchLoginMsg(et_telephone.getText().toString().trim(),et_password.getText().toString().trim())) {
+                        CustomDialogUtil.showDialog(LoginActivity.this,"正在登录");
                         doLogin(et_telephone.getText().toString().trim(), et_password.getText().toString().trim());
                     }
                 } else{
@@ -145,6 +147,13 @@ public class LoginActivity extends Activity{
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Logger.e("失败！");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            CustomDialogUtil.dismissDialog();
+                            ToastUtil.getInstance(LoginActivity.this).showToast("登录失败！");
+                        }
+                    });
                 }
 
                 @Override
@@ -160,6 +169,7 @@ public class LoginActivity extends Activity{
                                 appContext.setIsLogin(true);
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("telephone", telephone);
+                                CustomDialogUtil.dismissDialog();
                                 startActivity(intent);
                                 finish();
                             } else {
@@ -169,6 +179,7 @@ public class LoginActivity extends Activity{
                                         @Override
                                         public void run() {
                                             et_password.setText("");
+                                            CustomDialogUtil.dismissDialog();
                                             ToastUtil.getInstance(LoginActivity.this).showToast("连续" + LOGIN_CHANCES + "次认证失败，请您" + WAIT_TIME / 1000 + "秒后再登陆！");
                                         }
                                     });
@@ -183,6 +194,7 @@ public class LoginActivity extends Activity{
                                         @Override
                                         public void run() {
                                             et_password.setText("");
+                                            CustomDialogUtil.dismissDialog();
                                             ToastUtil.getInstance(LoginActivity.this).showToast("用户名或密码错误，请重新输入!剩余" + counter + "机会");
                                         }
                                     });
@@ -194,6 +206,8 @@ public class LoginActivity extends Activity{
                             e.printStackTrace();
                         }
                     }else{
+                        CustomDialogUtil.dismissDialog();
+                        ToastUtil.getInstance(LoginActivity.this).showToast("登录失败！");
                         Logger.e("失败");
                     }
                 }

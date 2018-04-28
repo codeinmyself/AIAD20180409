@@ -163,25 +163,6 @@ public class ProgressActivity extends Activity{
         dialog.show();
     }
 
-  /*  *//**
-     * 子线程控制dialog存在时间
-     *//*
-    private Thread mThread=new Thread(new Runnable() {
-        @Override
-        public void run() {
-            while(flag){
-                // TODO Auto-generated method stub
-                try {
-                    Thread.sleep(2000); //每隔2s进行判断
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-
-        }
-    });*/
-
 
     /**
      * 接收子线程传回的信息
@@ -191,7 +172,7 @@ public class ProgressActivity extends Activity{
         public void handleMessage(Message msg){
             super.handleMessage(msg);
 
-            dialog.setTitleText("模板视频下载进度"+((int)(((double)(msg.what+1)/6)*100))+"%");
+            dialog.setContentText("进度"+((int)(((double)(msg.what+1)/6)*100))+"%");
             if(msg.what==FLAG_DISMISS){
                 dismiss();
                 Intent intent=new Intent(ProgressActivity.this,SudokuActivity.class);

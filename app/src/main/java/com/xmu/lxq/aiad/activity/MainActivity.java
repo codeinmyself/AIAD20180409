@@ -49,7 +49,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static CustomDialogUtil dialog = null;
+   // CustomDialogUtil customDialogUtil=null;
     private int FLAG_DISMISS = 1;//关闭dialog的标志
 
     protected static final int CHOOSE_PICTURE = 0;
@@ -449,31 +449,8 @@ public class MainActivity extends AppCompatActivity
      * 进度条
      */
     private void showDialog() {
-        dialog = new CustomDialogUtil(this);
-        dialog.setMax(100);
-        dialog.setMessage("识别中");
-        dialog.show();
+        CustomDialogUtil.showDialog(this,"识别中");
     }
-
-    /**
-     * 子线程控制dialog存在时间
-     *//*
-    private Thread mThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            while (flag) {
-                // TODO Auto-generated method stub
-                try {
-                    Thread.sleep(1000); //每隔1s进行判断
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-
-        }
-    });*/
-
 
     /**
      * uploadPic
@@ -547,7 +524,7 @@ public class MainActivity extends AppCompatActivity
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == FLAG_DISMISS) {
-                dialog.dismiss();
+               CustomDialogUtil.dismissDialog();
             }
         }
     };
