@@ -107,6 +107,7 @@ public class SudokuActivity extends Activity {
      * initView and set Listener
      */
     private void initView() {
+
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         start = (ImageButton) findViewById(R.id.video_start);
         edit = (ImageButton) findViewById(R.id.video_edit);music = (ImageButton) findViewById(R.id.video_music);
@@ -395,6 +396,7 @@ public class SudokuActivity extends Activity {
      * 初始化6个模板视频
      */
     public void initialAD() {
+        CustomDialogUtil.showDialog(this,"加载中");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -413,6 +415,7 @@ public class SudokuActivity extends Activity {
                 SudokuActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        CustomDialogUtil.dismissDialog();
                         initialData();
                         adapter = new DragBaseAdapter(SudokuActivity.this, list);
                         aGridview.setAdapter(adapter);
