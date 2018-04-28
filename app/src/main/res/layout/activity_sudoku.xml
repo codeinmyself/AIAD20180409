@@ -177,11 +177,10 @@
             android:cacheColorHint="#ffffff"
             android:gravity="center"
             android:horizontalSpacing="10dp"
-            android:listSelector="@android:color/transparent"
             android:numColumns="3"
             android:scaleType="centerCrop"
             android:verticalSpacing="10dp">
-
+            <!-- android:listSelector="@android:color/transparent"-->
         </com.xmu.lxq.aiad.SudokuUtil.ActiveGrideView>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -35,4 +35,10 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowSoftInputMode">stateHidden|adjustResize</item>
     </style>
+
+    <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="colorAccent">#ffE91E63</item>
+    </style>
 </resources>

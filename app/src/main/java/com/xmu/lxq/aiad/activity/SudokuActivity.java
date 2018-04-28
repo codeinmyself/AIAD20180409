@@ -1,6 +1,7 @@
 package com.xmu.lxq.aiad.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.SudokuUtil.ActiveGrideView;
 import com.xmu.lxq.aiad.SudokuUtil.DragBaseAdapter;
 import com.xmu.lxq.aiad.application.AppContext;
+import com.xmu.lxq.aiad.util.CustomDialogUtil;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
 
@@ -75,6 +77,7 @@ public class SudokuActivity extends Activity {
     private LinearLayout editWordsBar;
     private String path;
     private int temp;
+    static CustomDialogUtil dialog=null;
     public static String[] img_text = {"u_1", "宫格1", "宫格2", "宫格3", "u_2", "宫格4",
             "宫格5", "宫格6", "u_3"};
 
@@ -286,8 +289,8 @@ public class SudokuActivity extends Activity {
 
     private class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
-        private String data = null;
-        //private String fileName=null;
+        private String videoPath = null;
+        private String fileName=null;
 
         private BitmapWorkerTask(ImageView imageView) {
             // 使用WeakReference来确保ImageView可以被垃圾回收机制回收
@@ -297,32 +300,41 @@ public class SudokuActivity extends Activity {
         // 在后台解析图片.
         @Override
         protected Bitmap doInBackground(String... params) {
-            data = params[0];
-            //fileName=params[1];
-            return getVideoThumbnail(data);
+            videoPath = params[0];
+            fileName=params[1];
+            File file=new File(videoPath);
+            Logger.e("test waitforwrite");
+            waitForWriteCompleted(file);
+            return getVideoThumbnail(videoPath);
         }
 
         // 一旦解析完成，先查看imageview是否已经被回收，没回收就设置bitmap上去.
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            if (imageViewReference != null && bitmap != null) {
+            if (bitmap != null) {
                 final ImageView imageView = imageViewReference.get();
-                //saveBitmap(bitmap, fileName);
+                saveBitmap(bitmap, fileName);
                 Logger.e("postexecute");
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
                 }
+                initialData();
+                adapter = new DragBaseAdapter(SudokuActivity.this, list);
+                adapter.notifyDataSetChanged();
+                list = new ArrayList<>(adapter.get());
+                reInitial();
+                aGridview.setAdapter(adapter);
+                dialog.cancel();
             }
         }
-
     }
 
-    public void loadBitmap(String videoPath, ImageView imageView) {
+    public void loadBitmap(String videoPath,String fileName, ImageView imageView) {
         BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-        //String []arr=new String[2];
-        //arr[1]=imagePath;
-        //arr[2]=fileName;
-        task.execute(videoPath);
+        String []arr=new String[2];
+        arr[0]=videoPath;
+        arr[1]=fileName;
+        task.execute(arr);
     }
 
     public int dip2px(float dpValue) {
@@ -382,23 +394,23 @@ public class SudokuActivity extends Activity {
         if (list != null) {
             if (list.size() > 0) list.clear();
         } else {
-            list = new ArrayList<HashMap<String, String>>();
+            list = new ArrayList<>();
         }
         for (int i = 0; i < img_text.length; i++) {
-            HashMap<String, String> map = new HashMap<String, String>();
+            HashMap<String, String> map = new HashMap<>();
             map.put(img_text[i], imgs[i]);
             list.add(map);
         }
     }
 
 
+    long[] mHits = new long[2];
     /**
      * 处理双击事件
      *
      * @return
      */
     private boolean doubleClick() {
-        long[] mHits = new long[2];
         System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
         mHits[mHits.length - 1] = SystemClock.uptimeMillis();//获取手机开机时间
         if (mHits[mHits.length - 1] - mHits[0] < 1000) {
@@ -534,20 +546,11 @@ public class SudokuActivity extends Activity {
                 String absolutePath = data.getStringExtra("absolutePath");
                 aGridview = (ActiveGrideView) findViewById(R.id.gridview);
                 ImageView imageView = (ImageView) aGridview.getChildAt(order).findViewById(R.id.iv_item);
-                //loadBitmap(absolutePath,imageView);
-                File file=new File(absolutePath);
-                Logger.e("test waitforwrite");
-                waitForWriteCompleted(file);
-                Bitmap bitmap = getVideoThumbnail(absolutePath);
-                imageView.setImageBitmap(bitmap);
-                saveBitmap(bitmap, fileName);
                 imgs[order] = userfiles_url + "/" + fileName + ".png";
-                initialData();
-                adapter = new DragBaseAdapter(this, list);
-                adapter.notifyDataSetChanged();
-                list = new ArrayList<>(adapter.get());
-                reInitial();
-                aGridview.setAdapter(adapter);
+                loadBitmap(absolutePath,fileName,imageView);
+                dialog = new CustomDialogUtil(this,R.style.CustomDialog);
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.show();
                 break;
         }
     }
