@@ -42,10 +42,6 @@ public class AppContext extends Application{
         //文件初始化
         initialDirectory();
     }
-
-    public boolean isLogin(){
-        return isLogin;
-    }
     public void setIsLogin(boolean flag){
         isLogin = flag;
     }

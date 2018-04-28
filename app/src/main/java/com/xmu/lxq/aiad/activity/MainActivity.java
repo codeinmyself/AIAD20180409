@@ -514,6 +514,7 @@ public class MainActivity extends AppCompatActivity
                         } else {
                             Logger.i("error1");
                             ToastUtil.getInstance(MainActivity.this).showToast("网络连接不好，请重新尝试！");
+                            Logger.i("response:"+response.body().string());
                             Message msg = mHandler.obtainMessage();
                             msg.what = FLAG_DISMISS;
                             mHandler.sendMessage(msg);

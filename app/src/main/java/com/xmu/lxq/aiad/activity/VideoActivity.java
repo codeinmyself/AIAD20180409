@@ -77,13 +77,6 @@ public class VideoActivity extends Activity {
         if (data != null) {
           if (requestCode == VIDEO_REQUEST_CODE) {
               Glide.get(this).clearMemory();
-               /* //打开视频
-                Uri uri = data.getData();
-                VideoView videoView = new VideoView(this);
-                videoView.setMediaController(new MediaController(this));
-                videoView.setVideoURI(uri);
-                videoView.start();
-                videoView.requestFocus();*/
                 Intent intent=new Intent();
                 intent.putExtra("fileName",fileName+"");
                 intent.putExtra("parentPath",file.getParent()+"");

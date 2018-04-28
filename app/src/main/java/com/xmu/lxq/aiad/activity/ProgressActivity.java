@@ -1,8 +1,8 @@
 package com.xmu.lxq.aiad.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -34,9 +35,8 @@ public class ProgressActivity extends Activity{
 
     public static String[] videosName=new String[6];//记录videosName
     static int num=0;//在非主线程遍历videosName[]，必须为静态
-    static ProgressDialog dialog = null;
+    static SweetAlertDialog  dialog = null;
     private int FLAG_DISMISS = 5;//关闭dialog的标志
-    private boolean flag = true;//跳出循环的标志
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -149,27 +149,23 @@ public class ProgressActivity extends Activity{
      */
     public void dismiss() {
         dialog.dismiss();
-        flag = false;
     }
 
     /**
      * 初始化view
      */
     private void initialView(){
-        dialog=new ProgressDialog(this);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置水平进度条
+        dialog=new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
+        dialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        dialog.setTitleText("正在下载模板视频");
         dialog.setCancelable(false);// 设置是否可以通过点击Back键取消
         dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
-        dialog.setTitle("正在下载");
-        dialog.setMax(100);
-        dialog.setMessage("请等待");
         dialog.show();
-        mThread.start();
     }
 
-    /**
+  /*  *//**
      * 子线程控制dialog存在时间
-     */
+     *//*
     private Thread mThread=new Thread(new Runnable() {
         @Override
         public void run() {
@@ -184,7 +180,7 @@ public class ProgressActivity extends Activity{
             }
 
         }
-    });
+    });*/
 
 
     /**
@@ -195,7 +191,7 @@ public class ProgressActivity extends Activity{
         public void handleMessage(Message msg){
             super.handleMessage(msg);
 
-            dialog.setTitle("正在下载"+((int)(((double)(msg.what+1)/6)*100))+"%");
+            dialog.setTitleText("模板视频下载进度"+((int)(((double)(msg.what+1)/6)*100))+"%");
             if(msg.what==FLAG_DISMISS){
                 dismiss();
                 Intent intent=new Intent(ProgressActivity.this,SudokuActivity.class);
