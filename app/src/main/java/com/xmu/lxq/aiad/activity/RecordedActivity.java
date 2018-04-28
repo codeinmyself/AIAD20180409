@@ -111,7 +111,6 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
             } else {
                 //聚焦失败显示的图片
                 mFocus.onFocusFailed();
-
             }
         }
     };
@@ -181,9 +180,7 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.mCapture:
                 if (!recordFlag) {
-                    //executorService.execute(recordRunnable);
-                    thread1.start();
-                    thread2.start();
+                    executorService.execute(recordRunnable);
                 } else if (!pausing) {
                     mCameraView.pause(false);
                     pausing = true;
@@ -206,7 +203,8 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
                 break;
         }
     }
-    Thread thread1=new Thread(new Runnable() {
+
+    Runnable recordRunnable = new Runnable() {
         @Override
         public void run() {
             recordFlag = true;
@@ -232,44 +230,12 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
                 }
                 recordFlag = false;
                 mCameraView.stopRecord();
-                //recordComplete(savePath);
+                recordComplete();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    });
-   /* Runnable recordRunnable = new Runnable() {
-        @Override
-        public void run() {
-            recordFlag = true;
-            pausing = false;
-            autoPausing = false;
-            timeCount = 0;
-
-            file=new File(userfiles_url+"/"+fileName+".mp4");
-            //如果存在文件先删除（有方法覆盖吗？）
-            if(file.exists()) file.delete();
-            String savePath = userfiles_url+"/"+fileName+".mp4";
-
-            try {
-                mCameraView.setSavePath(savePath);
-                mCameraView.startRecord();
-                while (timeCount <= maxTime && recordFlag) {
-                    if (pausing || autoPausing) {
-                        continue;
-                    }
-                    mCapture.setProcess((int) timeCount);
-                    Thread.sleep(timeStep);
-                    timeCount += timeStep;
-                }
-                recordFlag = false;
-                mCameraView.stopRecord();
-                //recordComplete(savePath);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };*/
+    };
     /**
      * getTime
      * @return
@@ -279,38 +245,29 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
         return String.valueOf(time);
     }
 
-    Thread thread2=new Thread(new Runnable() {
-        @Override
-        public void run() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        thread1.join();
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }
-                    mCapture.setProcess(0);
-                    ToastUtil.getInstance(RecordedActivity.this).showToast( "文件已保存！");
-                    Glide.get(RecordedActivity.this).clearMemory();
-                    // Uri uri = Uri.fromFile(file);
-               /* VideoView videoView = new VideoView(RecordedActivity.this);
-                videoView.setMediaController(new MediaController(RecordedActivity.this));
-                videoView.setVideoURI(uri);
-                videoView.start();
-                videoView.requestFocus();*/
-                    Intent intent=new Intent();
-                    intent.putExtra("fileName",fileName+"");
-                    intent.putExtra("parentPath",file.getParent()+"");
-                    intent.putExtra("absolutePath",file.getAbsolutePath()+"");
-                    intent.putExtra("order",order+"");
-                    mCameraView.onDestroy();
-                    RecordedActivity.this.setResult(1,intent);
-                    finish();
-                }
-            });
-        }
-    });
+   public void recordComplete(){
+        runOnUiThread(new Runnable() {
+           @Override
+           public void run() {
+               runOnUiThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       mCapture.setProcess(0);
+                       ToastUtil.getInstance(RecordedActivity.this).showToast( "文件已保存！");
+                       Glide.get(RecordedActivity.this).clearMemory();
+                       Intent intent=new Intent();
+                       intent.putExtra("fileName",fileName+"");
+                       intent.putExtra("parentPath",file.getParent()+"");
+                       intent.putExtra("absolutePath",file.getAbsolutePath()+"");
+                       intent.putExtra("order",order+"");
+                       mCameraView.onDestroy();
+                       RecordedActivity.this.setResult(1,intent);
+                       finish();
+                   }
+               });
+           }
+       });
+   }
    /* private void recordComplete(final String path) {
         runOnUiThread(new Runnable() {
             @Override

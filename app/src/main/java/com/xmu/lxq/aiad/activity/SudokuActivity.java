@@ -535,6 +535,9 @@ public class SudokuActivity extends Activity {
                 aGridview = (ActiveGrideView) findViewById(R.id.gridview);
                 ImageView imageView = (ImageView) aGridview.getChildAt(order).findViewById(R.id.iv_item);
                 //loadBitmap(absolutePath,imageView);
+                File file=new File(absolutePath);
+                Logger.e("test waitforwrite");
+                waitForWriteCompleted(file);
                 Bitmap bitmap = getVideoThumbnail(absolutePath);
                 imageView.setImageBitmap(bitmap);
                 saveBitmap(bitmap, fileName);
@@ -549,6 +552,20 @@ public class SudokuActivity extends Activity {
         }
     }
 
+    private void waitForWriteCompleted(File file) {
+        if (!file.exists())
+            return;
+        long old_length;
+        do {
+            old_length = file.length();
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } while (old_length != file.length());
+    }
+
     public Bitmap getVideoThumbnail(String filePath) {
         Bitmap bitmap = null;
         if (TextUtils.isEmpty(filePath)) {
@@ -561,7 +578,6 @@ public class SudokuActivity extends Activity {
         } else {
             Logger.e(filePath + "存在");
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-            //FFmpegMediaMetadataRetriever mmr = new  FFmpegMediaMetadataRetriever();
             try {
                 File file = new File(filePath);
                 mmr.setDataSource(file.getAbsolutePath());
