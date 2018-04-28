@@ -1,8 +1,6 @@
 package com.xmu.lxq.aiad.activity;
 
 import android.Manifest;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -21,22 +19,18 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.application.AppContext;
+import com.xmu.lxq.aiad.util.CustomDialogUtil;
 import com.xmu.lxq.aiad.util.NetworkDetector;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
@@ -55,9 +49,8 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static ProgressDialog dialog = null;
+    static CustomDialogUtil dialog = null;
     private int FLAG_DISMISS = 1;//关闭dialog的标志
-    private boolean flag = true;//跳出循环的标志
 
     protected static final int CHOOSE_PICTURE = 0;
     protected static final int TAKE_PICTURE = 1;
@@ -95,7 +88,6 @@ public class MainActivity extends AppCompatActivity
                 }else{
                     uploadPic();
                     showDialog();
-                    mThread.start();
                 }
 
             }
@@ -457,19 +449,15 @@ public class MainActivity extends AppCompatActivity
      * 进度条
      */
     private void showDialog() {
-        dialog = new ProgressDialog(this);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置水平进度条
-        dialog.setCancelable(false);// 设置是否可以通过点击Back键取消
-        dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
-        dialog.setTitle("识别中");
+        dialog = new CustomDialogUtil(this);
         dialog.setMax(100);
-        dialog.setMessage("请等待");
+        dialog.setMessage("识别中");
         dialog.show();
     }
 
     /**
      * 子线程控制dialog存在时间
-     */
+     *//*
     private Thread mThread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -484,15 +472,8 @@ public class MainActivity extends AppCompatActivity
             }
 
         }
-    });
+    });*/
 
-    /**
-     * 关闭dialog
-     */
-    public void dismiss() {
-        dialog.dismiss();
-        flag = false;
-    }
 
     /**
      * uploadPic
@@ -522,6 +503,7 @@ public class MainActivity extends AppCompatActivity
                             type[4] = jsonObject.getString("type5");
                             Message msg = mHandler.obtainMessage();
                             msg.what = FLAG_DISMISS;
+                            mHandler.sendMessage(msg);
                             Intent intent = new Intent(MainActivity.this, ProductTypeActivity.class);
                             intent.putExtra("type1", type[0]);
                             intent.putExtra("type2", type[1]);
@@ -530,15 +512,26 @@ public class MainActivity extends AppCompatActivity
                             intent.putExtra("type5", type[4]);
                             startActivity(intent);
                         } else {
-                            Logger.i("error");
+                            Logger.i("error1");
+                            ToastUtil.getInstance(MainActivity.this).showToast("网络连接不好，请重新尝试！");
+                            Message msg = mHandler.obtainMessage();
+                            msg.what = FLAG_DISMISS;
+                            mHandler.sendMessage(msg);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    Logger.i("error");
-                    ToastUtil.getInstance(MainActivity.this).showToast("网络连接不好，请重新尝试！");
-                    dismiss();
+                    Logger.i("error2");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtil.getInstance(MainActivity.this).showToast("网络连接不好，请重新尝试！");
+                        }
+                    });
+                    Message msg = mHandler.obtainMessage();
+                    msg.what = FLAG_DISMISS;
+                    mHandler.sendMessage(msg);
                 }
 
             }
@@ -553,102 +546,8 @@ public class MainActivity extends AppCompatActivity
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == FLAG_DISMISS) {
-                dismiss();
+                dialog.dismiss();
             }
         }
     };
-
-   /* @TargetApi(19)
-    private void handleImageOnKitKat(Intent data) {
-        String imagePath = null;
-        Uri uri = data.getData();
-        if (DocumentsContract.isDocumentUri(this,uri)){
-            //如果是document类型的uri，则通过document id 处理
-            String docId = DocumentsContract.getDocumentId(uri);
-            if ("com.android.providers.media.documents".equals(uri.getAuthority())){
-                String id = docId.split(":")[1];//解析出数字格式的id
-                String selection = MediaStore.Images.Media._ID + "=" +id;
-                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
-            }else if("com.android.providers.downloads.documents".equals(uri.getAuthority())){
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
-                imagePath = getImagePath(contentUri,null);
-            }
-        }else if ("content".equalsIgnoreCase(uri.getScheme())){
-            //如果是content类型的uri则使用普通的方式处理
-            imagePath = getImagePath(uri,null);
-        }else if ("file".equalsIgnoreCase(uri.getScheme())){
-            //如果是file类型的URI则直接获取图片路径即可
-            imagePath = uri.getPath();
-        }
-        displayImage(imagePath);//根据图片路径显示图片
-    }
-
-    private void handleImageBeforeKitKat(Intent data) {
-        Uri uri = data.getData();
-        String imagePath = getImagePath(uri,null);
-        displayImage(imagePath);
-    }*/
-   /* private String getImagePath(Uri uri, String selection) {
-        String path = null;
-        //通过URI和selection来获取真是的图片路径
-        Cursor cursor = getContentResolver().query(uri,null,selection,null,null);
-        if (cursor != null){
-            if (cursor.moveToFirst()){
-                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-            }
-            cursor.close();
-        }
-        return path;
-    }*/
-
-
-    //此方法作废
-    private void displayImage(String imagePath) {
-        if (imagePath != null) {
-            //将照片显示出来
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            picture.setImageBitmap(bitmap);
-        } else {
-            Toast.makeText(getApplicationContext(), "failed to get image!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    //因换UI缘故，此方法作废
-    public void showNextDialog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("上传图片");
-        builder.setMessage("下一步？");
-        builder.setCancelable(false);
-        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                /*picture.setDrawingCacheEnabled(true);
-                Bitmap bitmap=picture.getDrawingCache();
-                picture.setDrawingCacheEnabled(false);*/
-                uploadPic();
-
-            }
-        });
-        builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        //创建对话框
-        AlertDialog dialog = builder.create();
-        Window dialogWindow = dialog.getWindow();
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        dialogWindow.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-
-        lp.y = 10; // 新位置Y坐标
-        lp.width = 20; // 宽度
-        lp.height = 20; // 高度
-        lp.alpha = 0.7f; // 透明度
-        dialogWindow.setAttributes(lp);
-
-        dialog.show();
-    }
 }
