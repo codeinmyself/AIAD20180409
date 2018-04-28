@@ -160,7 +160,7 @@ public class SudokuActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View item, int arg2,
                                     long position) {
 
-                if (imgs[arg2].equals(default_img) || doubleClick() || imgs[arg2].equals("hh")) {
+                if (imgs[arg2].equals(default_img) || (doubleClick()&&(img_text[arg2].equals("u_1")||img_text[arg2].equals("u_2")||img_text[arg2].equals("u_3"))) || imgs[arg2].equals("hh")) {
                     if(voicePermission() && PermissionUtil.isHasAudioRecordPermission(SudokuActivity.this)){
                         Logger.i("录音权限已开启");
                         DragBaseAdapter dba = (DragBaseAdapter) parent.getAdapter();
