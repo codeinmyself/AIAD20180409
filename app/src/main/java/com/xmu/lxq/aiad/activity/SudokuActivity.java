@@ -336,7 +336,7 @@ public class SudokuActivity extends Activity {
                 list = new ArrayList<>(adapter.get());
                 reInitial();
                 aGridview.setAdapter(adapter);
-                dialog.cancel();
+                dialog.dismiss();
             }
         }
     }
