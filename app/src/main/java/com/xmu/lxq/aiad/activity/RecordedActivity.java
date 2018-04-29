@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmu.lxq.aiad.R;
@@ -41,6 +42,7 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
     private ImageView mBeautyBtn;
     private ImageView mFilterBtn;
     private ImageView mCameraChange;
+    private TextView textView;
     private static final int maxTime = 2000;//最长录制2s
     private boolean pausing = false;
     private boolean recordFlag = false;//是否正在录制
@@ -75,6 +77,8 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
         mBeautyBtn = (ImageView) findViewById(R.id.btn_camera_beauty);
         mFilterBtn = (ImageView) findViewById(R.id.btn_camera_filter);
         mCameraChange = (ImageView) findViewById(R.id.btn_camera_switch);
+        textView=(TextView)findViewById(R.id.timer);
+
         mBeautyBtn.setOnClickListener(this);
         mCameraView.setOnTouchListener(this);
         mCameraView.setOnFilterChangeListener(this);
@@ -225,6 +229,12 @@ public class RecordedActivity extends BaseActivity implements View.OnClickListen
                         continue;
                     }
                     mCapture.setProcess((int) timeCount);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView.setText(String.format("%.2f", (maxTime-timeCount)/1000.0)+"s");
+                        }
+                    });
                     Thread.sleep(timeStep);
                     timeCount += timeStep;
                 }
