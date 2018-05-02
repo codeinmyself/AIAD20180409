@@ -1,8 +1,12 @@
 package com.xmu.lxq.aiad.activity;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -14,6 +18,7 @@ import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +37,7 @@ import android.widget.SeekBar;
 
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
+import com.xmu.lxq.aiad.service.MusicService;
 import com.xmu.lxq.aiad.SudokuUtil.ActiveGrideView;
 import com.xmu.lxq.aiad.SudokuUtil.DragBaseAdapter;
 import com.xmu.lxq.aiad.application.AppContext;
@@ -100,6 +106,10 @@ public class SudokuActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku);
+
+        bindServiceConnection();
+        musicService = new MusicService();
+
         initView();
     }
 
@@ -273,12 +283,8 @@ public class SudokuActivity extends Activity {
                 words[temp].color = "white";
             }
         });
-        cd1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                word.setTextColor(Color.WHITE);
-                words[temp].color = "white";
-            }
-        });
+        cd1.setOnClickListener(new myOnClickListener());
+
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
 
             public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -321,6 +327,147 @@ public class SudokuActivity extends Activity {
         initialData();
         adapter = new DragBaseAdapter(SudokuActivity.this, list);
         aGridview.setAdapter(adapter);
+    }
+
+    /**
+            * MUSIC
+     */
+    private MusicService musicService;
+
+    private ServiceConnection sc = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            musicService = ((MusicService.MyBinder) iBinder).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            musicService = null;
+        }
+    };
+
+    private void bindServiceConnection() {
+        Intent intent = new Intent(this, MusicService.class);
+        startService(intent);
+        bindService(intent, sc, this.BIND_AUTO_CREATE);
+    }
+
+    public Handler handler = new Handler();
+    public Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+
+            cd1.setOnClickListener(new myOnClickListener());
+            //stop.setOnClickListener(new myOnClickListener());
+            //quit.setOnClickListener(new myOnClickListener());
+
+            handler.postDelayed(runnable, 100);
+        }
+    };
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(isApplicationBroughtToBackground()) {
+            musicService.isReturnTo = 1;
+            Logger.e("b","后台中");
+        }
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        musicService.isReturnTo = 1;
+    }
+
+    /*@Override
+    protected void onResume() {
+
+        musicService.AnimatorAction();
+        verifyStoragePermissions(this);
+
+        if(musicService.mediaPlayer.isPlaying()) {
+            stateText.setText("Playing");
+        } else {
+            if (musicService.which.equals("stop"))  {
+                stateText.setText("Stop");
+            } else if (musicService.which.equals("pause")){
+                stateText.setText("Pause");
+            }
+        }
+        seekBar.setProgress(musicService.mediaPlayer.getCurrentPosition());
+        seekBar.setMax(musicService.mediaPlayer.getDuration());
+        handler.post(runnable);
+        super.onResume();
+        Log.d("hint", "handler post runnable");
+    }*/
+
+    private class myOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.cd1:
+                    //changePlay();
+                    musicService.playOrPause();
+                    break;
+               /* case R.id.stopButton:
+                    musicService.stop();
+                    changeStop();
+                    break;
+                case R.id.quitButton:
+                    quit();
+                    break;*/
+                default:
+                    break;
+            }
+        }
+    }
+
+    /*private void changePlay() {
+
+        if(musicService.mediaPlayer.isPlaying()){
+            stateText.setText("Pause");
+            isPlay.setText("PLAY");
+            //animator.pause();
+        } else {
+            stateText.setText("Playing");
+            isPlay.setText("PAUSE");
+
+        }
+    }
+
+    private void changeStop() {
+        stateText.setText("Stop");
+        seekBar.setProgress(0);
+        //animator.pause();
+    }
+
+    private void quit() {
+        musicService.animator.end();
+        handler.removeCallbacks(runnable);
+        unbindService(sc);
+        try {
+            finish();
+            System.exit(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+    private boolean isApplicationBroughtToBackground() {
+        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(getPackageName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -529,6 +676,7 @@ public class SudokuActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        unbindService(sc);
         super.onDestroy();
         stop();
     }

@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity
     private ImageView picture;
     private TextView textView_account;
     private TextView notlogin;
-    private Button button_to_login;
+    private Button button_to_login,skip;
     private ImageView icon_image;
     private Uri imageUri;
 
@@ -165,6 +165,14 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     openAlbum();
                 }
+            }
+        });
+        skip=(Button)findViewById(R.id.skip);
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,SudokuActivity.class);
+                startActivity(intent);
             }
         });
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
