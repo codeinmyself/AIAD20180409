@@ -4,8 +4,8 @@ package com.xmu.lxq.aiad.gpufilter.helper;
  * Created by why8222 on 2016/2/25.
  */
 public enum MagicFilterType {
-    正常,
-    柔和夏日,
+    正常,//None
+    柔和夏日,//
     罗马古韵,
     北冰洋的春天,
     旋转的糯米糍,

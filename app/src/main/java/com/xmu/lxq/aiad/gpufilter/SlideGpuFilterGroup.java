@@ -19,16 +19,16 @@ import com.xmu.lxq.aiad.util.EasyGlUtils;
 public class SlideGpuFilterGroup {
     private MagicFilterType[] types = new MagicFilterType[]{
             MagicFilterType.正常,
-            MagicFilterType.柔和夏日,
-            MagicFilterType.罗马古韵,
-            MagicFilterType.北冰洋的春天,
-            MagicFilterType.旋转的糯米糍,
-            MagicFilterType.时间巨轮,
-            MagicFilterType.伏特加之舞,
-            MagicFilterType.冷冽冰霜,
-            MagicFilterType.慵懒的海豹,
-            MagicFilterType.悠闲村庄,
-            MagicFilterType.山水之间
+            MagicFilterType.柔和夏日,//MagicWarmFilter
+            MagicFilterType.罗马古韵,//MagicAntiqueFilter
+            MagicFilterType.北冰洋的春天,//MagicCoolFilter
+            MagicFilterType.旋转的糯米糍,//MagicFreudFilter
+            MagicFilterType.时间巨轮,//MagicN1977Filter
+            MagicFilterType.伏特加之舞,//MagicHudsonFilter
+            MagicFilterType.冷冽冰霜,//MagicHefeFilter
+            MagicFilterType.慵懒的海豹,//MagicNashvilleFilter
+            MagicFilterType.悠闲村庄,//MagicBrannanFilter
+            MagicFilterType.山水之间//MagicInkwellFilter
     };
     private GPUImageFilter curFilter;
     private GPUImageFilter leftFilter;
