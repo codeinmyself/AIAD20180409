@@ -204,7 +204,7 @@
             android:background="#2a0a50"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:visibility="visible">
+            android:visibility="invisible">
 
             <ImageButton
                 android:id="@+id/cd1"
