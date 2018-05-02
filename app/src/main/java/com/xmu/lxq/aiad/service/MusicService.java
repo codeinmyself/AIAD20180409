@@ -1,12 +1,14 @@
 package com.xmu.lxq.aiad.service;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
+import android.view.animation.LinearInterpolator;
 
 /**
  * Created by xd on 2018/5/2.
@@ -41,15 +43,15 @@ public class MusicService extends Service {
         }
     }
 
-   /* public  void AnimatorAction() {
+   public  void AnimatorAction() {
         if (mediaPlayer.isPlaying()) {
             animator.setDuration(5000);
             animator.setInterpolator(new LinearInterpolator()); // 均速旋转
             animator.setRepeatCount(ValueAnimator.INFINITE); // 无限循环
-            animator.setRepeatMode(ValueAnimator.INFINITE);
+            animator.setRepeatMode(ValueAnimator.RESTART);
             animator.start();
         }
-    }*/
+    }
     private int flag = 0;
     public static String which = "";
     public void playOrPause() {
@@ -60,24 +62,25 @@ public class MusicService extends Service {
 
         if(mediaPlayer.isPlaying()){
             mediaPlayer.pause();
-            //animator.pause();
+            animator.cancel();
         } else {
             mediaPlayer.start();
 
-            /*if ((flag == 1) || (isReturnTo == 1)) {
+            if ((flag == 1) || (isReturnTo == 1)) {
                 animator.setDuration(5000);
                 animator.setInterpolator(new LinearInterpolator()); // 均速旋转
                 animator.setRepeatCount(ValueAnimator.INFINITE); // 无限循环
-                animator.setRepeatMode(ValueAnimator.INFINITE);
+                animator.setRepeatMode(ValueAnimator.RESTART);
                 animator.start();
             } else {
-                animator.resume();
-            }*/
+               // animator.resume();
+                animator.start();
+            }
         }
     }
     public void stop() {
         which = "stop";
-        //animator.pause();
+        animator.cancel();
         if(mediaPlayer != null) {
             mediaPlayer.pause();
             mediaPlayer.stop();

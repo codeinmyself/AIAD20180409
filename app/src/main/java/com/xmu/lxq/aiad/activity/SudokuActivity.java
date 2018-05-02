@@ -1,5 +1,6 @@
 package com.xmu.lxq.aiad.activity;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
@@ -30,9 +31,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 
 import com.orhanobut.logger.Logger;
@@ -83,7 +86,8 @@ public class SudokuActivity extends Activity {
     public static List<HashMap<String, String>> list;
     private DragBaseAdapter adapter;
     private int position = 0;
-    private LinearLayout editWordsBar,addMusicBar;
+    private LinearLayout editWordsBar;
+    private HorizontalScrollView addMusicBar;
     private String path;
     private int temp;
     static CustomDialogUtil dialog=null;
@@ -129,7 +133,7 @@ public class SudokuActivity extends Activity {
         surfaceView.getHolder().setKeepScreenOn(true);
         aGridview = (ActiveGrideView) findViewById(R.id.gridview);
         submit = (Button) findViewById(R.id.submit);
-        editWordsBar = (LinearLayout) findViewById(R.id.edit_words_bar); addMusicBar = (LinearLayout) findViewById(R.id.add_music_bar);
+        editWordsBar = (LinearLayout) findViewById(R.id.edit_words_bar); addMusicBar = (HorizontalScrollView) findViewById(R.id.add_music_bar);
         rightbottom = (ImageButton) findViewById(R.id.rightbottom);
         leftbottom = (ImageButton) findViewById(R.id.leftbottom);
         righttop = (ImageButton) findViewById(R.id.righttop);
@@ -137,6 +141,7 @@ public class SudokuActivity extends Activity {
         black = (ImageButton) findViewById(R.id.black);
         white = (ImageButton) findViewById(R.id.white);
         cd1=(ImageButton) findViewById(R.id.cd1);
+        musicService.animator = ObjectAnimator.ofFloat(cd1, "rotation", 0, 359);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
