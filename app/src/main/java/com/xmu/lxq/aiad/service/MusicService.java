@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
 /**
@@ -21,7 +22,12 @@ public class MusicService extends Service {
             return MusicService.this;
         }
     }
-
+    private String[] musicDir = new String[]{
+            Environment.getExternalStorageDirectory().getAbsolutePath() + "/MakeorBreak.mp3",
+            Environment.getExternalStorageDirectory().getAbsolutePath() + "/ALittleStory.mp3",
+            Environment.getExternalStorageDirectory().getAbsolutePath() + "/新的潮流.mp3",
+           };
+    private int musicIndex = 0;
     public static int isReturnTo = 0;
     public static MediaPlayer mediaPlayer = new MediaPlayer();
     public static ObjectAnimator animator;
@@ -33,13 +39,30 @@ public class MusicService extends Service {
     public void initMediaPlayer() {
         try {
             //String file_path = "/storage/0123-4567/K.Will-Melt.mp3";
-            String file_path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/1.mp3";
+            //String file_path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/MakeorBreak.mp3";
             //String file_path = "/data/K.Will-Melt.mp3";
-            mediaPlayer.setDataSource(file_path);
+            mediaPlayer.setDataSource(musicDir[musicIndex]);
             mediaPlayer.prepare();
             mediaPlayer.setLooping(true);  // 设置循环播放
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    public void nextMusic(int i) {
+        if(mediaPlayer != null && musicIndex < 3) {
+            mediaPlayer.stop();
+            try {
+                mediaPlayer.reset();
+                mediaPlayer.setDataSource(musicDir[i]);
+                //musicIndex++;
+                mediaPlayer.prepare();
+                mediaPlayer.setLooping(true);
+                /*mediaPlayer.seekTo(0);
+                mediaPlayer.start();*/
+            } catch (Exception e) {
+                Log.d("hint", "can't jump next music");
+                e.printStackTrace();
+            }
         }
     }
 
