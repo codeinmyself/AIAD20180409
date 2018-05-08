@@ -1,5 +1,6 @@
 package com.xmu.lxq.aiad.activity;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
@@ -30,9 +31,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 
 import com.orhanobut.logger.Logger;
@@ -76,14 +79,15 @@ public class SudokuActivity extends Activity {
     private SeekBar seekBar;
     private ImageButton start,edit,music;
     private ImageButton save;
-    private ImageButton lefttop, leftbottom, righttop, rightbottom, black, white,cd1;
+    private ImageButton lefttop, leftbottom, righttop, rightbottom, black, white,cd1,cd2,cd3;
     private EditText word;
     private Button submit;
     private ActiveGrideView aGridview;
     public static List<HashMap<String, String>> list;
     private DragBaseAdapter adapter;
     private int position = 0;
-    private LinearLayout editWordsBar,addMusicBar;
+    private LinearLayout editWordsBar;
+    private HorizontalScrollView addMusicBar;
     private String path;
     private int temp;
     static CustomDialogUtil dialog=null;
@@ -129,14 +133,14 @@ public class SudokuActivity extends Activity {
         surfaceView.getHolder().setKeepScreenOn(true);
         aGridview = (ActiveGrideView) findViewById(R.id.gridview);
         submit = (Button) findViewById(R.id.submit);
-        editWordsBar = (LinearLayout) findViewById(R.id.edit_words_bar); addMusicBar = (LinearLayout) findViewById(R.id.add_music_bar);
+        editWordsBar = (LinearLayout) findViewById(R.id.edit_words_bar); addMusicBar = (HorizontalScrollView) findViewById(R.id.add_music_bar);
         rightbottom = (ImageButton) findViewById(R.id.rightbottom);
         leftbottom = (ImageButton) findViewById(R.id.leftbottom);
         righttop = (ImageButton) findViewById(R.id.righttop);
         lefttop = (ImageButton) findViewById(R.id.lefttop);
         black = (ImageButton) findViewById(R.id.black);
         white = (ImageButton) findViewById(R.id.white);
-        cd1=(ImageButton) findViewById(R.id.cd1);
+        cd1=(ImageButton) findViewById(R.id.cd1);cd2=(ImageButton) findViewById(R.id.cd2);cd3=(ImageButton) findViewById(R.id.cd3);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,7 +169,6 @@ public class SudokuActivity extends Activity {
             }
         });
         aGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View item, int arg2,
                                     long position) {
@@ -283,7 +286,7 @@ public class SudokuActivity extends Activity {
                 words[temp].color = "white";
             }
         });
-        cd1.setOnClickListener(new myOnClickListener());
+        cd1.setOnClickListener(new myOnClickListener());cd2.setOnClickListener(new myOnClickListener());cd3.setOnClickListener(new myOnClickListener());
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
 
@@ -297,7 +300,7 @@ public class SudokuActivity extends Activity {
                 start.setEnabled(true);
             }
 
-            @Override
+
             public void surfaceDestroyed(SurfaceHolder holder) {
                 if (player != null) {
                     position = player.getCurrentPosition();
@@ -357,10 +360,6 @@ public class SudokuActivity extends Activity {
         @Override
         public void run() {
 
-            cd1.setOnClickListener(new myOnClickListener());
-            //stop.setOnClickListener(new myOnClickListener());
-            //quit.setOnClickListener(new myOnClickListener());
-
             handler.postDelayed(runnable, 100);
         }
     };
@@ -380,79 +379,26 @@ public class SudokuActivity extends Activity {
         musicService.isReturnTo = 1;
     }
 
-    /*@Override
-    protected void onResume() {
-
-        musicService.AnimatorAction();
-        verifyStoragePermissions(this);
-
-        if(musicService.mediaPlayer.isPlaying()) {
-            stateText.setText("Playing");
-        } else {
-            if (musicService.which.equals("stop"))  {
-                stateText.setText("Stop");
-            } else if (musicService.which.equals("pause")){
-                stateText.setText("Pause");
-            }
-        }
-        seekBar.setProgress(musicService.mediaPlayer.getCurrentPosition());
-        seekBar.setMax(musicService.mediaPlayer.getDuration());
-        handler.post(runnable);
-        super.onResume();
-        Log.d("hint", "handler post runnable");
-    }*/
-
     private class myOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.cd1:
-                    //changePlay();
+                    musicService.animator = ObjectAnimator.ofFloat(cd1, "rotation", 0, 359);
                     musicService.playOrPause();
                     break;
-               /* case R.id.stopButton:
-                    musicService.stop();
-                    changeStop();
+               case R.id.cd2:
+                   musicService.nextMusic(1);
+                   musicService.playOrPause();
                     break;
-                case R.id.quitButton:
-                    quit();
-                    break;*/
+                case R.id.cd3:
+                    musicService.nextMusic(2);
+                    break;
                 default:
                     break;
             }
         }
     }
-
-    /*private void changePlay() {
-
-        if(musicService.mediaPlayer.isPlaying()){
-            stateText.setText("Pause");
-            isPlay.setText("PLAY");
-            //animator.pause();
-        } else {
-            stateText.setText("Playing");
-            isPlay.setText("PAUSE");
-
-        }
-    }
-
-    private void changeStop() {
-        stateText.setText("Stop");
-        seekBar.setProgress(0);
-        //animator.pause();
-    }
-
-    private void quit() {
-        musicService.animator.end();
-        handler.removeCallbacks(runnable);
-        unbindService(sc);
-        try {
-            finish();
-            System.exit(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
     @Override
     public void onStop() {
