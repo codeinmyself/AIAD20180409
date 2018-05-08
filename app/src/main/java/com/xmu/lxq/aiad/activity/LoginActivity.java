@@ -137,7 +137,6 @@ public class LoginActivity extends Activity{
      * @param password
      */
     private void doLogin(final String telephone, String password) {
-        // 使用Map封装请求参数
         HashMap<String, String> map = new HashMap<>();
         map.put("telephone", telephone);
         map.put("password", password);
@@ -155,7 +154,6 @@ public class LoginActivity extends Activity{
                         }
                     });
                 }
-
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String tempResponse =  response.body().string();
