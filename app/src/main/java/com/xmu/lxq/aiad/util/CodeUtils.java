@@ -1,13 +1,17 @@
 package com.xmu.lxq.aiad.util;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.Random;
 
-
+/**
+ * Created by yao
+ * 用于图片验证码的工具类
+ */
 public class CodeUtils {
     private static final char[] CHARS = {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -27,12 +31,14 @@ public class CodeUtils {
     private static final int DEFAULT_FONT_SIZE = 60;//字体大小
     private static final int DEFAULT_LINE_NUMBER = 3;//多少条干扰线
     private static final int BASE_PADDING_LEFT = 20; //左边距
-    private static final int RANGE_PADDING_LEFT = 35;//左边距范围值
-    private static final int BASE_PADDING_TOP = 42;//上边距
+    private static final int RANGE_PADDING_LEFT = 30;//左边距范围值
+    private static final int BASE_PADDING_TOP = 70;//上边距
     private static final int RANGE_PADDING_TOP = 15;//上边距范围值
-    private static final int DEFAULT_WIDTH = 200;//默认宽度.图片的总宽
+    private static final int DEFAULT_WIDTH = 300;//默认宽度.图片的总宽
     private static final int DEFAULT_HEIGHT = 100;//默认高度.图片的总高
     private static final int DEFAULT_COLOR = 0xDF;//默认背景颜色值
+
+    private String code;
 
     public static CodeUtils getInstance() {
         if(mCodeUtils == null) {
@@ -46,11 +52,10 @@ public class CodeUtils {
         mPaddingLeft = 0; //每次生成验证码图片时初始化
         mPaddingTop = 0;
 
-        Bitmap bitmap = Bitmap.createBitmap(DEFAULT_WIDTH, DEFAULT_HEIGHT, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(DEFAULT_WIDTH, DEFAULT_HEIGHT, Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
-        //生成的验证码
-        String code = createCode();
+        code = createCode();
 
         canvas.drawColor(Color.rgb(DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR));
         Paint paint = new Paint();
@@ -70,6 +75,13 @@ public class CodeUtils {
         canvas.save(Canvas.ALL_SAVE_FLAG);//保存
         canvas.restore();
         return bitmap;
+    }
+    /**
+     * 得到图片中的验证码字符串
+     * @return
+     */
+    public String getCode() {
+        return code;
     }
 
     //生成验证码
@@ -129,5 +141,4 @@ public class CodeUtils {
         mPaddingLeft += BASE_PADDING_LEFT + mRandom.nextInt(RANGE_PADDING_LEFT);
         mPaddingTop = BASE_PADDING_TOP + mRandom.nextInt(RANGE_PADDING_TOP);
     }
-
 }

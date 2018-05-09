@@ -2,15 +2,19 @@ package com.xmu.lxq.aiad.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.model.User;
+import com.xmu.lxq.aiad.util.CodeUtils;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
 
@@ -41,7 +45,9 @@ public class RegisterActivity extends Activity{
     private Button verificationButton;
     private Button submitButton;
     private Button cancelButton;
-
+    private ImageView img_verification;
+    private CodeUtils codeUtils;
+    private EditText img_verification_et;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -49,14 +55,28 @@ public class RegisterActivity extends Activity{
         initView();
     }
 
+    public void getVerificationImage(){
+        codeUtils = CodeUtils.getInstance();
+        Bitmap bitmap = codeUtils.createBitmap();
+        img_verification.setImageBitmap(bitmap);
+    }
     /**
      * initial view
      */
     public void initView(){
+        img_verification_et=(EditText)findViewById(R.id.img_verification_et);
         telephoneText=(EditText)findViewById(R.id.phone_number_et);
         passwordText=(EditText)findViewById(R.id.pwd_et);
+        img_verification=(ImageView)findViewById(R.id.img_verification);
 
-        verificationText=findViewById(R.id.verification_code_et);
+        getVerificationImage();
+        img_verification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getVerificationImage();
+            }
+        });
+        //verificationText=findViewById(R.id.verification_code_et);
         verificationButton=findViewById(R.id.verification_code_btn);
         verificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +118,7 @@ public class RegisterActivity extends Activity{
         submitButton.setOnClickListener(m_register_Listener);
         cancelButton.setOnClickListener(m_register_Listener);
     }
+
     View.OnClickListener m_register_Listener = new View.OnClickListener() {    //不同按钮按下的监听事件选择
         public void onClick(View v) {
             switch (v.getId()) {
@@ -122,7 +143,7 @@ public class RegisterActivity extends Activity{
      * registerCheck
      */
     public void registerCheck() {                                //确认按钮的监听事件
-        if (isUserNameAndPwdValid()||verificationCheck()) {
+        if (isUserNameAndPwdValid()&&verificationCheck()) {
             String telephone = telephoneText.getText().toString().trim();
             String userPwd = passwordText.getText().toString().trim();
             User mUser = new User(Long.parseLong(telephone), userPwd);
@@ -130,11 +151,24 @@ public class RegisterActivity extends Activity{
         }
     }
     public boolean verificationCheck(){
-        String code_et=verificationText.getText().toString().trim();
+       /* String code_et=verificationText.getText().toString().trim();
         if(!verificationCode.equals(code_et)){
             ToastUtil.getInstance(this).showToast("验证码错误！");
             return false;
-        }
+        }*/
+       String code_et=img_verification_et.getText().toString().trim();
+       if(null==code_et || TextUtils.isEmpty(code_et)){
+           ToastUtil.getInstance(this).showToast("验证码不能为空！");
+           return false;
+       }else if(code_et.equalsIgnoreCase(codeUtils.getCode())){
+
+           Logger.i("good");
+           ToastUtil.getInstance(this).showToast("good！");
+       }else{
+           Logger.e("wrong");
+           ToastUtil.getInstance(this).showToast("wrong");
+           return false;
+       }
         return true;
     }
 
