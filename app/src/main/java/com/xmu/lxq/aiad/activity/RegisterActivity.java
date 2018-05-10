@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +14,6 @@ import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
-import com.xmu.lxq.aiad.model.User;
 import com.xmu.lxq.aiad.util.CodeUtils;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
@@ -38,7 +38,7 @@ public class RegisterActivity extends Activity{
 
     String verificationCode;
     private EditText telephoneText;
-    private EditText passwordText;
+   // private EditText passwordText;
 
     private EditText verificationText;
 
@@ -55,6 +55,20 @@ public class RegisterActivity extends Activity{
         initView();
     }
 
+    final CountDownTimer timer = new CountDownTimer(60000, 1000) {
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            verificationButton.setText(millisUntilFinished/1000 + "秒后重置");
+        }
+
+        @Override
+        public void onFinish() {
+            verificationButton.setEnabled(true);
+            verificationButton.setText("获取验证码");
+        }
+    };
+
     public void getVerificationImage(){
         codeUtils = CodeUtils.getInstance();
         Bitmap bitmap = codeUtils.createBitmap();
@@ -66,7 +80,7 @@ public class RegisterActivity extends Activity{
     public void initView(){
         img_verification_et=(EditText)findViewById(R.id.img_verification_et);
         telephoneText=(EditText)findViewById(R.id.phone_number_et);
-        passwordText=(EditText)findViewById(R.id.pwd_et);
+        //passwordText=(EditText)findViewById(R.id.pwd_et);
         img_verification=(ImageView)findViewById(R.id.img_verification);
 
         getVerificationImage();
@@ -76,12 +90,16 @@ public class RegisterActivity extends Activity{
                 getVerificationImage();
             }
         });
-        //verificationText=findViewById(R.id.verification_code_et);
+        verificationText=findViewById(R.id.verification_code_et);
         verificationButton=findViewById(R.id.verification_code_btn);
         verificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isUserNameAndPwdValid()){
+                if(isTelephoneValid()){
+
+                    verificationButton.setEnabled(false);
+                    timer.start();
+
                     String telephone = telephoneText.getText().toString().trim();
                     String url=OkHttpUtil.base_url+"/getVerificationCode";
                     Map<String,String> m1 = new HashMap();
@@ -94,14 +112,16 @@ public class RegisterActivity extends Activity{
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            String tempResponse =  response.body().string();
+
+                            String temmResponse=response.body().string();
                             if(response.isSuccessful()){
                                 Logger.i("success!");                            }
                             try {
-                                JSONObject jsonObject = new JSONObject(tempResponse);
+                                Logger.i(temmResponse);
+                                JSONObject jsonObject = new JSONObject(temmResponse);
                                 String returnCode = jsonObject.getString("code");
                                 if ("200".equals(returnCode)) {
-                                    verificationCode=jsonObject.getJSONObject("detail").toString();
+                                    verificationCode=jsonObject.getString("detail");
                                     Logger.i(verificationCode);
                                 }
                             }catch (Exception e){
@@ -143,24 +163,29 @@ public class RegisterActivity extends Activity{
      * registerCheck
      */
     public void registerCheck() {                                //确认按钮的监听事件
-        if (isUserNameAndPwdValid()&&verificationCheck()) {
-            String telephone = telephoneText.getText().toString().trim();
+        if (isTelephoneValid()&&verificationCheck()) {
+            Intent intent=new Intent(this,SetPasswordActivity.class);
+            intent.putExtra("telephone",telephoneText.getText().toString().trim());
+            startActivity(intent);
+          /*  String telephone = telephoneText.getText().toString().trim();
             String userPwd = passwordText.getText().toString().trim();
             User mUser = new User(Long.parseLong(telephone), userPwd);
-            doRegister(mUser);
+            doRegister(mUser);*/
         }
     }
     public boolean verificationCheck(){
-       /* String code_et=verificationText.getText().toString().trim();
+        String code_et=verificationText.getText().toString().trim();
+        Logger.i(code_et);
+        Logger.i(verificationCode);
         if(!verificationCode.equals(code_et)){
             ToastUtil.getInstance(this).showToast("验证码错误！");
             return false;
-        }*/
-       String code_et=img_verification_et.getText().toString().trim();
-       if(null==code_et || TextUtils.isEmpty(code_et)){
+        }
+       String code_et_img=img_verification_et.getText().toString().trim();
+       if(TextUtils.isEmpty(code_et)){
            ToastUtil.getInstance(this).showToast("验证码不能为空！");
            return false;
-       }else if(code_et.equalsIgnoreCase(codeUtils.getCode())){
+       }else if(code_et_img.equalsIgnoreCase(codeUtils.getCode())){
 
            Logger.i("good");
            ToastUtil.getInstance(this).showToast("good！");
@@ -173,74 +198,15 @@ public class RegisterActivity extends Activity{
     }
 
 
-    /**
-     * doRegister
-     * @param user
-     */
-    private void doRegister(User user) {
-        String url = OkHttpUtil.base_url + "register";
-        try {
-            // 发送请求
-            OkHttpUtil.doPost(url,user, new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Logger.e("失败！");
-                }
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String tempResponse =  response.body().string();
-                    if(response.isSuccessful()){
-                        Logger.i("成功！");
-                        try{
-                            Logger.i(tempResponse);
-                            JSONObject jsonObject=new JSONObject(tempResponse);
-                            String returnCode=jsonObject.getString("code");
-                            if("200".equals(returnCode)){
-                                Logger.i("注册成功!"+returnCode);
-
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ToastUtil.getInstance(RegisterActivity.this).showToast("注册成功!");
-                                    }
-                                });
-                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            }else{
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ToastUtil.getInstance(RegisterActivity.this).showToast("注册失败!");
-                                    }
-                                });
-                            }
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }else{
-                        Logger.e("失败！");
-                    }
-
-                }
-            });  //POST方式
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 
     /**
      * isUserNameAndPwdValid
      * @return
      */
-    public boolean isUserNameAndPwdValid() {
+    public boolean isTelephoneValid() {
         if (telephoneText.getText().toString().trim().equals("")) {
             Toast.makeText(this, getString(R.string.account_empty),
-                    Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (passwordText.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getString(R.string.pwd_empty),
                     Toast.LENGTH_SHORT).show();
             return false;
         }else if(!isMatchered(PHONE_PATTERN,telephoneText.getText().toString().trim())){

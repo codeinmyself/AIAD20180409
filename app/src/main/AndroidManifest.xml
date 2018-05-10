@@ -48,6 +48,9 @@
             android:name=".activity.PersonalInfo"
             android:label="PersonalInfo"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.SetPasswordActivity"
+            android:label="SetPassword"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.IconActivity"
             android:label="Icon"

@@ -14,66 +14,48 @@
 
     <TextView
         android:id="@+id/phone_number_tv"
-        android:layout_width="47dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="70dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
         android:text="@string/phone_number"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/phone_number_et"
-        android:layout_width="246dp"
+        android:layout_width="329dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/phone_number_tv"
-        app:layout_constraintStart_toEndOf="@+id/phone_number_tv" />
-
-
-    <TextView
-        android:id="@+id/pwd_tv"
-        android:layout_width="47dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
-        android:text="@string/password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phone_number_tv" />
 
-    <EditText
-        android:id="@+id/pwd_et"
-        android:layout_width="246dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        app:layout_constraintBaseline_toBaselineOf="@+id/pwd_tv"
-        app:layout_constraintStart_toEndOf="@+id/pwd_tv" />
 
     <Button
         android:id="@+id/verification_code_btn"
-        android:layout_width="99dp"
+        android:layout_width="148dp"
         android:layout_height="40dp"
 
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="24dp"
         android:text="@string/send_verify_code"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editText"
-        app:layout_constraintStart_toEndOf="@+id/editText" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/verification_code_et"
+        app:layout_constraintStart_toEndOf="@+id/verification_code_et" />
 
     <EditText
         android:id="@+id/img_verification_et"
         android:layout_width="188dp"
         android:layout_height="44dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="请输入右边图形验证码"
         android:inputType="text"
-        android:text="请输入右边图形验证码"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <Button
         android:id="@+id/register_btn_sure"
@@ -90,7 +72,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_btn_cancel" />
+        app:layout_constraintTop_toBottomOf="@+id/register_btn_cancel"
+        app:layout_constraintVertical_bias="0.358" />
 
     <Button
         android:id="@+id/register_btn_cancel"
@@ -98,25 +81,25 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="52dp"
         android:background="@android:color/transparent"
         android:text="@string/tip_for_login_redirect"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_verification_et" />
+        app:layout_constraintTop_toBottomOf="@+id/verification_code_et" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/verification_code_et"
         android:layout_width="138dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="请输入验证码"
         android:inputType="textPersonName"
-        android:text="请输入验证码"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pwd_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <ImageView
         android:id="@+id/img_verification"
@@ -129,5 +112,27 @@
         app:layout_constraintTop_toTopOf="@+id/img_verification_et"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/bg_gv" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="108dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="图形验证码"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone_number_et" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="手机验证码"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_verification_et" />
 
 </android.support.constraint.ConstraintLayout>

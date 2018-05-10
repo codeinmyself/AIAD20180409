@@ -29,9 +29,9 @@ import static android.content.ContentValues.TAG;
 public class OkHttpUtil{
 
 
-    public  static String base_url="http://119.29.142.123/";
+    public  static String base_url="http://192.168.1.101:8080/";
+    //public  static String base_url="http://119.29.142.123/";
     //public  static String base_url="http://192.168.0.11:8080/";
-
 
     private static OkHttpClient singleton;
     //非常有必要，要不此类还是可以被new，但是无法避免反射
