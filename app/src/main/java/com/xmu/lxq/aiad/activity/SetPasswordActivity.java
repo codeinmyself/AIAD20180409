@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
@@ -29,6 +30,7 @@ import okhttp3.Response;
 public class SetPasswordActivity extends Activity {
 
     private Button submit_password_btn;
+    private ImageButton back_to_register;
     private EditText reset_password_et;
     private EditText set_password_et;
 
@@ -37,7 +39,7 @@ public class SetPasswordActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_register);
+        this.setContentView(R.layout.activity_set_password);
         Intent intent=getIntent();
         telephone=intent.getStringExtra("telephone");
         type=intent.getStringExtra("type");
@@ -45,6 +47,7 @@ public class SetPasswordActivity extends Activity {
     }
     public void initView(){
         submit_password_btn=(Button)findViewById(R.id.submit_password_btn);
+        back_to_register=(ImageButton)findViewById(R.id.back_to_register);
         reset_password_et=(EditText)findViewById(R.id.reset_password_et);
         set_password_et=(EditText)findViewById(R.id.set_password_et);
 
@@ -64,6 +67,13 @@ public class SetPasswordActivity extends Activity {
                 }else{
                     ToastUtil.getInstance(SetPasswordActivity.this).showToast("未知错误！");
                 }
+            }
+        });
+        back_to_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SetPasswordActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }
