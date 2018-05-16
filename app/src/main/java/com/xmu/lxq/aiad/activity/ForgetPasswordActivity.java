@@ -2,19 +2,16 @@ package com.xmu.lxq.aiad.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
-import com.xmu.lxq.aiad.util.CodeUtils;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
 
@@ -31,23 +28,16 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
- * Created by asus1 on 2017/12/16.
+ * Created by lee on 2018/5/10.
  */
 
-public class RegisterActivity extends Activity{
-
+public class ForgetPasswordActivity extends Activity{
     String verificationCode;
     private EditText telephoneText;
-   // private EditText passwordText;
-
     private EditText verificationText;
-
     private Button verificationButton;
     private Button submitButton;
     private Button cancelButton;
-    private ImageView img_verification;
-    private CodeUtils codeUtils;
-    private EditText img_verification_et;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -55,41 +45,8 @@ public class RegisterActivity extends Activity{
         initView();
     }
 
-    final CountDownTimer timer = new CountDownTimer(60000, 1000) {
-
-        @Override
-        public void onTick(long millisUntilFinished) {
-            verificationButton.setText(millisUntilFinished/1000 + "秒后重置");
-        }
-
-        @Override
-        public void onFinish() {
-            verificationButton.setEnabled(true);
-            verificationButton.setText("获取验证码");
-        }
-    };
-
-    public void getVerificationImage(){
-        codeUtils = CodeUtils.getInstance();
-        Bitmap bitmap = codeUtils.createBitmap();
-        img_verification.setImageBitmap(bitmap);
-    }
-    /**
-     * initial view
-     */
     public void initView(){
-        img_verification_et=(EditText)findViewById(R.id.img_verification_et);
         telephoneText=(EditText)findViewById(R.id.phone_number_et);
-        //passwordText=(EditText)findViewById(R.id.pwd_et);
-        img_verification=(ImageView)findViewById(R.id.img_verification);
-
-        getVerificationImage();
-        img_verification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getVerificationImage();
-            }
-        });
         verificationText=findViewById(R.id.verification_code_et);
         verificationButton=findViewById(R.id.verification_code_btn);
         verificationButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +58,7 @@ public class RegisterActivity extends Activity{
                     timer.start();
 
                     String telephone = telephoneText.getText().toString().trim();
-                    String url=OkHttpUtil.base_url+"/getVerificationCode";
+                    String url= OkHttpUtil.base_url+"/getVerificationCode";
                     Map<String,String> m1 = new HashMap();
                     m1.put("telephone",telephone);
                     OkHttpUtil.doPost(url, m1, new Callback() {
@@ -139,6 +96,13 @@ public class RegisterActivity extends Activity{
         cancelButton.setOnClickListener(m_register_Listener);
     }
 
+    public final static String PHONE_PATTERN = "[1][34578]\\d{9}";
+    public static boolean isMatchered(String patternStr, CharSequence input) {
+        Pattern pattern = Pattern.compile(patternStr);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.find();
+    }
+
     View.OnClickListener m_register_Listener = new View.OnClickListener() {    //不同按钮按下的监听事件选择
         public void onClick(View v) {
             switch (v.getId()) {
@@ -146,19 +110,13 @@ public class RegisterActivity extends Activity{
                     registerCheck();
                     break;
                 case R.id.register_btn_cancel:                     //取消按钮的监听事件,由注册界面返回登录界面
-                    Intent intent_Register_to_Login = new Intent(RegisterActivity.this,LoginActivity.class) ;    //切换User Activity至Login Activity
+                    Intent intent_Register_to_Login = new Intent(ForgetPasswordActivity.this,LoginActivity.class) ;    //切换User Activity至Login Activity
                     startActivity(intent_Register_to_Login);
                     finish();
                     break;
             }
         }
     };
-    public final static String PHONE_PATTERN = "[1][34578]\\d{9}";
-    public static boolean isMatchered(String patternStr, CharSequence input) {
-        Pattern pattern = Pattern.compile(patternStr);
-        Matcher matcher = pattern.matcher(input);
-        return matcher.find();
-    }
     /**
      * registerCheck
      */
@@ -166,12 +124,8 @@ public class RegisterActivity extends Activity{
         if (isTelephoneValid()&&verificationCheck()) {
             Intent intent=new Intent(this,SetPasswordActivity.class);
             intent.putExtra("telephone",telephoneText.getText().toString().trim());
-            intent.putExtra("type" ,"register");
+            intent.putExtra("type","forgetPassword");
             startActivity(intent);
-          /*  String telephone = telephoneText.getText().toString().trim();
-            String userPwd = passwordText.getText().toString().trim();
-            User mUser = new User(Long.parseLong(telephone), userPwd);
-            doRegister(mUser);*/
         }
     }
     public boolean verificationCheck(){
@@ -182,25 +136,15 @@ public class RegisterActivity extends Activity{
             ToastUtil.getInstance(this).showToast("验证码错误！");
             return false;
         }
-       String code_et_img=img_verification_et.getText().toString().trim();
-       if(TextUtils.isEmpty(code_et)){
-           ToastUtil.getInstance(this).showToast("验证码不能为空！");
-           return false;
-       }else if(code_et_img.equalsIgnoreCase(codeUtils.getCode())){
-
-           Logger.i("good");
-           ToastUtil.getInstance(this).showToast("good！");
-       }else{
-           Logger.e("wrong");
-           ToastUtil.getInstance(this).showToast("wrong");
-           return false;
-       }
-        return true;
+        if(TextUtils.isEmpty(code_et)){
+            ToastUtil.getInstance(this).showToast("验证码不能为空！");
+            return false;
+        }else{
+            Logger.e("wrong");
+            ToastUtil.getInstance(this).showToast("wrong");
+            return false;
+        }
     }
-
-
-
-
     /**
      * isUserNameAndPwdValid
      * @return
@@ -217,6 +161,19 @@ public class RegisterActivity extends Activity{
         return true;
     }
 
+    final CountDownTimer timer = new CountDownTimer(60000, 1000) {
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            verificationButton.setText(millisUntilFinished/1000 + "秒后重置");
+        }
+
+        @Override
+        public void onFinish() {
+            verificationButton.setEnabled(true);
+            verificationButton.setText("获取验证码");
+        }
+    };
     /**
      * onBackPressed
      */

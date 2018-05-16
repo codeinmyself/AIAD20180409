@@ -32,6 +32,7 @@ public class SetPasswordActivity extends Activity {
     private EditText reset_password_et;
     private EditText set_password_et;
 
+    String type=null;//判断从哪个activity过来的
     String telephone=null;
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -39,6 +40,7 @@ public class SetPasswordActivity extends Activity {
         this.setContentView(R.layout.activity_register);
         Intent intent=getIntent();
         telephone=intent.getStringExtra("telephone");
+        type=intent.getStringExtra("type");
         initView();
     }
     public void initView(){
@@ -57,7 +59,7 @@ public class SetPasswordActivity extends Activity {
                     ToastUtil.getInstance(SetPasswordActivity.this).showToast("两次输入不匹配！");
                 }else if(pwd.equals(pwd_reset)){
                     User mUser = new User(Long.parseLong(telephone), pwd);
-                    doRegister(mUser);
+                    doRegisterOrUpdatePassword(mUser);
                     ToastUtil.getInstance(SetPasswordActivity.this).showToast("密码设置成功！");
                 }else{
                     ToastUtil.getInstance(SetPasswordActivity.this).showToast("未知错误！");
@@ -70,8 +72,16 @@ public class SetPasswordActivity extends Activity {
      * doRegister
      * @param user
      */
-    private void doRegister(User user) {
-        String url = OkHttpUtil.base_url + "register";
+    private void doRegisterOrUpdatePassword(User user) {
+        String url;
+        if(type.equals("register")){
+            url = OkHttpUtil.base_url + "register";
+        }else if(type.equals("forgetPassword")){
+            url=OkHttpUtil.base_url + "updatePassword";
+        }else{
+            ToastUtil.getInstance(this).showToast("错啦");
+            return;
+        }
         try {
             // 发送请求
             OkHttpUtil.doPost(url,user, new Callback() {
@@ -90,12 +100,16 @@ public class SetPasswordActivity extends Activity {
                             JSONObject jsonObject=new JSONObject(tempResponse);
                             String returnCode=jsonObject.getString("code");
                             if("200".equals(returnCode)){
-                                Logger.i("注册成功!"+returnCode);
+                                Logger.i("注册/更改密码成功!"+returnCode);
 
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        ToastUtil.getInstance(SetPasswordActivity.this).showToast("注册成功!");
+                                        if(type.equals("register")){
+                                            ToastUtil.getInstance(SetPasswordActivity.this).showToast("注册成功!");
+                                        }else{
+                                            ToastUtil.getInstance(SetPasswordActivity.this).showToast("更改密码成功!");
+                                        }
                                     }
                                 });
                                 Intent intent = new Intent(SetPasswordActivity.this, LoginActivity.class);
@@ -104,7 +118,7 @@ public class SetPasswordActivity extends Activity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        ToastUtil.getInstance(SetPasswordActivity.this).showToast("注册失败!");
+                                        ToastUtil.getInstance(SetPasswordActivity.this).showToast("失败!");
                                     }
                                 });
                             }
