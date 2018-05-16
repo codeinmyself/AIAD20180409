@@ -51,6 +51,9 @@
         <activity android:name=".activity.SetPasswordActivity"
             android:label="SetPassword"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ForgetPasswordActivity"
+            android:label="ForgetPassword"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.IconActivity"
             android:label="Icon"

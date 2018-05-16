@@ -6,10 +6,7 @@ import android.os.Looper;
 import com.xmu.lxq.aiad.widget.LoadingDialog;
 
 
-/**
- * Created by cj on 2017/10/16.
- * desc
- */
+
 
 public class BaseActivity extends Activity {
     public LoadingDialog loading;
