@@ -336,7 +336,6 @@ public class SudokuActivity extends Activity {
             * MUSIC
      */
     private MusicService musicService;
-
     private ServiceConnection sc = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -348,13 +347,11 @@ public class SudokuActivity extends Activity {
             musicService = null;
         }
     };
-
     private void bindServiceConnection() {
         Intent intent = new Intent(this, MusicService.class);
         startService(intent);
         bindService(intent, sc, this.BIND_AUTO_CREATE);
     }
-
     public Handler handler = new Handler();
     public Runnable runnable = new Runnable() {
         @Override
@@ -363,7 +360,6 @@ public class SudokuActivity extends Activity {
             handler.postDelayed(runnable, 100);
         }
     };
-
     @Override
     public void onPause(){
         super.onPause();
@@ -372,13 +368,11 @@ public class SudokuActivity extends Activity {
             Logger.e("b","后台中");
         }
     }
-
     @Override
     public void onRestart() {
         super.onRestart();
         musicService.isReturnTo = 1;
     }
-
     private class myOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
