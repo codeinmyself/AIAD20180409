@@ -165,7 +165,8 @@ public class RegisterActivity extends Activity{
     public void registerCheck() {                                //确认按钮的监听事件
         if (isTelephoneValid()&&verificationCheck()) {
             Intent intent=new Intent(this,SetPasswordActivity.class);
-            intent.putExtra("telephone",telephoneText.getText().toString().trim());
+            String telephone =telephoneText.getText().toString().trim();
+            intent.putExtra("telephone",telephone);
             intent.putExtra("type" ,"register");
             startActivity(intent);
           /*  String telephone = telephoneText.getText().toString().trim();
@@ -187,15 +188,14 @@ public class RegisterActivity extends Activity{
            ToastUtil.getInstance(this).showToast("验证码不能为空！");
            return false;
        }else if(code_et_img.equalsIgnoreCase(codeUtils.getCode())){
-
            Logger.i("good");
            ToastUtil.getInstance(this).showToast("good！");
+           return true;
        }else{
            Logger.e("wrong");
            ToastUtil.getInstance(this).showToast("wrong");
            return false;
        }
-        return true;
     }
 
 
