@@ -168,6 +168,11 @@ public class ProgressActivity extends Activity{
 
             dialog.setContentText("进度"+((int)(((double)(msg.what+1)/6)*100))+"%");
             if(msg.what==FLAG_DISMISS){
+                try{
+                    Thread.sleep(1000);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 dismiss();
                 Intent intent=new Intent(ProgressActivity.this,SudokuActivity.class);
                 startActivity(intent);

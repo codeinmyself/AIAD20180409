@@ -354,14 +354,14 @@ public class SudokuActivity extends Activity {
             handler.postDelayed(runnable, 100);
         }
     };
-    @Override
-    public void onPause(){
+
+    /*public void onPause(){
         super.onPause();
         if(isApplicationBroughtToBackground()) {
             musicService.isReturnTo = 1;
             Logger.e("b","后台中");
         }
-    }
+    }*/
     @Override
     public void onRestart() {
         super.onRestart();
@@ -392,7 +392,7 @@ public class SudokuActivity extends Activity {
     public void onStop() {
         super.onStop();
     }
-    private boolean isApplicationBroughtToBackground() {
+    /*private boolean isApplicationBroughtToBackground() {
         ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
         if (!tasks.isEmpty()) {
@@ -402,7 +402,7 @@ public class SudokuActivity extends Activity {
             }
         }
         return false;
-    }
+    }*/
 
 
     private  boolean voicePermission(){
@@ -436,7 +436,6 @@ public class SudokuActivity extends Activity {
             if (bitmap != null) {
                 final ImageView imageView = imageViewReference.get();
                 saveBitmap(bitmap, fileName);
-                Logger.e("postexecute");
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
                 }
