@@ -48,4 +48,6 @@
     <string name="study">学习办公</string>
     <string name="electrical">数码电子</string>
     <string name="loading">加载中.</string>
+    <string name="my_ad">我的广告</string>
+    <string name="my_material">我的素材</string>
 </resources>
