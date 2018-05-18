@@ -59,28 +59,29 @@ public class ProgressActivity extends Activity{
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String tempResponse =  response.body().string();
-                if(response.isSuccessful()){
-                    Logger.i("getVideosName():成功");
-                }
-                try {
-                    JSONObject jsonObject = new JSONObject(tempResponse);
-                    String returnCode = jsonObject.getString("code");
-                    if ("200".equals(returnCode)) {
-                        jsonObject=jsonObject.getJSONObject("detail");
+                String tempResponse = response.body().string();
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(tempResponse);
+                        String returnCode = jsonObject.getString("code");
+                        if ("200".equals(returnCode)) {
+                            jsonObject = jsonObject.getJSONObject("detail");
 
-                        videosName[0]=jsonObject.getString("0");
-                        videosName[1]=jsonObject.getString("1");
-                        videosName[2]=jsonObject.getString("2");
-                        videosName[3]=jsonObject.getString("3");
-                        videosName[4]=jsonObject.getString("4");
-                        videosName[5]=jsonObject.getString("5");
+                            videosName[0] = jsonObject.getString("0");
+                            videosName[1] = jsonObject.getString("1");
+                            videosName[2] = jsonObject.getString("2");
+                            videosName[3] = jsonObject.getString("3");
+                            videosName[4] = jsonObject.getString("4");
+                            videosName[5] = jsonObject.getString("5");
 
-                        getTemplateVideo();
-                        recordVideosName();
+                            getTemplateVideo();
+                            recordVideosName();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
+                }else{
+                    Logger.e("wrong");
                 }
             }
         });
@@ -111,21 +112,14 @@ public class ProgressActivity extends Activity{
         try{
             for(int i=0;i<=5;i++){
                 String url = OkHttpUtil.base_url + "downloadVideos/"+i;
-                while(videosName[i]==null){
-                    Logger.e("videosName为null");
-                }
                 OkHttpUtil.downFile(url, resourcesfiles_url+"/", /*videosName[i]*/videosName[i] + ".mp4", new OkHttpUtil.OnDownloadListener() {
                     @Override
                     public void onDownloadSuccess() {
-                        Logger.i(videosName[num]+"^_^视频下载成功！");
+                        //Logger.i(videosName[num]+"^_^视频下载成功！");
                         Message msg=mHandler.obtainMessage();
-                        msg.what=num;
-                        mHandler.sendMessage(msg);
-                        num++;
+                        msg.what=num;mHandler.sendMessage(msg);num++;
                         //if只会在最后执行
-                        if(num==6){
-                            num=0;
-                        }
+                        if(num==6){num=0;}
                     }
 
                     @Override

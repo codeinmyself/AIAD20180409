@@ -86,34 +86,28 @@ public class SudokuActivity extends Activity {
     public static List<HashMap<String, String>> list;
     private DragBaseAdapter adapter;
     private int position = 0;
-    private LinearLayout editWordsBar;
-    private HorizontalScrollView addMusicBar;
+    private LinearLayout editWordsBar,addMusicBar;
     private String path;
     private int temp;
     static CustomDialogUtil dialog=null;
     public static String[] img_text = {"u_1", "宫格1", "宫格2", "宫格3", "u_2", "宫格4",
             "宫格5", "宫格6", "u_3"};
-
-    static String default_img = "/sdcard/1513955901.png";
+    static String default_img = null;
     public static String[] imgs = {"hh", default_img, default_img, default_img, "hh", default_img, default_img, default_img, "hh"};
-
-    public class Words {
+    private Words[] words = new Words[9];
+    private class Words {
         private String videoID;
         private String content;
         private String pos;
         private String color;
     }
 
-    private Words[] words = new Words[9];
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku);
-
         bindServiceConnection();
         musicService = new MusicService();
-
         initView();
     }
 
@@ -121,7 +115,6 @@ public class SudokuActivity extends Activity {
      * initView and set Listener
      */
     private void initView() {
-
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         start = (ImageButton) findViewById(R.id.video_start);
         edit = (ImageButton) findViewById(R.id.video_edit);music = (ImageButton) findViewById(R.id.video_music);
@@ -133,7 +126,7 @@ public class SudokuActivity extends Activity {
         surfaceView.getHolder().setKeepScreenOn(true);
         aGridview = (ActiveGrideView) findViewById(R.id.gridview);
         submit = (Button) findViewById(R.id.submit);
-        editWordsBar = (LinearLayout) findViewById(R.id.edit_words_bar); addMusicBar = (HorizontalScrollView) findViewById(R.id.add_music_bar);
+        editWordsBar = (LinearLayout) findViewById(R.id.edit_words_bar); addMusicBar = (LinearLayout) findViewById(R.id.add_music_bar);
         rightbottom = (ImageButton) findViewById(R.id.rightbottom);
         leftbottom = (ImageButton) findViewById(R.id.leftbottom);
         righttop = (ImageButton) findViewById(R.id.righttop);
@@ -154,16 +147,12 @@ public class SudokuActivity extends Activity {
                                 ToastUtil.getInstance(SudokuActivity.this).showToast("九宫格视频尚未完成！");
                             }
                         });
-                        down = false;
-                        break;
+                        down = false;break;
                     }
                 }
                 if (down) {
-                    submitRecord();
-                    submitUserVideos();
-                    mThread.start();
-                    Intent intent = new Intent(SudokuActivity.this, AddWordsActivity.class);
-                    startActivity(intent);
+                    submitRecord();submitUserVideos();mThread.start();
+                    Intent intent = new Intent(SudokuActivity.this, AddWordsActivity.class);startActivity(intent);
                 }
 
             }
@@ -175,7 +164,7 @@ public class SudokuActivity extends Activity {
 
                 if (imgs[arg2].equals(default_img) || (doubleClick()&&(img_text[arg2].equals("u_1")||img_text[arg2].equals("u_2")||img_text[arg2].equals("u_3"))) || imgs[arg2].equals("hh")) {
                     if(voicePermission() && PermissionUtil.isHasAudioRecordPermission(SudokuActivity.this)){
-                        Logger.i("录音权限已开启");
+                        //Logger.i("录音权限已开启");
                         DragBaseAdapter dba = (DragBaseAdapter) parent.getAdapter();
                         Map.Entry entry = dba.loopItem(dba.get(), (int) position);
                         Intent intent = new Intent(SudokuActivity.this, RecordedActivity.class);
@@ -437,7 +426,6 @@ public class SudokuActivity extends Activity {
             videoPath = params[0];
             fileName=params[1];
             File file=new File(videoPath);
-            Logger.e("test waitforwrite");
             waitForWriteCompleted(file);
             return getVideoThumbnail(videoPath);
         }
@@ -497,7 +485,8 @@ public class SudokuActivity extends Activity {
                     if (i == 1 || i == 2 || i == 3 | i == 5 || i == 6 || i == 7) {
                         Logger.i("initialAD:" + resourcesfiles_url + "/" + ProgressActivity.videosName[count]);
                         Bitmap bitmap = getVideoThumbnail(resourcesfiles_url + "/" + ProgressActivity.videosName[count] + ".mp4");
-
+                        if(bitmap==null)
+                            Logger.e("bitmap==null");
                         saveBitmap(bitmap, ProgressActivity.videosName[count] + "");
                         imgs[i] = resourcesfiles_url + "/" + ProgressActivity.videosName[count] + ".png";
                         img_text[i] = ProgressActivity.videosName[count];
@@ -517,7 +506,7 @@ public class SudokuActivity extends Activity {
                             words[i].videoID = img_text[i];
                             words[i].pos = "lt";
                             words[i].color = "black";
-                            Logger.i(words[i].videoID);
+                            //Logger.i(words[i].videoID);
                         }
                     }
                 });
@@ -716,7 +705,6 @@ public class SudokuActivity extends Activity {
             Logger.e(filePath + "不存在");
             return null;
         } else {
-            Logger.e(filePath + "存在");
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
             try {
                 File file = new File(filePath);
@@ -724,8 +712,6 @@ public class SudokuActivity extends Activity {
                 bitmap = mmr.getFrameAtTime(1000,MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
                 if (bitmap == null) {
                     Logger.e("bitmap==null");
-                }else{
-                   Logger.e("bitmap!=null");
                 }
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
@@ -821,7 +807,7 @@ public class SudokuActivity extends Activity {
             @Override
             public void onDownloading(int progress) {
 
-                Logger.e("merge1.mp4正在下载！");
+                Logger.i("merge1.mp4正在下载！");
             }
 
             @Override

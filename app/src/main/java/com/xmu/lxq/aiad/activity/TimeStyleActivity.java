@@ -153,8 +153,7 @@ public class TimeStyleActivity extends Activity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
-                Logger.i("success!");
+                //Logger.i("success!");
             }
         });
         Intent intent=new Intent(TimeStyleActivity.this,ProgressActivity.class);

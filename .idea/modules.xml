@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/aiad.iml" filepath="$PROJECT_DIR$/aiad.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AIAD20180409.iml" filepath="$PROJECT_DIR$/AIAD20180409.iml" />
+      <module fileurl="file://D:\aiad\AIAD20180409\AIAD20180409\aiad.iml" filepath="D:\aiad\AIAD20180409\AIAD20180409\aiad.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

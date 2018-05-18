@@ -196,15 +196,16 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/add_music_bar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="200dp"
             android:background="@color/purple"
             android:gravity="center_vertical|center_horizontal|center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <HorizontalScrollView
-                android:id="@+id/add_music_bar"
                 android:layout_width="320dp"
                 android:layout_height="match_parent"
                 android:visibility="visible">

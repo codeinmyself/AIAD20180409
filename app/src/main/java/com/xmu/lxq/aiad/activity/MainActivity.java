@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,SudokuActivity.class);
+                Intent intent=new Intent(MainActivity.this,TimeStyleActivity.class);
                 startActivity(intent);
             }
         });
