@@ -175,6 +175,12 @@ public class LoginActivity extends Activity{
                             if ("200".equals(returnCode)) {
                                 AppContext appContext = (AppContext) getApplication();
                                 appContext.setIsLogin(true);
+
+                                SharedPreferences sp1 = getSharedPreferences("data", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sp1.edit();
+                                editor.putLong("telephone", Long.parseLong(telephone));
+                                editor.apply();
+
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("telephone", telephone);
                                 CustomDialogUtil.dismissDialog();

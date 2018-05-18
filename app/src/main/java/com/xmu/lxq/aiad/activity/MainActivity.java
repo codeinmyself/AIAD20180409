@@ -197,12 +197,10 @@ public class MainActivity extends AppCompatActivity
                 File file = new File(path);
                 if (file.exists()) {
                     icon_image.setImageBitmap(getDiskBitmap(path));
-                    // Glide.with(this).load(path).bitmapTransform(new CropCircleTransformation(this)).into(icon_image);
                 } else {
                     Resources res = MainActivity.this.getResources();
                     Bitmap icon = BitmapFactory.decodeResource(res, R.drawable.album_color);
                     icon_image.setImageBitmap(icon);
-                    //Glide.with(this).load(R.drawable.ic_launcher_background).bitmapTransform(new CropCircleTransformation(this)).into(icon_image);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -284,7 +282,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.logout) {
             AppContext app=(AppContext)getApplication();
             app.setIsLogin(true);
-            //SharePreferenceUtil sharePreferenceUtil=new SharePreferenceUtil(MainActivity.this);
             if (AppContext.isLogin) {
                 Logger.i("退出账号！");
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -297,7 +294,6 @@ public class MainActivity extends AppCompatActivity
                 button_to_login.setVisibility(View.VISIBLE);
                 icon_image.setVisibility(View.INVISIBLE);
                 notlogin.setVisibility(View.VISIBLE);
-                // sharePreferenceUtil.setStateLogout();
                 app.setIsLogin(false);
             } else {
                 ToastUtil.getInstance(MainActivity.this).showToast("并未登录！");

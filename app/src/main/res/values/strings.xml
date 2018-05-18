@@ -19,6 +19,7 @@
     <string name="personal_info">个人资料</string>
     <string name="icon">头像</string>
     <string name="account">账号</string>
+    <string name="mail">邮箱</string>
     <string name="nickname">昵称</string>
     <string name="sex">性别</string>
     <string name="women">女</string>
