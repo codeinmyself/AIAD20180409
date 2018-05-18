@@ -78,7 +78,7 @@ public class SudokuActivity extends Activity {
     private MediaPlayer player;
     private SeekBar seekBar;
     private ImageButton start,edit,music;
-    private ImageButton save;
+    private ImageButton save,save_music;
     private ImageButton lefttop, leftbottom, righttop, rightbottom, black, white,cd1,cd2,cd3;
     private EditText word;
     private Button submit;
@@ -125,7 +125,7 @@ public class SudokuActivity extends Activity {
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         start = (ImageButton) findViewById(R.id.video_start);
         edit = (ImageButton) findViewById(R.id.video_edit);music = (ImageButton) findViewById(R.id.video_music);
-        save = (ImageButton) findViewById(R.id.save_words);
+        save = (ImageButton) findViewById(R.id.save_words);save_music=(ImageButton) findViewById(R.id.save_music);
         word = (EditText) findViewById(R.id.words);
         word.setEnabled(false);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
@@ -248,6 +248,11 @@ public class SudokuActivity extends Activity {
                 words[temp].content = word.getText().toString();
                 word.setEnabled(false);
                 editWordsBar.setVisibility(View.INVISIBLE);
+            }
+        });
+        save_music.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                addMusicBar.setVisibility(View.INVISIBLE);
             }
         });
         lefttop.setOnClickListener(new View.OnClickListener() {
