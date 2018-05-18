@@ -256,13 +256,15 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_gallery) {
             if (AppContext.isLogin) {
-
+                Intent intent = new Intent(MainActivity.this, MyMaterialActivity.class);
+                startActivity(intent);
             } else {
                 ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
             }
         } else if (id == R.id.nav_slideshow) {
             if (AppContext.isLogin) {
-
+                Intent intent = new Intent(MainActivity.this, MyADActivity.class);
+                startActivity(intent);
             } else {
                 ToastUtil.getInstance(MainActivity.this).showToast("请先登录！");
             }
