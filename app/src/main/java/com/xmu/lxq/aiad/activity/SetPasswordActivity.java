@@ -41,6 +41,7 @@ public class SetPasswordActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_set_password);
         Intent intent=getIntent();
+        Logger.i("here");
         telephone=intent.getStringExtra("telephone");
         type=intent.getStringExtra("type");
         initView();
