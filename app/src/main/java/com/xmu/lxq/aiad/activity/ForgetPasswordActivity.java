@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
@@ -37,11 +38,11 @@ public class ForgetPasswordActivity extends Activity{
     private EditText verificationText;
     private Button verificationButton;
     private Button submitButton;
-    private Button cancelButton;
+    private ImageButton cancelButton;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_register);
+        this.setContentView(R.layout.activity_forget_password);
         initView();
     }
 
@@ -90,7 +91,7 @@ public class ForgetPasswordActivity extends Activity{
             }
         });
         submitButton=(Button)findViewById(R.id.register_btn_sure);
-        cancelButton=(Button)findViewById(R.id.register_btn_cancel);
+        cancelButton=(ImageButton)findViewById(R.id.cancel_forgot);
 
         submitButton.setOnClickListener(m_register_Listener);
         cancelButton.setOnClickListener(m_register_Listener);
@@ -109,7 +110,7 @@ public class ForgetPasswordActivity extends Activity{
                 case R.id.register_btn_sure:                       //确认按钮的监听事件
                     registerCheck();
                     break;
-                case R.id.register_btn_cancel:                     //取消按钮的监听事件,由注册界面返回登录界面
+                case R.id.cancel_forgot:                     //取消按钮的监听事件,由注册界面返回登录界面
                     Intent intent_Register_to_Login = new Intent(ForgetPasswordActivity.this,LoginActivity.class) ;    //切换User Activity至Login Activity
                     startActivity(intent_Register_to_Login);
                     finish();

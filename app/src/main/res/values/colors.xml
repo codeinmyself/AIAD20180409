@@ -3,7 +3,9 @@
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#FF4081</color>
     <color name="griditems_bg">#ffe8ecef</color>
-    <color name="commo_text_color">#ff333333</color>
-    <color name="line">#ffd3dde6</color>
-    <color name="purple">#2a0a50</color>
+    <color name="commo_text_color">#333333</color>
+    <color name="line">#d3dde6</color>
+    <color name="purple">#624EE3</color>
+    <color name="blue">#5B9CFD</color>
+    <color name="text_gray">#999999</color>
 </resources>

@@ -35,6 +35,9 @@
     <string name="tip_for_save_article">自动保存我的作品到广告库</string>
     <string name="send_verify_code">发送验证码</string>
     <string name="register">注册</string>
+    <string name="reset_password">重置密码</string>
+    <string name="set_password">请输入密码</string>
+    <string name="input_again">请再次输入</string>
     <string name="tip_for_login_redirect">已有账号？ 立即登录</string>
     <string name="type0">类型0</string>
     <string name="tip_for_choose_others">若不是，请在下方选择：</string>

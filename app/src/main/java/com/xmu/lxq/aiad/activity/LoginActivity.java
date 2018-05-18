@@ -38,6 +38,7 @@ public class LoginActivity extends Activity{
     private Button login;
     private Button register;
     private Button tryout;
+    private Button forgot;
     //3次登录机会
     private int LOGIN_CHANCES = 3;
     //还剩几次登录机会的标志，初始值就是LOGIN_CHANCES
@@ -63,6 +64,7 @@ public class LoginActivity extends Activity{
         login = (Button)findViewById(R.id.button1);
         register=(Button)findViewById(R.id.button2);
         tryout=(Button)findViewById(R.id.button);
+        forgot=(Button)findViewById(R.id.forget_password_btn);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +95,14 @@ public class LoginActivity extends Activity{
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(LoginActivity.this,ForgetPasswordActivity.class);
+                //intent.putExtra("type","forgetPassword");
                 startActivity(intent);
             }
         });
