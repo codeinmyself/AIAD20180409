@@ -24,8 +24,6 @@ import com.xmu.lxq.aiad.util.CustomDialogUtil;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
 import com.xmu.lxq.aiad.util.SharePreferenceUtil;
 
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -43,10 +41,11 @@ public class PersonalInfo extends Activity {
     private ImageView avatar;
     private ImageButton edit_nickname,edit_gender,edit_mail;
     private LinearLayout personalInfo, nickname,gender,mail;
-    private TextView text_nickname,text_gender,text_mail;
+    private TextView text_nickname,text_gender,text_mail,text_telephone;
     private EditText editText_nickname,editText_mail;
     private Button save_nickname,male,female,save_mail;
 
+    private SharePreferenceUtil sharePreferenceUtil;
 
 
     @Override
@@ -54,6 +53,7 @@ public class PersonalInfo extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info);
         avatar = (ImageView) findViewById(R.id.avatar);
+        text_telephone=(TextView)findViewById(R.id.text_telephone);
         edit_nickname = (ImageButton) findViewById(R.id.edit_nickname);edit_gender=(ImageButton) findViewById(R.id.edit_gender);edit_mail=(ImageButton) findViewById(R.id.edit_mail);
         personalInfo = (LinearLayout) findViewById(R.id.personalInfo);
         nickname = (LinearLayout) findViewById(R.id.nickname);mail=(LinearLayout) findViewById(R.id.mail);
@@ -62,6 +62,7 @@ public class PersonalInfo extends Activity {
         editText_nickname = (EditText) findViewById(R.id.editText_nickname);editText_mail = (EditText) findViewById(R.id.editText_mail);
         save_nickname = (Button) findViewById(R.id.save_nickname); save_mail = (Button) findViewById(R.id.save_mail);
         male = (Button) findViewById(R.id.male);female = (Button) findViewById(R.id.female);
+
         if (AppContext.isLogin) {
             String path = "/sdcard/AIAD/personal/" + "icon.jpg";
             try {
@@ -81,15 +82,20 @@ public class PersonalInfo extends Activity {
         }
 
 
-        final SharePreferenceUtil sharePreferenceUtil=new SharePreferenceUtil(PersonalInfo.this,"personalInfo");
-        text_mail.setText(sharePreferenceUtil.getEmail());
+        sharePreferenceUtil=new SharePreferenceUtil(PersonalInfo.this,"personalInfo");
+        text_telephone.setText(sharePreferenceUtil.getSharedPreference("telephone","").toString().trim());
+        text_mail.setText(sharePreferenceUtil.getSharedPreference("email","").toString().trim());
+        text_nickname.setText(sharePreferenceUtil.getSharedPreference("nickname","").toString().trim());
+        text_gender.setText(sharePreferenceUtil.getSharedPreference("gender","").toString().trim());
+
         edit_nickname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 personalInfo.setVisibility(View.INVISIBLE);
                 nickname.setVisibility(View.VISIBLE);
-                if (text_nickname.getText().toString() != "") {
+                if (!text_nickname.getText().toString().equals("")) {
                     editText_nickname.setText(text_nickname.getText().toString());
+                    editText_nickname.setSelection(text_nickname.getText().toString().length());//将光标移至文字末尾
                 }
             }
         });
@@ -98,8 +104,10 @@ public class PersonalInfo extends Activity {
             public void onClick(View v) {
                 personalInfo.setVisibility(View.INVISIBLE);
                 mail.setVisibility(View.VISIBLE);
-                if (text_mail.getText().toString() != "") {
-                    editText_mail.setText(text_nickname.getText().toString());
+                if (!text_mail.getText().toString().equals("")) {
+                    editText_mail.setText(text_mail.getText().toString());
+                    editText_mail.setSelection(text_mail.getText().toString().length());//将光标移至文字末尾
+
                 }
             }
         });
@@ -108,7 +116,7 @@ public class PersonalInfo extends Activity {
             public void onClick(View v) {
                 String nickname1=editText_nickname.getText().toString();
                 text_nickname.setText(nickname1);
-                sharePreferenceUtil.setNickname(nickname1);
+                sharePreferenceUtil.put("nickname",nickname1);
                 personalInfo.setVisibility(View.VISIBLE);
                 nickname.setVisibility(View.INVISIBLE);
             }
@@ -117,8 +125,8 @@ public class PersonalInfo extends Activity {
             @Override
             public void onClick(View v) {
                 String mail1=editText_mail.getText().toString();
-                text_nickname.setText(mail1);
-                sharePreferenceUtil.setEmail(mail1);
+                text_mail.setText(mail1);
+                sharePreferenceUtil.put("email",mail1);
                 personalInfo.setVisibility(View.VISIBLE);
                 mail.setVisibility(View.INVISIBLE);
             }
@@ -136,7 +144,7 @@ public class PersonalInfo extends Activity {
                 personalInfo.setVisibility(View.VISIBLE);
                 gender.setVisibility(View.INVISIBLE);
                 text_gender.setText("男");
-                sharePreferenceUtil.setGender("男");
+                sharePreferenceUtil.put("gender","男");
             }
         });
         female.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +153,7 @@ public class PersonalInfo extends Activity {
                 personalInfo.setVisibility(View.VISIBLE);
                 gender.setVisibility(View.INVISIBLE);
                 text_gender.setText("女");
-                sharePreferenceUtil.setGender("女");
+                sharePreferenceUtil.put("gender","女");
             }
         });
         avatar.setOnClickListener(new View.OnClickListener() {
@@ -224,6 +232,10 @@ public class PersonalInfo extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            text_telephone.setText(sharePreferenceUtil.getSharedPreference("telephone","").toString().trim());
+            text_mail.setText(sharePreferenceUtil.getSharedPreference("email","").toString().trim());
+            text_nickname.setText(sharePreferenceUtil.getSharedPreference("nickname","").toString().trim());
+            text_gender.setText(sharePreferenceUtil.getSharedPreference("gender","").toString().trim());
         }
 
     }

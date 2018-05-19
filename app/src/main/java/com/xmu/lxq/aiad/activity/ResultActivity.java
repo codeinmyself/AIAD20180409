@@ -113,18 +113,6 @@ public class ResultActivity extends Activity {
         }
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         try {
-           /* retriever.setDataSource(filePath);
-            bitmap = retriever.getFrameAtTime(10);
-            上面这样写会出错
-            */
-            /*File file=new File(filePath);
-            retriever.setDataSource(file.getAbsolutePath());
-            bitmap = retriever.getFrameAtTime();
-            链接：http://blog.csdn.net/yaochangliang159/article/details/56841879
-            */
-            /*
-            https://stackoverflow.com/questions/11459784/mediametadataretactivity-getframeattime-videoframe-is-a-null-pointer
-             */
             retriever.setDataSource(filePath);
             bitmap = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
         } catch (IllegalArgumentException e) {

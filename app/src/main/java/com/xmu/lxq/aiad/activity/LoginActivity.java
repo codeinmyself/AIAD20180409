@@ -13,6 +13,7 @@ import com.xmu.lxq.aiad.R;
 import com.xmu.lxq.aiad.application.AppContext;
 import com.xmu.lxq.aiad.util.CustomDialogUtil;
 import com.xmu.lxq.aiad.util.OkHttpUtil;
+import com.xmu.lxq.aiad.util.SharePreferenceUtil;
 import com.xmu.lxq.aiad.util.ToastUtil;
 
 import org.json.JSONObject;
@@ -176,10 +177,8 @@ public class LoginActivity extends Activity{
                                 AppContext appContext = (AppContext) getApplication();
                                 appContext.setIsLogin(true);
 
-                                SharedPreferences sp1 = getSharedPreferences("data", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sp1.edit();
-                                editor.putLong("telephone", Long.parseLong(telephone));
-                                editor.apply();
+                                SharePreferenceUtil sharePreferenceUtil=new SharePreferenceUtil(LoginActivity.this,"personalInfo");
+                                sharePreferenceUtil.put("telephone",telephone);
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("telephone", telephone);

@@ -113,7 +113,7 @@ public class CameraDrawer implements GLSurfaceView.Renderer {
 
         mProcessFilter.create();
         showFilter.create();
-//        showFilter.setTextureId(textureID);
+//      showFilter.setTextureId(textureID);
         mBeFilter.create();
         mAfFilter.create();
         mBeautyFilter.init();

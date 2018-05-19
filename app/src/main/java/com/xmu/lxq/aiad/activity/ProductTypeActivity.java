@@ -181,13 +181,13 @@ public class ProductTypeActivity extends Activity{
 
     private int classifyProcess(String str[],int type[]){
         for(int i=0;i<5;i++) {
-            str[i] = (str[i].substring(str[i].indexOf("#") + 1));// 取标签
-            if(str[i].equals("book"))type[0]++;                         // 投票
-            else if(str[i].equals("daily"))type[1]++;
-            else if(str[i].equals("cloth"))type[2]++;
-            else if(str[i].equals("food"))type[3]++;
-            else if(str[i].equals("makeup"))type[4]++;
-            else if(str[i].equals("electronic"))type[5]++;
+            str[0] = (str[i].substring(str[i].indexOf("#") + 1));// 取标签
+            if(str[0].equals("book"))type[0]++;                         // 投票
+            else if(str[0].equals("daily"))type[1]++;
+            else if(str[0].equals("cloth"))type[2]++;
+            else if(str[0].equals("food"))type[3]++;
+            else if(str[0].equals("makeup"))type[4]++;
+            else if(str[0].equals("electronic"))type[5]++;
         }
         int max=type[0],index=0;                                 //取最大票数
         for(int i=0;i<type.length;i++) {

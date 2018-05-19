@@ -115,7 +115,7 @@ public class ProgressActivity extends Activity{
                 OkHttpUtil.downFile(url, resourcesfiles_url+"/", /*videosName[i]*/videosName[i] + ".mp4", new OkHttpUtil.OnDownloadListener() {
                     @Override
                     public void onDownloadSuccess() {
-                        //Logger.i(videosName[num]+"^_^视频下载成功！");
+                        Logger.i(videosName[num]+"^_^视频下载成功！");
                         Message msg=mHandler.obtainMessage();
                         msg.what=num;mHandler.sendMessage(msg);num++;
                         //if只会在最后执行
