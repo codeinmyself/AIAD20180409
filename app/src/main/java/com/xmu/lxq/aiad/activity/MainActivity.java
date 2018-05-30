@@ -7,8 +7,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -175,7 +173,8 @@ public class MainActivity extends AppCompatActivity
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,TimeStyleActivity.class);
+                //Intent intent=new Intent(MainActivity.this,TimeStyleActivity.class);
+                Intent intent=new Intent(MainActivity.this,ResultActivity.class);
                 startActivity(intent);
             }
         });
