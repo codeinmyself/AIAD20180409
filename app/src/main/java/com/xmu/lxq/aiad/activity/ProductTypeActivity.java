@@ -196,7 +196,7 @@ public class ProductTypeActivity extends Activity{
             {max=type[i];
                 index=i;}
         }
-        index=3;
+        index=4;
         Logger.i("!!!最大值是"+index);
         return index;
     }

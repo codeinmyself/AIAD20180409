@@ -19,7 +19,6 @@ float hardLight(float color)
 }
 
 void main(){
-
     vec3 centralColor = texture2D(inputImageTexture, textureCoordinate).rgb;
     blurCoordinates[0] = textureCoordinate.xy + singleStepOffset * vec2(0.0, -10.0);
     blurCoordinates[1] = textureCoordinate.xy + singleStepOffset * vec2(0.0, 10.0);
