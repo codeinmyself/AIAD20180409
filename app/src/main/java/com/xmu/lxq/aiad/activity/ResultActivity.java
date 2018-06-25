@@ -19,6 +19,7 @@ import android.widget.SeekBar;
 
 import com.orhanobut.logger.Logger;
 import com.xmu.lxq.aiad.R;
+import com.xmu.lxq.aiad.application.AppContext;
 
 import java.io.File;
 
@@ -39,8 +40,8 @@ public class ResultActivity extends Activity {
     static ProgressDialog dialog = null;
     private int FLAG_DISMISS = 1;
     private boolean flag = true;//跳出循环的标志
-    //static String path = deal_url+"/"+ AppContext.timeStamp+"/merge1.mp4";
-    static String path = deal_url+ "/merge1.mp4";
+    static String path = deal_url+"/"+ AppContext.timeStamp+"/merge1.mp4";
+    //static String path = deal_url+ "/merge1.mp4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

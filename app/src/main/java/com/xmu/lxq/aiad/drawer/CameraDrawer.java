@@ -180,8 +180,8 @@ public class CameraDrawer implements GLSurfaceView.Renderer {
         mSurfaceTextrue.updateTexImage();
 
         EasyGlUtils.bindFrameTexture(fFrame[0],fTexture[0]);
-        //GLES20.glViewport(0,0,mPreviewWidth,mPreviewHeight);
-        GLES20.glViewport(0,0,mPreviewWidth,mPreviewHeight*3);
+        GLES20.glViewport(0,0,mPreviewWidth,mPreviewHeight);
+        //GLES20.glViewport(0,0,mPreviewWidth,mPreviewHeight*3);
         drawFilter.draw();
         EasyGlUtils.unBindFrameBuffer();
 
@@ -254,8 +254,8 @@ public class CameraDrawer implements GLSurfaceView.Renderer {
                     throw new RuntimeException("unknown recording status " + recordingStatus);
             }
         }
-        //GLES20.glViewport(0,0,width,height);
-        GLES20.glViewport(0,height/3,width,height/3);
+        GLES20.glViewport(0,0,width,height);
+        //GLES20.glViewport(0,height/3,width,height/3);
         showFilter.setTextureId(mAfFilter.getOutputTexture());
         showFilter.draw();
         if (videoEncoder != null && recordingEnabled && recordingStatus == RECORDING_ON){

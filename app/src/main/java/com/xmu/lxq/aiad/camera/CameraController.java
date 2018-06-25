@@ -68,7 +68,7 @@ public class CameraController implements ICamera{
             picSize = getPropPictureSize(param.getSupportedPictureSizes(),mConfig.rate,
                     mConfig.minPictureWidth);
             //param.setPictureSize(1920, 1080);
-           param.setPictureSize(picSize.width, picSize.height);
+            param.setPictureSize(picSize.width, picSize.height);
             param.setPreviewSize(preSize.width,preSize.height);
 
             mCamera.setParameters(param);

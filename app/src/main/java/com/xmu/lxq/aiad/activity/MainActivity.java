@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 //Intent intent=new Intent(MainActivity.this,TimeStyleActivity.class);
-                Intent intent=new Intent(MainActivity.this,ResultActivity.class);
+                Intent intent=new Intent(MainActivity.this,TimeStyleActivity.class);
                 startActivity(intent);
             }
         });

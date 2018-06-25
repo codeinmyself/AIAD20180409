@@ -163,7 +163,8 @@ public class SudokuActivity extends Activity {
                         //Logger.i("录音权限已开启");
                         DragBaseAdapter dba = (DragBaseAdapter) parent.getAdapter();
                         Map.Entry entry = dba.loopItem(dba.get(), (int) position);
-                        Intent intent = new Intent(SudokuActivity.this, RecordedActivity.class);
+                        //Intent intent = new Intent(SudokuActivity.this, RecordedActivity.class);
+                        Intent intent = new Intent(SudokuActivity.this, VideoActivity.class);
                         intent.putExtra("order", arg2 + "");
                         intent.putExtra("fileName", img_text[arg2] + "");
                         startActivityForResult(intent, 1);
