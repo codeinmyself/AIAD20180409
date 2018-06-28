@@ -163,8 +163,8 @@ public class SudokuActivity extends Activity {
                         //Logger.i("录音权限已开启");
                         DragBaseAdapter dba = (DragBaseAdapter) parent.getAdapter();
                         Map.Entry entry = dba.loopItem(dba.get(), (int) position);
-                        //Intent intent = new Intent(SudokuActivity.this, RecordedActivity.class);
-                        Intent intent = new Intent(SudokuActivity.this, VideoActivity.class);
+                        Intent intent = new Intent(SudokuActivity.this, RecordedActivity.class);
+                        //Intent intent = new Intent(SudokuActivity.this, VideoActivity.class);
                         intent.putExtra("order", arg2 + "");
                         intent.putExtra("fileName", img_text[arg2] + "");
                         startActivityForResult(intent, 1);
@@ -615,21 +615,21 @@ public class SudokuActivity extends Activity {
         File file = new File(userfiles_url + "/", "DateRecording.txt");
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file, true);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream,"UTF-8");
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
-            bufferedWriter.write(img_text[0] + " ");
-            bufferedWriter.write(img_text[1] + " ");
-            bufferedWriter.write(img_text[2] + " ");
-            bufferedWriter.write(img_text[3] + " ");
-            bufferedWriter.write(img_text[4] + " ");
-            bufferedWriter.write(img_text[5] + " ");
-            bufferedWriter.write(img_text[6] + " ");
-            bufferedWriter.write(img_text[7] + " ");
+            bufferedWriter.write(img_text[0] + "*");
+            bufferedWriter.write(img_text[1] + "*");
+            bufferedWriter.write(img_text[2] + "*");
+            bufferedWriter.write(img_text[3] + "*");
+            bufferedWriter.write(img_text[4] + "*");
+            bufferedWriter.write(img_text[5] + "*");
+            bufferedWriter.write(img_text[6] + "*");
+            bufferedWriter.write(img_text[7] + "*");
             bufferedWriter.write(img_text[8] + "\r\n");
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
                     if (words[j].videoID.equals(img_text[i])) {
-                        bufferedWriter.write(words[j].content + " " + words[j].pos + " " + words[j].color + "\r\n");
+                        bufferedWriter.write(words[j].content + "*" + words[j].pos + "*" + words[j].color + "\r\n");
                         break;
                     }
                 }

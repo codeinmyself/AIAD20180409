@@ -30,9 +30,9 @@ public class OkHttpUtil{
 
 
     //public  static String base_url="http://10.30.160.32:8080/";
+    public  static String base_url="http://192.168.0.36:8080/";
     //public  static String base_url="http://192.168.0.36:8080/";
-    //public  static String base_url="http://192.168.0.36:8080/";
-    public  static String base_url="http://192.168.43.151:8080/";
+    //public  static String base_url="http://192.168.43.151:8080/";
     //public  static String base_url="http://192.168.1.101:8081/";
     //public  static String base_url="http://119.29.142.123/";
     //public  static String base_url="http://192.168.0.11:8080/";

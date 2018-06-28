@@ -94,10 +94,10 @@ public class ProgressActivity extends Activity{
         File file=new File(userfiles_url+"/","DateRecording.txt");
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file,true);//追加方式打开
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream,"UTF-8");
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
-            bufferedWriter.write(videosName[0]+" "+videosName[1]+" "+videosName[2]+" "+videosName[3]+" "+videosName[4]+" "+videosName[5]+"\r\n");
-            bufferedWriter.write("u_1 u_2 u_3"+"\r\n");
+            bufferedWriter.write(videosName[0]+"*"+videosName[1]+"*"+videosName[2]+"*"+videosName[3]+"*"+videosName[4]+"*"+videosName[5]+"\r\n");
+            bufferedWriter.write("u_1*u_2*u_3"+"\r\n");
             bufferedWriter.close();
             outputStreamWriter.close();
         }catch (Exception e){

@@ -131,7 +131,14 @@ public class TimeStyleActivity extends Activity {
             bufferedWriter.write(AppContext.timeStamp+"\r\n");
             bufferedWriter.write("light"+"\r\n");
             bufferedWriter.write(time+"\r\n");
-            bufferedWriter.write(style+"\r\n");
+            if(style.equals("清新")){
+                bufferedWriter.write("fresh"+"\r\n");
+
+            }else if(style.equals("复古")){
+                bufferedWriter.write("vintage"+"\r\n");
+            }else{
+                bufferedWriter.write("hip-hop"+"\r\n");
+            }
 
             bufferedWriter.close();
             outputStreamWriter.close();

@@ -121,7 +121,7 @@ public class AddWordsActivity extends AppCompatActivity {
         File file = new File(userfiles_url + "/", "DateRecording.txt");
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file, true);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream,"GBK");//改成以GBK存储，解决乱码问题
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream,"UTF-8");
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
             bufferedWriter.write(name + "\r\n");
             bufferedWriter.write(message + "\r\n");
